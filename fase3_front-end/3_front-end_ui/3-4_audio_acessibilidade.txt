@@ -1,0 +1,135 @@
+https://cursos.alura.com.br/extra/alura-mais/o-que-e-acessibilidade--c227
+
+Alura, artigo, áudio, curso online, front-end, ONE, t4f2, ux design
+
+# O que é acessibilidade?
+
+  Acessibilidade em diversos contextos
+  Dados do Censo Brasileiro / Internacionais
+  Percepção afeta no desenvolvimento
+
+- Símbolo de acessibilidade da ONU
+  - representa a parte de acessibilidade
+  - indica sites acessíveis
+  - Site Inclusão Social
+    https://www.inclusive.org.br/arquivos/28238
+  - Símbolo:
+    https://www.inclusive.org.br/wp-content/uploads/acessibilidade-768x512-300x200.jpg
+
+
+## Acessibilidade é
+
+  - para todos os tipos de pessoas
+
+  - tem a ver com possibilidade e condição de alcance
+  
+  - para uso com segurança e autonomia de
+    - espaços
+    - móveis
+    - transportes
+    - inofrmações
+    - comunicação
+    - sistemas
+    - tecnologias
+    
+  - tem relação com tudo
+    - físico
+    - tecnológico
+    - digital
+    
+  - para pessoas com caracterísiticas especiais
+    - deficiência
+    - neuroatípicas
+    - mobilidade reduzida
+    - diferentes condições
+      - financeiras
+      - sociais
+      - educacionais
+      - localização
+      - alfabetização
+      - faixa etária
+    - pode pertencer ao público alvo do projeto
+
+
+## Dados do IBGE
+
+- Censo 2010
+
+  - 24% população BR
+    - tem algum grau de dificuldade
+    - ou algum tipo de deficiência
+    - podendo ter mais de 1 tipo
+    - 6,7% - grande / total dificuldade
+      - enxergar
+      - ouvir
+      - caminhar
+      - subir esqueda
+      
+  - Tipos de deficiência (por ordem de incidência)
+    - visual
+    - motora
+    - auditiva
+    - mental / intelectual
+
+  - Daltonismo
+    - incapacidade de distinguir nuances de cores
+    - não identificar determinadas cores
+    - cores específicas
+      - não percebe cor vermelha (mais comum)
+      - não percebe cor verde
+      - não percebe cor azul (mais raro)
+      - percebe tudo em tons de cinza / preto e branco (raríssimo)
+    
+    - relacionado com características genéticas
+      - 8,5% população masculina mundial
+      - 0,5% população feminina mundial
+    
+  - Pessoas com algum tipo de
+    - deficiência
+    - síndrome
+    - distúrbio
+  - são usuárias de produtos / serviços
+  - podem presona do projeto pode ter esta caracterísitca
+
+  - Acesso à internet (fonte Cetic.br)
+    - pesquisa sobre uso de tecnologias da informação / comunicação (TIC)
+    - TIC - aparelhos tecnológicos nos domicílios
+      - acesso à internet
+        - 90,3% classe A
+        - 76,2% classe B
+        - 55,8% classe C
+        - 38,5% classes D e E
+      - 2013 a 2016
+        - 9% redução da classe C
+        - 23% redução das classes D e E
+    - Maioria das pessoas podem ter acesso
+      - apenas no trabalho
+      - fora de casa
+
+  - Projetos devem considerar
+    - todas as pessoas
+      - sem segmentação
+      - seres complexos
+      - interrelações
+      - muitas características
+    - telas acessíveis
+    - sistema adequado ao daltonismo
+    - navegação pelo teclado
+    - baxiar app sem wifi
+    - uso offline
+    - boa experiência offline / online
+    
+  - Foco nas pessoas com todas as suas características
+  
+
+Links relacionados:
+
+https://cgi.br/media/docs/publicacoes/1/Estudo%20Banda%20Larga%20no%20Brasil.pdf
+
+https://cgi.br/media/docs/publicacoes/2/12225320191028-tic_dom_2018_livro_eletronico.pdf
+
+https://www2.camara.leg.br/atividade-legislativa/comissoes/comissoes-permanentes/cpd/documentos/cinthia-ministerio-da-saude
+
+https://educa.ibge.gov.br/jovens/conheca-o-brasil/populacao/20551-pessoas-com-deficiencia.html
+
+https://www.color-blindness.com/

@@ -1,0 +1,36 @@
+https://www.alura.com.br/artigos/organizando-o-css-no-seu-projeto
+
+Alura, curso online, artigo, front-end, ONE, t4f2
+
+Artigos > Front-end
+
+
+# Organizando o CSS no seu projeto
+
+
+Projeto ganha mais complexidade
+  - código duplicado
+  - conflito e falta de padrão nomes de classes
+
+
+Organizar CSS do projeto em 5 partes
+
+  - SMACSS
+    https://smacss.com/
+    - guia de boas práticas
+
+  1. base
+    - estilo comum a todo projeto
+    
+  2. layout
+    - estilo específico a cada página do projeto
+    
+  3. módulo
+    - estilo de componentem recorrentes em diversas páginas
+  
+  4. estado
+    - diferentes comportamentos de um componente em cada página
+  
+  5. tema
+    - altera interface visual do projeto
+    - tema claro / escuro

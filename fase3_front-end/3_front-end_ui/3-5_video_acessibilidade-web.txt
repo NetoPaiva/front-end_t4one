@@ -1,0 +1,67 @@
+https://youtu.be/vrLx1yJjsXU
+
+Alura, curso online, video, front-end, ONE, t4f2
+
+
+# Acessibilidade na Web - Alura Live#47
+
+
+## O que é acessibilidade
+
+ - tornar lugares e espaços acessíveis para todas as pessoas
+
+
+### Acessibilidade voltada para Web
+
+  - Tornar conteúdo/interação acessível ao usuário
+  - Proporcionar a mesma experiência de uso a todos
+
+
+### Site acessível
+
+  - Dev precisa colocar-se no lugar das pessoas com necessidades
+  
+  - Saber como as pessoas acessam
+    - recursos de acessibilidade / leitor de tela
+    
+  - Aplicação web facilita contato virtual a conteúdos
+    - vídeo com transcrição / legenda
+    - texto alternativo nas imagens (alt="")
+    - contraste de cores
+    - evitar informação apenas visual
+    
+  - Design acessível (!)
+    - design não é apenas visual
+    - design é planejamento de todos os elementos do projeto
+    - se acessibilidade é um elemento, precisa ser bem trabalhado pelo design
+    - ponto!
+    
+  - W3C - diretriz de acessibilidade (WCAG 2.0)
+    - como tornar conteúdo acessível
+    - https://www.w3c.br/pub/Materiais/PublicacoesW3C/cartilha-w3cbr-acessibilidade-web-fasciculo-I.html
+    - https://www.w3.org/Translations/WCAG20-pt-br/
+    
+  - Páginas dinâmicas com JS
+    - altera estrutura HTML
+    - interfere na "leitura" feita pelas ferramentas assistivas
+    - Aplicações mais populares são dinâmicas
+      - página altera sem recarregar totalmente
+      - usuário não sabe se atualizou
+      - gmail
+      - youtube
+      - facebook
+      - busca google
+    
+  - WAI-ARIA
+    - novos atributos (acessíveis) do HTML5
+    - adiciona recursos no HTML
+    - deixa o recusro dinâmico acessível
+    - insere atributo no elemento que estará em consante atualização
+    - informa as ferramentas assistivas
+    - https://developer.mozilla.org/pt-BR/docs/Web/Accessibility/ARIA
+    - https://developer.mozilla.org/pt-BR/docs/Learn/Accessibility
+    - https://www.gov.br/ds/guias/wai-aria
+
+
+
+/* --- fim
