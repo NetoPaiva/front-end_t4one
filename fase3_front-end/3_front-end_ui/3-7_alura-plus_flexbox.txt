@@ -1,0 +1,353 @@
+https://cursos.alura.com.br/extra/alura-mais/css-flexbox-distribua-elementos-de-forma-responsiva-c301
+
+Alura, artigo, curso online, front-end, ONE, t4f3
+
+Alura Plus
+
+# CSS flexbox
+
+## Distribuir elementos de forma responsiva
+
+Referências:
+
+	O guia do Flexbox em português
+	https://www.alura.com.br/artigos/css-guia-do-flexbox
+
+	Guia do CSS Tricks em inglês:
+	https://css-tricks.com/snippets/css/a-guide-to-flexbox/
+
+	O Flexbox Cheatsheet é bem visual e você pode testar as propriedades
+	https://yoksel.github.io/flex-cheatsheet/
+
+	Se quiser praticar, o Flexbox Froggy é um clássico
+	https://flexboxfroggy.com/#pt-br
+
+  Crid Garden - jogo para aprender CSS Grid
+  https://codepip.com/games/grid-garden/
+
+	MDN
+	https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Flexbox
+
+	W3Schools
+	https://www.w3schools.com/csS/css3_flexbox.asp
+
+
+### Flexbox
+
+	display:flex;
+
+	- ferramenta CSS
+	- distribui elementos de forma responsiva
+	- é um valor da propriedade "display"
+	- declarar propriedade do elemento pai
+	- resultado é aplicado nos elementos filho
+
+
+### Conceito flexbox
+
+	- relação entre pai e filhos
+
+flex-container
+	- elemento HTML
+	- elemento pai
+	- envolve os elementos filho (flex-items)
+
+flex-items
+	- elemento HTML
+	- elemento filho
+
+
+### Onde declarar "display:flex;"
+
+	- no código CSS
+	- chamar elemento pai (flex-container)
+	- declarar "display:flex;"
+
+
+###  Comportamento do flex-container
+
+	- aplicar "display:flex;" no "flex-container" (pai)
+	- efeito aparece no "flex-items" (filho)
+	- não afeta os "filhos dos filhos"
+
+Eixo de distribuição
+
+	- principal (main axis)
+		- horizontal (row) é o padrão
+		- distribui os elementos lado a lado
+	- transversal (cross axis)
+		- vertical (column)
+
+	- alterar direção do eixo de distribuição
+		- "flex-direction:column;"
+		- inverte eixo
+			- vertical será o principal
+			- horizontal será o transversal
+		- distribui os elementos um embaixo do outro
+	
+	- flex-container aceita apenas um eixo de distribuição
+		- em linha (row) - horizontal
+		- em coluna (column) - vertical
+
+Quebra de linha
+
+	- "nowrap" é o padrão
+	- items não quebram linha automaticamente
+	- para alterar
+	- declarar no container
+		"flex-wrap:wrap;"
+		
+
+#### Propriedades de alinhamento do container
+
+	- alinha items dentro do container
+	- referente ao eixo principal
+
+Verificar qual elemento quer alinhar
+
+	- identificar no HTML qual é
+		- elemento pai (flex-container)
+		- elemento filho (flex-item)
+	- definir no CSS
+		- largura do container
+		- margem "auto"
+	
+
+Alinhamento no eixo principal
+
+	justify-content
+		- distribui items ao longo do eixo principal
+		- distribui o espaço livre do container
+		- depende da largura do container
+		  - definir largura da total da tela (width: 100vw;)
+		- declarar no seletor do container
+	
+	justify-content:flex-start;
+		- posicionamento padrão
+		- posiciona items no início do eixo
+
+	justify-content:flex-end;
+		- posiciona items no final do eixo
+
+	justify-contenpot:center;
+		- posiciona items no centro do eixo
+
+	justify-content:space-between;
+		- distribui espaço vazio entre os items
+
+	justify-content:space-around;
+		- distribui espaço ao redor dos items
+
+	justify-content:space-evenly;
+		- distribui espaço iguais entre os items
+	
+	modificadores "safe" e "unsafe";
+		- podem ser usados com qualquer valor
+		- safe
+			- impede empurrar elemento para fora da tela
+		- unsafe
+			- permite empurrar
+
+
+Alinhamento no eixo transversal
+
+	align-items
+		- alinha items no eixo transversal
+		- declara no container
+		- depende do valor de altura do container
+		  - definir altura total da tela (height:100vh;)
+
+	align-items:strech;
+		- alinhamento padrão
+		- estica items para preencher container
+		- considerando largura mínima e máxima
+
+	align-items:flex-start;
+	align-items:start;
+	align-items:self-start;
+		- items posicionados no início do eixo
+		- diferença tem relação com "flex-directio" / "writing-mode"
+
+	align-items:center;
+		- items centralizados no eixo transversal
+
+	align-items:baseline;
+		- items são alinhados conforme suas baselines
+
+	modificadores "safe" e "unsafe"
+		- também podem ser usados com qualquer alinhamento
+		- evita empurrar elemento para fora da tela
+
+
+Alinhar conteúdo
+
+	align-content
+		- organizar linhas de elementos dentro do container
+		- distribui espaço vazio
+		- funciona apenas com mais de uma linha de elementos
+		- declara no container
+	
+	align-content:flex-start;
+	align-content:start;
+		- alinha items com início do container
+		- flex-star
+			- guia pela flex-direction
+		- start
+			- guia pelo writing-mode
+
+	align-content:flex-end;
+	align-content:end;
+		- alinha items com o final do container
+		- flex-end
+			- guia pela flex-direction
+		- end
+			- guia pelo witing-mode
+
+	align-content:center;
+		- centraliza items no container
+
+	align-content:space-between;
+		- distribui espaço vazio entre os items
+		- primeira linha junto ao início do container
+		- última linha junto ao final do container
+
+	align-content:around;
+		- distribui espaço vazio
+		- mesmo espaçamento entre cada linha
+			- entre os items
+			- entre o item e a margem do container
+
+	align-content:evenly;
+		- distribui espaço vazio
+		- mesmo espaço entre os items
+
+	align-content:stretch;
+		- alinhamento padrão
+		- estica elementos para ocupar entrelinhas
+	
+	modificadores "safe" e "unsafe"
+		- podem ser usados
+
+
+### Comportamento do flex-items
+
+Items começam sempre na borda inicial (start edge)
+	- conforme padrão de escrita (idioma)
+	- à esquerda e no topo
+	- no topo quando eixo vertical
+	
+Rotacionar 90 graus os elementos filho
+	- declarar no container
+		"writing-mode:vertical-lr"
+		- sentido horário
+		"writing-mode:vertical-rl"
+		- sentido anti-horário
+
+Items não crescem no eixo principal
+	- não ocupam total do container no eixo principal
+	- mas podem encolher se container reduzir
+
+Items podem crescer no eixo transversal
+	- podem ocupar todo eixo transversal do container
+
+
+#### Propriedades do flex-items
+
+- declarar propriedades no seletor do elemento filho
+- possível definir para apenas um dos filhos
+
+Ordem de aparecimento
+
+	- por padrão
+		- valor é zero
+		- items aparecem segundo ordem do HTML
+
+	order:<número-da-posição>;
+		- altera ordem dos items
+		- valor menor que zero
+			- elemento vai para primeira posição
+		- valor maior que zero
+			- elemento vai para última posição
+
+Crescimento
+
+	flex-grow:<número-de-aumento>;
+		- habilidade de crescimento
+		- valor númerico (1,2,3...)
+		- não aceita valor negativo
+		- fator de proporção
+		- quantas vezes o elemento irá ocupar espaço vazio
+			- 1 vez / 2 vezes / 3 vezes
+		- fator diferente para cada item
+
+Encolhimento
+
+	flex-shrink:<número-de-redução>;
+		- habilidade de encolhimento
+		- semelhanete ao "grow"
+
+Tamanho padrão para elemento
+
+	flex-base:<valor>;
+		- valor padrão é "auto"
+		- define tamanho do elemento antes de distribuir espaço vazio
+		- valor pode ser
+			- palavra-cahave
+				- auto (considera altura e largura do elemento)
+				- content (considera conteúdo interno do elemento)
+			- unidade de medida
+				- % / em / rem / px
+		- valor 0
+			- espaço vazio não é considerado
+		- valor "auto"
+			- espaço distriuído com base no "flex-grow" do item
+
+Atalho para grow / shrink / basis
+
+	- definição inteligente de valores
+
+	flex:<valor>;
+		- combina declaração de valor para
+			- flex-grow
+			- flex-shrink
+			- flex-basis
+		- o padrão é
+			flex:0 1 auto;
+			- grow = 0
+			- shrink = 1
+			- basis = auto
+		- são opcionais os valores de 
+			- shrink
+			- basis
+			flex:1;
+			- define valores
+				- grow = 0
+				- shrink = 1
+		
+Alinhar item individualmente
+
+	align-self:<valor>;
+
+	- permite alterar alinhamento do item
+	- valores semelhantes ao "align-items"
+		- flex-start / start
+		- flex-end / end
+		- center
+		- baseline
+		- strech
+
+Propriedades sem efeito
+
+	- não funcionam nos elementos filhos
+		float
+		clear
+		vertical-align
+		align-items:auto
+
+
+### Responsividade
+
+  - flex ajuda bastante na adaptação ao tamanho das telas
+  - sempre usar @mediaquery
+
+/* --- fim ;)

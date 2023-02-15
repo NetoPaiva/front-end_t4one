@@ -1,0 +1,166 @@
+/* posicionar os elementos do cabeçalho */
+
+.cabecalhoPrincipal .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cabecalhoPrincipal-nav {
+  display: flex;
+}
+
+
+/* posicionar elementos da lista de cursos */
+
+.conteudoPrincipal-cursos {
+  display: flex;
+  flex-wrap: wrap;
+/*
+  justify-content: space-between;
+*/
+}
+
+.conteudoPrincipal-cursos-link {
+  width: 23%;
+  margin: 1%;
+}
+
+.conteudoPrincipal-cursos-link:nth-child(4n) {
+  margin-right: 0;
+}
+
+.conteudoPrincipal-cursos-link:nth-child(4n+1) {
+  margin-left: 0;
+}
+
+/* posicionar elementos do vídeo e texto */
+
+.videoSobre .container {
+  display: flex;
+}
+
+.videoSobre-sobre {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 2;
+}
+
+.videoSobre-video {
+  flex-grow: 1;
+  flex-shrink: 2;
+}
+
+.videoSobre-sobre-list {
+  flex-grow: 1;
+}
+
+/* posicionar elementos do mapa de cursos no rodapé */
+
+.rodapePrincipal-navMap-list {
+  display: flex;
+	/*flex-direction: column;
+	flex-wrap: wrap;*/
+  flex-flow: column wrap;
+  height: 250px;
+}
+
+/* posicionar elementos dos patrocinadores e formulário no rodapé */
+
+.rodapePrincipal-patrocinadores .container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.rodapePrincipal-patrocinadores-list {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 70%;
+  margin-right: 5%;
+}
+
+.rodapePrincipal-contatoForm {
+  width: 25%;
+}
+
+.rodapePrincipal-contatoForm-fieldset {
+  display: flex;
+}
+
+
+
+
+
+/* parte mobile */
+
+@media(max-width: 768px) {
+
+/* posicionar elementos do cabeçalho */
+
+  .cabecalhoPrincipal .container {
+    flex-direction: column;
+    align-items: initial;
+    text-align: center;
+  }
+
+  .cabecalhoPrincipal-nav {
+      flex-direction: column;
+  }
+
+  .cabecalhoPrincipal-nav-link-app {
+    order: -1;
+  }
+
+/* posicionar elementos da lista de cursos */
+
+  .conteudoPrincipal-cursos {
+    flex-direction: column;
+  }
+
+  .conteudoPrincipal-cursos-link {
+    width: 100%;
+  }
+
+/* posicionar elementos do vídeo e texto */
+
+  .videoSobre .container {
+    flex-direction: column;
+  }
+
+  .videoSobre-video {
+    margin: 0 auto;
+  }
+
+/* posicionar elementos do mapa de cursos no rodapé */
+
+  .rodapePrincipal-navMap-list {
+    height: auto;
+    margin-left: 1%;
+  }
+
+/* posicionar elementos dos patrocinadores e formulário no rodapé */
+
+  .rodapePrincipal-patrocinadores .container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .rodapePrincipal-patrocinadores-list {
+  /*
+    flex-direction:column;
+  */
+    margin: 2%
+    width: 100%;
+  }
+
+  .rodapePrincipal-contatoForm {
+    width: 100%;
+  }
+
+  .rodapePrincipal-contatoForm-fieldset {
+    justify-content: center;
+  }
+}
+

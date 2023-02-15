@@ -1,0 +1,26 @@
+https://www.alura.com.br/artigos/como-lidar-com-os-limites-de-resolucao-em-sites-responsivos
+
+Alura, artigo, CSS, curso online, front-end, ONE, t4f3
+
+Artigos > Front-end
+
+# Como lidar com os limites de resolução em sites responsivos?
+
+### Conceito de responsividade
+
+  - adaptar ao tamanho de tela (resoluções diferentes)
+  - ideal para tamanhos medianos
+  - não se adapta bem aos tamanhos extremos
+    - muito pequeno (200px)
+    - muito grande (2000px)
+
+## Responsivo possível
+
+  - adaptável a uma faixa mínima e máxima de resolução
+    - tamanho mínimo
+        min-width: 320px;
+    - tamanho máximo
+        max-width: 1400px;
+
+
+/* --- fim ;)

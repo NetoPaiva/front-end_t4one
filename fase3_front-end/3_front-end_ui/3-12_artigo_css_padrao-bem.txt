@@ -1,0 +1,95 @@
+https://www.alura.com.br/artigos/criando-componentes-css-com-padrao-bem
+
+Alura, artigo, CSS, curso online, front-end, ONE, t4f3
+
+
+Referências:
+
+  Documentação
+    https://en.bem.info/methodology/
+
+  Artigo sobre organização do CSS
+    http://blog.caelum.com.br/comecando-a-organizar-seu-css/
+
+
+Artigos > Front-end
+
+
+# Criando componentes CSS com o padrão BEM
+
+## Facilita desenvolvimento e permite reaproveitar código
+
+
+Etapas do projeto
+  - definir quais são as informações
+  - separar/criar os elementos da estrutura HTML
+  - estilizar os elementos no CSS
+
+Solucionar conflitos de estilos e elementos
+  - um mesmo elemento utilizado em lugares e estilos diferentes
+
+  Soluções possíveis
+  
+    - usar aninhamento de seletores
+      - declarar o seletor pai e o filho
+          .header .logo {}
+          .nav .logo {}
+          .footer .logo {}
+      - porém, uma definição posterior do elemento sem aninhamento
+        - anularia as definições anteriores
+
+    - criar um novo componente
+      - declarar a estilização do elemento em um arquivo CSS exclusivo
+      - vincular este arquivo de estilo no documento HTML
+      - porém, um novo aninhamento pode sobrescrever o componente
+
+Padrão BEM
+
+  - uma espécie de mistura entre o "id" e a "class"
+
+  - divide a interface em blocos
+  - facilita o desenvolvimento
+  - permite reutilização do código
+  - sempre utilizar "class" (genérico)
+  - não utilizar "id" (único)
+  - não definir geometria/posicionamento
+  - permite qualquer número de níveis de aninhamento
+  - declarar no HTML como "class" do elemento
+  - chamar o seletor no arquivo geral de estilo
+  - funcionalidade independente
+  - permite ser reutilizado
+
+  sintaxe
+    - um tipo de aninhamento
+    - classe "genérica__única"
+        class="header__logo"
+        class="nav__logo"
+        class="footer__logo"
+      - cria uma "classe" específica do elemento
+
+  - B = block
+    - define elemento como um bloco semântico
+    - descreve o propósito do elemento (o que é)
+        class="error"
+    - não seu estado (como é)
+        class="red-text"
+
+  - E = element
+    - a parte composta do bloco
+    - não pode ser utilizada separadamente
+    - conectado por duplo sublinhado (__)
+      class="nav__logo"
+
+  - M = modifier
+    - permite modificações do elemento
+    - aparência do elemento (qual é)
+    - estado do elemento (como é)
+    - comportamento do elemento (relação com usuário)
+    - modificador conectado por duplo traço (--)
+        class="header__logo--black"
+        class="nav__logo--big"
+        class="nav--semlogo"
+        class="footer__logo--off"
+
+
+/* --- fim ;)  

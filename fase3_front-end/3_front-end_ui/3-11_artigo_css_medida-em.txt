@@ -1,0 +1,47 @@
+https://www.alura.com.br/artigos/porque-usar-em-no-seu-css-hoje-em-dia
+
+
+Alura, artigo, CSS, curso online, front-end, ONE, t4f3
+
+
+Artigos > Front-end
+
+# Porque usar 'em' no seu CSS hoje em dia?
+
+
+Conceito
+  - "em"
+    - significa: efêmero
+    - é uma medida relativa
+    - calculada com base no tamanho da fonte do elemento pai
+    - elemento com valor 2em = 2x font-size do pai
+    - se não tiver fonte definida
+      - considera 16px como padrão para o elemento <html>
+
+Responsividade
+  - já não é tão necessário
+  - hoje o px é relativo também
+    - aumenta/diminui conforme zoom aplicado pelo do usuário
+
+Vantagem de usar "em"
+  - quando existe relação estrutural entre pai e filho
+  - multiplica/divide valores com base no font-size do pai
+  - mudar o tamanho do pai
+    - filhos mudam proporcionalmente
+
+Responsividade
+  - "em" não é a melhor solução para ajustar o layout como um todo
+    - não se adapta automaticamente
+  - outras medidas relativas podem oferecer melhores soluções
+    - porcentagem
+    - "rem"
+      - relativa ao font-size do elemento raiz <html>
+    - viewport units
+        - vw (referente à largura da tela)
+        - vh (refente à altura da tela)
+        - mais adaptável às diferentes resoluções de telas
+        font-size:2vw;
+          - fonte se adapta em relação à largura da tela
+
+ 
+/* --- fim ;)  
