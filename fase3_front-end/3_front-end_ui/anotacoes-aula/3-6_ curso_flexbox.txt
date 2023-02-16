@@ -616,22 +616,52 @@ https://developer.mozilla.org/pt-BR/docs/Web/CSS/CSS_Flexible_Box_Layout/Basic_C
 
   - vídeo
 
+  - Relembrar propriedades utilizadas
+  - observar documento HTML
+  - distribuir elementos com "diplay:flex"
+
 
 5.2. Propriedade flex em detalhes
 
   - vídeo
+
+  - expandir / reduzir tamanho dos elementos filhos
+  
+  - "flex-grow"
+    - expande o tamanho dos elementos
+      - divide o espaço vazio
+      - distribui a cada elemento
+        - considerando o fator atribuído a cada um
+          .flexItem1{flex-grow:1;}
+          .flexItem2{flex-grow:2;}
+
+  - "flex-shrink"
+    - reduz o tamanho dos elementos
+    - semelhante ao "grow"
+          
 
 
 5.3. Desafios e fim
 
   - vídeo
 
+  - praticar as propriedades de distribuição "flexbox"
 
-5.4. Fazendo os elementos preencher o espaço vazio
+    - jogo do sapo
+      http://flexboxfroggy.com/ 
+
+    - jogo dos canhões
+      http://www.flexboxdefense.com/
+
+
+5.4. Fazendo os elementos preencherem o espaço vazio
+
+  - baixar projeto completo até aqui
+https://github.com/alura-cursos/posicione-elementos-com-flexbox/archive/e6dfec99045e720c2f9f24002c715f2631846721.zip
 
   - atividade de fixação
     - elemento filho ocupar todo o espaço do container
-      - flex-item { flex-grow; }
+      - flex-item { flex-grow:1; }
 
 
 5.5. Contas no flex
@@ -733,3 +763,6 @@ http://flexboxfroggy.com/
   - vídeo de finalização do curso
   - link sobre organizar estudos e criar portfolio
 https://www.alura.com.br/artigos/organizando-estudos-portfolio-notion-linkedin
+
+
+/* --- fim ;)

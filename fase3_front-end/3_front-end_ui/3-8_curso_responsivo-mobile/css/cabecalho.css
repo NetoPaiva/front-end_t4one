@@ -1,7 +1,7 @@
 /* @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&family=Open+Sans:wght@300;400;700&display=swap'); */
 
 .cabecalho {
-    color: #FFF;
+    color: var(--branco);
 
     width: 100%;
 
@@ -14,7 +14,7 @@
     padding-top: .75rem;
     padding-bottom: .75rem;
 
-    border-bottom: 1px solid #103D4A;
+    border-bottom: 1px solid var(--borda-cabecalho-mobile);
 
     position: absolute;
 }
@@ -36,3 +36,15 @@
     margin-bottom: 1.25rem;
     margin-left: .7rem;
 }
+
+
+/* desktop */
+
+@media screen and (min-width:1024px){
+    .cabecalho {
+      flex-direction:row;
+      justify-content:space-between;
+
+      border: none;
+    }
+  }
