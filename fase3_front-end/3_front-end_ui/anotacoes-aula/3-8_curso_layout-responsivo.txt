@@ -819,6 +819,18 @@ A Estrutura criada ficaria assim
   - Sintaxe Emmet
       section.sobre.container>(div.sobre__conteudo>h2.sobre__titulo+p.sobre__texto*3+(ul.sobre__plataformas>li*3>img)+p.sobre__texto)+img.sobre__imagem
 
+   section.sobre.container>
+      (div.sobre__conteudo>
+         h2.sobre__titulo
+         +p.sobre__texto*3
+         +(ul.sobre__plataformas>
+            li*3>
+               img)
+         +p.sobre__texto)
+      +img.sobre__imagem
+
+      
+
   - código HTML
 
     <section class="sobre container">

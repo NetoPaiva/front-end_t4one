@@ -1,0 +1,26 @@
+.receitas__container {
+  background: #e5e5e5;
+
+  display: flex;
+  flex-wrap: wrap;
+  
+  /* padding: 5rem 0 0 5rem; */
+}
+
+@media screen and (min-width: 0) {
+  .receitas__container {
+    padding: 5rem 0 0 1rem;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .receitas__container {
+    padding: 5rem 0 0 2.5rem;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .receitas__container {
+    padding: 5rem 0 0 5rem;
+  }
+}

@@ -52,7 +52,7 @@ https://www.figma.com/file/0gMF5BPgplPYqQA6Om1T1sk9/alura-bootstrap
     - seção sobre
     - lista de receitas
     - seção quem somos / equipe
-    - rodapé / contato
+    - rodapé / contato
 
   - Boas práticas
     - organização mais eficiente / fácil manutenção
@@ -74,6 +74,28 @@ https://www.figma.com/file/0gMF5BPgplPYqQA6Om1T1sk9/alura-bootstrap
       - normalize
       - reset
 
+  - Estrutura inicial do projeto
+    - readme
+      - link para Figma do projeto
+    - assets
+      - organiza todos os arquivos estáticos
+        - css
+        - imagens
+        - js
+        - fontes / ícones
+    - index.html
+      - head
+      - importação de fonte Google
+      - configuração de tela (responsividade)
+      - vinculação dos arquivos de estilo
+        - normalize (semelhante "reset" do curso "responsivo")
+          - anula estilos padrões dos navegadores
+          - primeiro arquivo a ser importado no html
+        - reset (semelhante "base" do curso "responsivo")
+          - aplicar estilos padrões ausentes no normalize
+          - fontes do projeto (body)
+          - espaçamentos dos títulos e listas
+
 
 ### 1.4.  Criando o cabeçalho
 
@@ -86,9 +108,14 @@ https://www.figma.com/file/0gMF5BPgplPYqQA6Om1T1sk9/alura-bootstrap
     - sobre
     - receitas
     - quem somos
-    - rodapé
+    - rodapé
 
-  - iniciar projeto pelo cabeçalho
+  - iniciar desenvolvimento
+    - de cima para baixo
+    - cada seção
+    - do topo da página até o rodapé
+
+  - elementos do cabeçalho
     - logo
       - imagem
     - menu de navegação
@@ -127,6 +154,11 @@ https://www.figma.com/file/0gMF5BPgplPYqQA6Om1T1sk9/alura-bootstrap
 
   - incluir os texto das tags
 
+    Início
+    Receitas
+    Quem somos
+    Comunidade
+
   - visualizar página no navegador
 
 
@@ -136,12 +168,36 @@ https://www.figma.com/file/0gMF5BPgplPYqQA6Om1T1sk9/alura-bootstrap
   - vídeo aula
 
   - criar estilização CSS
+    - style.css
     - seletores (tags dos elementos html)
     - propriedades
     - valores
-    
+
+  - incluir os seletores dos elementos HTML
+
+    - header { }
+      - logo à esquerda / lista à direita
+
+    - header nav ul { }
+      - itens da lista na mesma linha
+
+    - header nav ul li { }
+      - alterar estilo dos itens da lista
+
+    - header nav ul li:last-child { }
+      - retirar margem do último item da lista
+
+    - header nav ul li a { }
+      - alterar estilo dos links
+
+    - header nav ul li a#ativo { }
+      - negrito no link ativo
+
+    - header nav ul li a:hover { }
+      - aplicar sublinhado ao passar o mouse
 
   - vincular CSS no HTML
+    - cabecalho.css
   
 
 ### 1.6.  Simplificando os seletores
@@ -155,6 +211,66 @@ https://www.figma.com/file/0gMF5BPgplPYqQA6Om1T1sk9/alura-bootstrap
   - declarar classes/id no HTML
     - para usar como seletores no CSS/JS
     - facilita / melhora projeto
+
+  - elemento / classe
+    - header / cabecalho
+    - img / logo
+    - nav / menu
+    - ul / menu__lista
+    - li menu__item
+    - a / menu__link
+    - a:ativo / menu__link--ativo
+
+  - incluir classes nas tags do HTML
+  - alterar os seletores no CSS
+
+  - separar código CSS (cada elemento em um arquivo)
+    - cabecalho.css
+    - menu__item.css
+    - menu__link.css
+    - menu__lista.css
+
+  - criar pasta "header" em assets
+    - mover para a pasta todos os arquivos CSS referentes ao menu
+
+  - criar nesta pasta arquivo "header.css"
+    - importar todos os arquivos do header
+      @import url("cabecalho.css");
+      @import url("menu__item.css");
+      @import url("menu__link.css");
+      @import url("menu__lista.css");
+
+  - vincular arquivo CSS no documento HTML
+    - ./assets/css/header/header.css
+
+  - conceito de atomic design
+  
+    - facilitar
+      - organização dos documentos do projeto
+      - criar novos componentes / elementos
+    
+    - átomo
+      - cada tag HTML
+
+    - molécula
+      - átomos unidos
+
+    - organismo
+      - união de diversas moléculas
+
+    - padrão (template)
+      - união de organismos
+      - com elementos modelos / exemplo / não reais
+
+    - corpo (página)
+      - forma final da aplicação
+      - elementos reais
+
+    - o header é o organismo formado por átomos e moléculas
+      - img
+      - nav
+      - ul
+      - li
 
 
 ### 1.7.  Criando seletores simples
@@ -193,12 +309,6 @@ https://www.figma.com/file/0gMF5BPgplPYqQA6Om1T1sk9/alura-bootstrap
 
   - vídeo aula
   
-  - estrutura html
-    - section .sobre
-      - img .sobre-img
-        - h2 .sobre-h2
-          - p .sobre-p
-
   - padrão BEM para nomear as classes
 
     - B = block
@@ -224,14 +334,51 @@ https://www.figma.com/file/0gMF5BPgplPYqQA6Om1T1sk9/alura-bootstrap
       bloco--modificador
       bloco__elemento--modificador
 
-  - nova estrutura html
+
+  - nova estrutura html - Banner
     - section .sobre
       - img .sobre__imagem
-        - h2 .sobre__titulo
-          - p .sobre__descricao
+      - h2 .sobre__titulo
+      - p .sobre__descricao
 
 
-### 2.3.  Estilizando o sobre
+  - sintaxe Emmet
+    section.banner__container>img.banner__imagem+h2.banner__titulo
+
+
+  - estrutura criada Banner
+
+   <section class="banner__container">
+      <img src="" alt="" class="banner__imagem">
+      <h2 class="banner__titulo"></h2>
+   </section>
+
+
+  - nova estrutura html - Sobre
+    - section .sobre
+      - h2 .sobre__titulo
+      - p .sobre__descricao
+
+
+  - sintaxe Emmet
+    section.sobre__container+h2.sobre__titulo+p.sobre__descricao
+
+
+  - estrutura criada Sobre
+
+   <section class="sobre__container">
+      <h2 class="sobre__titulo"></h2>
+      <p class="sobre__descricao"></p>
+   </section>
+
+
+  - incluir informações
+    - textos
+    - dados da imagem
+  
+
+
+### 2.3.  Estilizando o Banner
 
   - vídeo aula
 
@@ -254,30 +401,47 @@ https://www.figma.com/file/0gMF5BPgplPYqQA6Om1T1sk9/alura-bootstrap
 
   - editar os arquivos CSS do banner com as propriedades de estilo
 
-    .banner { position: relative; }
+    .banner__container { position: relative; }
 
     .banner__imagem {
+      height: calc (100vh - 72px);
       width:100%;
-      height: calc (100vh - 72px;)
     }
 
     .banner__titulo {
-      font-family: Pacifico, cursive;
-      color: #fdfdfd;
-      font-size: 5.0625rem;
       position: absolute;
       left: 50%;
-      text-shadow: 0 4px 4px rgba(0, 0, 0, 0.75);
       top: 50%;
+      
+      color: #fdfdfd;
+      
+      font-family: Pacifico, cursive;
+      font-size: 5.0625rem;
       text-align: center;
+      text-shadow: 0 4px 4px rgba(0, 0, 0, 0.75);
+      
       transform: translate(-50%, -50%);
+      
       width: 100%;
     }
 
-  - height: calc (100vh - 72px;)
-    - imagem ocupar o restante da altura da tela
-    - sem sobrepor ao cabeçalho
-      - subtrai 72px do tamanho da tela (100vh)
+
+  - calcular altura da foto desconsiderando altura do Cabeçalho
+    - altura total da tela - altura do Cabeçalho
+      - height: calc (100vh - 72px);
+
+
+  - Alinhar título no centro da foto
+    - a foto ocupa área total do banner (largura e altura)
+      - width:100%
+    - posicionamento
+      - position: absolute
+      - left: 50%
+      - top: 50%
+    - para posicionar com base na área do banner
+      - declarar no CSS do banner__container
+        - position: relative
+      
 
 
 ### 2.4.  Para saber mais
@@ -287,13 +451,13 @@ https://www.figma.com/file/0gMF5BPgplPYqQA6Om1T1sk9/alura-bootstrap
     - já realizados na fase iniciante
 
 
-### 2.5.  Estilizando o sobre
+### 2.5.  Estilizando o Sobre
 
   - conferir layout Figma
 
   - organizar/ vincular e editar arquivos CSS3 do "sobre"
 
-    .sobre {
+    .sobre __container {
       text-align: center;
       padding: 2.5rem;
     }
@@ -309,6 +473,16 @@ https://www.figma.com/file/0gMF5BPgplPYqQA6Om1T1sk9/alura-bootstrap
     font-size: 1.75rem;
     font-weight: 100;
   }
+
+
+  - pasta e arquivos CSS para a seção Sobre
+  - importar estilos no HTML
+
+
+  - incluir no sobre__container
+    - centralizado (text-align:center)
+    - espaçamento interno (padding: 2.5rem)
+
 
 ### 2.6.  Metodologia BEM
 
@@ -342,7 +516,7 @@ https://www.figma.com/file/0gMF5BPgplPYqQA6Om1T1sk9/alura-bootstrap
 
 ### 3.2.  Preparando o ambiente
 
-  - código html da seção "receitas"
+  - código html fornecido da seção "receitas"
 
   <section class="receitas">
     <div class="receita">
@@ -396,6 +570,15 @@ https://www.figma.com/file/0gMF5BPgplPYqQA6Om1T1sk9/alura-bootstrap
   </section>
 
 
+  - altarar nome das classe
+    receitas >> receitas__container
+    receita >> receita__container
+
+  - sintaxe Emmet
+
+    section.receitas__container>(div.receita__container>img.receita__imagem+div.receita__conteudo>h4.receita__titulo+p.receita__descricao+button.recita__botao)*6
+
+
 ### 3.3.  Estruturando as receitas
 
   - vídeo aula
@@ -403,15 +586,16 @@ https://www.figma.com/file/0gMF5BPgplPYqQA6Om1T1sk9/alura-bootstrap
   - preparar ambiente de pastas e arquivos na pasta do projeto
 
     - na pasta "css"
-      - arquivo "receita.css"
+      - arquivo "receitas.css"
 
     - pasta "css/receitas"
       - arquivos
-        - "receita.css"
-        - "receita__titulo.css"
-        - "receita__descricao.css"
+        - "receitas__container.css"
+        - "receita__container.css"
         - "receita__imagem.css"
         - "receita__conteudo.css"
+        - "receita__titulo.css"
+        - "receita__descricao.css"
         - "receita__botao.css"
 
   - vincular todos os arquivos CSS ao documento HTML
@@ -419,20 +603,27 @@ https://www.figma.com/file/0gMF5BPgplPYqQA6Om1T1sk9/alura-bootstrap
 
 ### 3.4.  Estilizando as receitas
 
-  .receitas {
+  - elemento pai da seção (receitas__container)
+
+  .receitas__container {
     background: #e5e5e5;
     display: flex;
     flex-wrap: wrap;
     padding: 5rem 0 0 5rem;
   }
 
-  .receita {
+  - elemento pai das receitas
+    - definir largura descontando a margem direita
+      width: calc (25% - 5rem);
+
+  .receita__container {
     background: #fdfdfd;
     display: flex;
     flex-direction: column;
     margin-bottom: 5rem;
     margin-right: 5rem;
-    width: 25%;
+    /* width: 25%; */
+    width: calc (25% - 5rem);
   }
 
   .receita__imagem {
@@ -459,14 +650,6 @@ https://www.figma.com/file/0gMF5BPgplPYqQA6Om1T1sk9/alura-bootstrap
     border-radius: 5px;
     color: #fdfdfd;
     padding: 1rem;
-  }
-
-  .receita__botao {
-    background: #8d0606;
-    border: none;
-    border-radius: 5px;
-    color: #fdfdfd;
-    padding: 1rem;
     transition: all .1s ease-in-out;
   }
 
@@ -478,7 +661,7 @@ https://www.figma.com/file/0gMF5BPgplPYqQA6Om1T1sk9/alura-bootstrap
 
 ### 3.5.  Organizando o CSS do painel
 
-  - atividade de fixação
+  - atividade de fixação (não pertence ao projeto)
   
     - organizar arquivos css na pasta painel
       painel/cabecalho.css
@@ -518,7 +701,7 @@ https://www.figma.com/file/0gMF5BPgplPYqQA6Om1T1sk9/alura-bootstrap
 
 ### 4.2.  Preparando o ambiente
 
-  - código HTML desta etapa
+  - código HTML desta etapa - seção "Quem somos"
 
   <section class="quem-somos">
     <h3 class="quem-somos__titulo">Quem somos</h3>
@@ -543,6 +726,37 @@ https://www.figma.com/file/0gMF5BPgplPYqQA6Om1T1sk9/alura-bootstrap
   </section>
 
 
+  - sintaxe Emmet
+
+  section.somos__container>h3.somos__titulo+p.somos__descricao+div.pessoas__container>(div.pessoa__container>div.pessoa__imagem.pessoa__imagem--+span.pessoa__nome+span.pessoa__funcao)*3
+
+  - estrutura criada
+
+    <section class="somos__container">
+      <h3 class="somos__titulo"></h3>
+      <p class="somos__descricao"></p>
+      <div class="pessoas__container">
+        <div class="pessoa__container">
+          <div class="pessoa__imagem pessoa__imagem--"></div>
+          <span class="pessoa__nome"></span>
+          <span class="pessoa__funcao"></span>
+        </div>
+        <div class="pessoa__container">
+          <div class="pessoa__imagem pessoa__imagem--"></div>
+          <span class="pessoa__nome"></span>
+          <span class="pessoa__funcao"></span>
+        </div>
+        <div class="pessoa__container">
+          <div class="pessoa__imagem pessoa__imagem--"></div>
+          <span class="pessoa__nome"></span>
+          <span class="pessoa__funcao"></span>
+        </div>
+      </div>
+    </section>
+
+    - incluir informações das tags
+
+
 ### 4.3.  Estruturando o quem somos
 
   - vídeo aula
@@ -555,20 +769,20 @@ https://www.figma.com/file/0gMF5BPgplPYqQA6Om1T1sk9/alura-bootstrap
   - vincular arquivos CSS
 
   - estilização CSS
+  
+    .somos__container {
+      text-align: center;
+      padding: 5rem;
+    }
 
-  .quem-somos__titulo {
+  .somos__titulo {
     margin-bottom: 1rem;
     color: #8d0606;
     font-size: 3.1875rem;
     font-family: Pacifico, cursive;
   }
 
-  .quem-somos {
-    text-align: center;
-    padding: 5rem;
-  }
-
-  .quem-somos__descricao {
+  .somos__descricao {
     font-weight: 100;
     font-size: 1.75rem;
     color: #595959;
@@ -594,10 +808,15 @@ https://www.figma.com/file/0gMF5BPgplPYqQA6Om1T1sk9/alura-bootstrap
 
   - códigos CSS
 
-  .pessoas {
+  .pessoas__container {
     display: flex;
     padding-top: 3rem;
     justify-content: space-around;
+  }
+
+  .pessoa__container{
+    display: flex;
+    flex-direction: column;
   }
 
   .pessoa__nome {
@@ -661,7 +880,10 @@ https://www.figma.com/file/0gMF5BPgplPYqQA6Om1T1sk9/alura-bootstrap
       width: 300px;
     }
 
-  - imagens ilustrativas declaradas no CSS e não no HTML
+  - imagens ilustrativas
+    - é um estilo (CSS)
+    - não é informação (HTML)
+    - devem ser declaradas no CSS e não no HTML
 
   .banner__imagem{
     background-image: url('../../img/banner.jpg');
@@ -714,7 +936,7 @@ https://www.figma.com/file/0gMF5BPgplPYqQA6Om1T1sk9/alura-bootstrap
     https://github.com/alura-cursos/arquitetura-css/archive/aula4.zip
 
 
-### 5.2.  Criando o rodapé
+### 5.2.  Criando o rodapé
 
   - vídeo aula
 
@@ -723,6 +945,18 @@ https://www.figma.com/file/0gMF5BPgplPYqQA6Om1T1sk9/alura-bootstrap
     <footer class="rodape">
       Contato: exemplo@email.com.br
     </footer>
+
+  - sintaxe Emmet
+
+    footer.rodape__container>h3.rodape__contato
+
+  - estrutura criada
+
+    <footer class="rodape__container">
+      <h3 class="rodape__contato"></h3>
+    </footer>
+
+
 
   - criar arquivo CSS na pasta do projeto
     rodape.css
@@ -741,6 +975,11 @@ https://www.figma.com/file/0gMF5BPgplPYqQA6Om1T1sk9/alura-bootstrap
   
 
 ### 5.3.  Deixando o site responsivo
+
+  - transportar medidas padrão para maior tela
+    - espaçamentos
+    - margens
+    - larguras ...
 
   - incluir nos arquivos CSS
   
@@ -1035,5 +1274,3 @@ https://www.figma.com/file/0gMF5BPgplPYqQA6Om1T1sk9/alura-bootstrap
 
 
 /* --- fim ;)
-
-

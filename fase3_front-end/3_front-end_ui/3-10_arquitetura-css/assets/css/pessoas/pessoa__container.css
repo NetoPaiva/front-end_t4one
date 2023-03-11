@@ -1,0 +1,18 @@
+.pessoa__container{
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-around; */
+  align-items: center;
+}
+
+@media screen and (min-width: 0) {
+  .pessoa__container {
+    margin-bottom: 2rem;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .pessoa__container {
+    margin-bottom: 0;
+  }
+}
