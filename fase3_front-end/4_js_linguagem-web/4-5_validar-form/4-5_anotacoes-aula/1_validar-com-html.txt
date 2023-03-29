@@ -1,0 +1,197 @@
+Anotações do curso
+
+# JS - Validar Formulário
+
+
+## Aula 1 - Apresentação
+
+
+### Parte 1/1 - Apresentação
+
+Projeto Doguito Pet Shop
+  - duas páginas
+    - cadastro de pessoa
+    - cadastro de produto
+
+  Cadastro da pessoa
+
+    - preencher formulário de cadastro
+      - criar login para acessar o site
+
+    - validar formulário
+      - validações básicas com HTML puro
+        - atributos HTML de validação
+      - customizações com JS
+        - data nascimento
+          - menor de idade ou não
+        - requisição API CEP
+          - preenchimento automáico
+        - verificação de CPF
+
+  Cadastro de produto
+
+    - validação com máscara monetária
+      - localizar e importar
+      - configurar conforme necessida do projeto
+
+  Importar projeto inicial
+    https://github.com/alura-cursos/validacao-doguito/archive/main.zip
+
+    
+
+### Parte 1/2 - Atributos de validação
+
+Campos do formulário
+
+  - Informações básicas
+    - nome
+    - email
+    - senha
+
+  - Inofrmações pessoais
+    - data de nascimento
+    - CPF
+
+  - Endereço
+    - CEP
+    - logradouro
+    - cidade
+    - estao
+
+Validar formulário
+  - garantir que os campos estejam preenchidos
+  - exibir mensagem de preenchimento obrigatório
+  - visualizar que campo precisa ser preenchido
+  - evitar envio sem preenchimento
+
+Ferramentas HTML de validação
+
+  Atributo "required"
+
+  - Campo "nome"
+    - no documento HTML 
+      - incluir o atributo "required" na tag do input "nome"
+        <input name="nome" id="nome" class="input" type="text" placeholder="Nome" required>
+
+    - testar no navegador
+      - tentar enviar (clicar no botão)
+      - aparece mensagem informando que campo "nome" precisa ser preenchido
+
+  - incluir atributo "required" nas tags dos demais campos do formulráio
+
+  Atributo "type"
+
+  - Campo "email"
+    - alterar o atributo "type" para "email"
+    - irá verificar se o preenchimento está com a estrutura de endereço de email
+    - não verifica a existência deste endereço
+
+  - Campo "senha"
+    - alterar o atributo "type" para "password"
+    - irá ocultar os caracteres durante o preenchimento
+
+  Atributo "minlength"
+  
+  - Campo senha
+    - adicionar atributo "minlength" com valor 6
+    - irá verificar se preenchimento tem o mínimo de 6 caracteres
+    - não verifica caracteres válidos
+
+
+### Parte 1/3 - Regex senha
+
+Definir caracteres válidos
+  - pelo menos
+    - 1 letra maiúscula
+    - 1 letra minúscula
+    - 1 número
+  - nenhum símbolo/caracter especial
+
+Atributo "pattern"
+  - simplifica declaração de múltiplos atributos
+  - utiliza expressão regular (regular expression = regEx)
+  - dentro da regex
+    - declarar padrão de verificação
+
+  Regex
+    - conhecer a linguagem
+    - pesquisar por "password regex"
+      - resultado mostrará como escrever a expressão para validar senha
+    - regexlib
+      - comunidade de desenvolvedores
+      - vários exemplos de expressões
+
+  Sintaxe da regex para validar senha
+    - com as regras do projeto Doguito
+
+    pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?!.*[ !@#$%^¨&*_=+-]).{6,12}$"
+
+  Cada elemento da declaração do atributo com a regex
+
+    pattern="..."
+    - declaração do atributo dentro da tag "input" da "senha"
+    - recebe como valor toda a expressão regular entre aspas
+
+    ^... $
+    - primeiro símbolo "^" (circunflexo)
+    - último símbolo "$" (cifrão)
+      - envolve toda a expressão
+      - até onde checar o padrão
+        - espectro de carateres válidos
+        - 4 conjuntos de regras delimitados por parenteses
+
+    (?=.*[a-z])
+    - primeiro conjunto - letras minúsculas
+      - ?= ("interregoção e igual" define caracteres permitidos)
+      - . ("ponto" todos caracteres são permitidos, menos quebra de linha)
+      - * ("asterisco" determina pelo um desses caracteres)
+      - [...] ("entre colchetes" o intervalo de caracteres válidos - letras minúsculas)
+
+    (?=.*[A-Z])
+    - segundo conjunto - letras maiúsculas
+
+    (?=.*[0-9])
+    - terceiro conjunto - números
+
+    (?!.*[ !@#$%^¨&*_=+-`´~'""`])
+    - quarto conjunto - exclusão de caracteres especiais
+      - ?! ("interrogação e excalamação" define caracteres inválidos)
+      - melhor evitar usar intervalos
+        - mapa de caracteres pode variar em cada usuário
+      - tem que informar cada um dos caracteres inválidos
+        - espaço, exclamação, arroba, cerquilha...
+
+    .{6,12}
+    - parte extra da expressão
+    - quantidade mínima e máxima de caracteres
+      - . ("ponto" indica que  será dada a quantidade de caracteres)
+      - {...} ("entre chaves" determina quantidade mínima e máxima de carateres)
+    - com esta regra não precisa declarar o atributo "minlength"
+      - remover o atributo da tag da senha
+
+  Atributo "title"
+    - informar a regra de caracteres válidos da senha
+    - incluir na tag "input" da "senha"
+      title="A senha deve conter entre 6 a 12 caracteres, ao menos 1 maiúscula e 1 minúscula e 1 número, sem caracteres especiais."
+    - pode incluir o atributo nos demais campos do formulário
+
+
+### Parte 1/4 - Saber mais - Regex
+
+Treinar escrita de regex
+      
+- regex é formada por diversas regras
+  - dominar partes da escrita facilita entendimento
+  - praticar / conhecer
+
+  - site regexr
+    https://regexr.com
+    - tabela com exemplos
+    - folha de dicas coms algumas regras
+    - validador pra testar regras prontas
+      - mostra o resultado durante a escrita
+
+  - site regexlib
+    https://regexlib.com
+    - biblioteca de expressões
+    - fonte de consulta e teste

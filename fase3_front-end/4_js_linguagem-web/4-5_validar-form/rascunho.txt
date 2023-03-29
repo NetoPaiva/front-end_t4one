@@ -1,0 +1,85 @@
+4-2 Validar CPF com números repetidos
+
+É comum termos que colocar o nosso CPF em sites que fazem algum tipo de cadastro. É uma forma bem interessante e única de nós podermos nos identificar. E a Doguito petshop não vai ser diferente, nós temos o nosso campo de CPF e a função vai ser validar esse campo.
+
+[00:15] Nós podemos dividir essa validação em duas partes. A primeira parte é pensar o que a pessoa vai poder colocar dentro do campo de CPF, a pessoa pode digitar, por exemplo, CPF da seguinte forma: os três dígitos, ponto, três dígitos, ponto, mais três dígitos e separando os dois validadores por hífen. Ou então ela pode escrever sem os pontos, só com o hífen dos dígitos validadores, ou então, até mesmo sem nada, “12312312311”.
+
+[00:56] Mas as três formas que eu digitei o CPF são formas válidas, são CPF, o CPF ainda é válido, o que está escrito. Então como nós vamos tratar CPFs escritos de maneiras diferentes?
+
+[01:12] Para evitar esse problema, de ter de ficar criando condições para se tratar diversas maneiras de se escrever um CPF, nós podemos usar uma função do próprio JavaScript que vai arrancar tudo que não for dígito, e nós só temos uma forma de validar esse CPF. Então a função agora vai ser formatar esse CPF antes de realmente conseguir validá-lo.
+
+[01:34] Então vamos para o nosso JavaScript, nosso editor de texto, e vamos criar nossa função geral que vai cuidar da validação do CPF. Porque para poder validar o CPF no geral, nós temos que primeiro formatar ele trouxe. Então vou criar a função, validaCPF recebendo input, e agora nós temos que formatar esse CPF. Vou criar uma constante que vai ser CPFFormatado = input.value, e aqui nós vamos utilizar uma ferramenta chamada replace.
+
+[02:07] Replace é uma função que está dentro do input, que ele vai substituir alguma coisa, algum valor desse value por outra coisa. Então vou colocar replace.
+
+[02:25] Então o que nós queremos substituir, nós queremos tudo que não for dígito, tudo que não for número e com isso nós podemos criar uma regex, então nós colocamos /D/g, ‘’, ou seja, nós estamos pegando tudo dentro da nossa string que não for um digito, e vamos trocá-los por uma string vazia, ou seja, nada.
+
+[02:53] Então nós temos o CPF formatado, nós podemos também fazer as mensagens que vamos enviar pelo setCustomValidity, então vamos criar let mensagem = ‘ ’ e input.setCustomValidity(mensagem). Já temos o nosso CPF formatado.
+
+[03:15] E agora nós temos que pensar, o que é um CPF válido? Um CPF válido, por exemplo, não tem números repetidos. Ou seja, não existe um CPF que contenha onze um, onze dois, onze três, e assim por diante. Então nós podemos criar uma função que vai verificar se o CPF possui esses números repetidos.
+
+[03:39] Então vou criar na linha 39 outra função chamada checaCPFRepetido (cpf), e agora esse nosso CPF, nessa função, tem que verificar se o nosso CPF condiz com algum dos números repetidos, ou onze um, onze dois ou onze três. Então nós vamos criar um vetor, const valoresRepetidos, por exemplo, vai ser um vetor, e nós vamos colocar aqui também os valores repetidos. Então ’00000000000’, entre aspas porque nós comprando string com string.
+
+[04:35] Então nós temos os zeros, nós temos onze uns, nós temos onze dois, onze três, onze quatros, onze cincos, onze seis, onze setes, onze oitos e, por último, onze noves. E o retorno dessa função vai ser exatamente se o CPF vai ser válido ou não. Então eu vou criar na linha 95 uma variável chamada CPFValido, que ele vai começar inicialmente com o true. E o retorno dessa função vai ser exatamente se o CPF vai estar válido ou não.
+
+[05:38] Lembrando que não é uma verificação geral, essa variável não vai dizer se o CPF todo, com todas as validações possíveis, realmente está válido, é só ver se ele não tem os valores repetidos. E agora nós temos que verificar se o CPF que nós vamos receber na função vai bater com algum dos valores que tem dentro desse vetor.
+
+[05:56] Deixa eu criar um laço de repetição, então valoresRepetidos.forEach() e ai para cada valor que nós temos dentro desse vetor, nós vamos criar uma condição if se o valor vai ser igual ao CPF. E se ele for, quer dizer que o CPF não é válido, então nós trocamos o valor do cpfValido para false.
+
+[06:23] Então nós já temos nossa função que verifica, agora, o CPF repetido. Então vamos chamar essa função na nossa função principal, que vai ser agora, vai ter uma condição checaCPFRepetido, passando um cpfFormatado, e caso ele caia nessa condição, nós colocamos a mensagem = ‘O CPF digitado não é válido.’.
+
+[07:00] Mas tem um problema, para cair nessa condição, o retorno dessa função tem que ser verdadeiro. Porém, se ele for verdadeiro, o CPF é válido. Então ficou meio confuso isso aqui. Nós vamos fazer o seguinte, caso ele não seja válido, ou seja, se o retorno for falso, ele tem que cair nessa condição. Nós colocamos no começo da condição, uma exclamação. Agora se a função retornar falso, ele vai cair na condição nós colocamos.
+
+[07:36] Agora falta chamar essa função de validaCPF em algum lugar. Nós podemos colocar com o objeto dataNascimento, o tipo cpf, passando input, vou chamar a função agora validaCPF, passando na função um input.
+
+[08:02] Nós temos as funções prontas, falta agora também colocar as mensagens de erro, nós temos também nosso objeto de mensagens de erro, baseado no tipo de CPF. Então temos o valueMissing também, e com a mensagem “O campo de CPF não pode estar vazio.” E também nosso customError, que vai ser a mensagem nós que escrevemos ali embaixo já.
+
+[08:38] Temos agora as mensagens de erro, nós temos o nosso objeto de validador do CPF. Falta agora adicionar também no HTML, os atributos, o data attributes, o data-tipo=”cpf” required.
+
+[09:00] Agora nós podemos testar o nosso validador, se ele está funcionando. Vou preencher o formulário bem rápido, matheus@email.com, o e-mail, a senha, data de nascimento e agora o CPF, vamos o que acontece eu digitar o CPF “11111111111”, e “O CPF digitado não é válido.”, ok!
+
+[09:27] Então precisamos fazer o teste agora e colocar um “-”, vamos ver, o CPF não é válido. Vou colocar pontos, continua não sendo válido. E agora trocar esse monte de uns por um 2. Agora o CPF está válido, ou seja, nosso regex, nosso laço de repetição com o objeto e também o conversor funcionou.
+
+[09:54] Então agora vai verificar se o CPF está válido, mas só se baseando em números repetidos, ou seja, não quer dizer que por conta disso o CPF digitado, esse que eu descrevi com dez 1 e um 2, quer dizer que ele seja válido. Então nós temos mais um passo ainda de validar o CPF.
+
+
+/* --- fim :)
+
+
+
+
+4-3 Matemática do CPF
+
+Nós fizemos a verificação do CPF checando se ele tem números repetidos, ou seja, onze 1, onze 2, onze 3, e assim por diante. E agora nós temos que checar a estrutura do CPF, o ideal seria que nós pegássemos o CPF, enviássemos para a Receita Federal, para o API e lá eles fazem a verificação deles para saber se o CPF realmente é válido ou não.
+
+[00:22] O problema é que nós não temos acesso a essa API da Receita Federal, então nós vamos ter que fazer a validação do CPF através de um cálculo matemático. Como vai funcionar essa conta, nós temos um CPF que vai ser formado por nove dígitos principais e 2 dígitos verificadores, compondo total 11 dígitos. Então nós temos que fazer agora a validação baseado nos dígitos verificadores, nos 2 dígitos.
+
+[00:57] Nós temos que fazer contas separadas para cada um dos dígitos, para verificar. E o segundo dígito verificador depende do cálculo do primeiro dígito verificador, se está válido ou não.
+
+[01:08] Com é que funciona, nós temos que calcular a soma dos nove primeiros dígitos, considerando o primeiro dígito verificador. Porém, nós não vamos fazer a soma 1 + 2 + 3 + 4 + 5 + 6, nós vamos fazer cada um dos dígitos multiplicado por 10, por 9, por 8, por 7, por 6, até chegar em 2.
+
+[01:38] Vai ficar mais ou menos assim, (10 * 1) + (9 * 2) + (8 * 3) ... (2 * 9). Então começar por 10, porque o primeiro dígito verificador está na décima posição do CPF e nós temos que fazer justamente essa soma dos nove primeiros dígitos, por isso que começa com 10 e vai até 2 vezes 9.
+
+[02:20] Depois que nós pegarmos essa soma, o dígito verificador é = 11 – (soma % 11) o resto da divisão da soma por 11. Nós conseguimos pegar o primeiro dígito verificador. Essa que é a conta maluca que nós vamos ter que fazer para poder descobrir o primeiro dígito verificador.
+
+[02:51] E caso o primeiro dígito verificador bata com a sequência, nós vamos descobrir o segundo, e é a mesma coisa, é a mesma soma e a mesma conta de subtração e resto de divisão. Mas agora, ao invés de começar com 10 o multiplicador, ele vai começar com 11. Porque aí o segundo dígito verificador está na 11ª posição do CPF. Vai ficar (11 * 1) + (10 * 2) + (9 * 3) ... (2 * 0).
+
+[03:26] Lembra que eu fale que o segundo dígito verificador depende da validação do primeiro para poder estar correto. Então primeiro nós temos que verificar o primeiro, e se estiver válido, nós contamos além dos nove primeiros dígitos, nós também contamos o primeiro dígito verificador. E o restante para verificar é a mesma coisa, é 11 - o resto da divisão por 11 da soma.
+
+[03:48] Eu vou pegar essa conta e vou salvar, deixa comentada só para nós usarmos como referência depois, e vou criar a primeira função, que vai fazer exatamente a checaEstruturaCPF(cpf). O que vai acontecer aqui dentro, nós temos que criar o retorno dessa função, quer dizer, o retorno essa função vai ser um booleano, um verdadeiro ou falso.
+
+[04:19] E vai ser um verdadeiro ou falso de outra função, que ele vai checaDigitoVerificador (cpf, multiplicaodr), nós vamos receber um CPF e também um multiplicador. Então embora nós tenhamos que fazer duas somas para descobrir cada um dos dígitos verificadores, ao invés de criar, por exemplo, duas funções para poder fazer o cálculo de cada uma delas, nós podemos fazer uma função só.
+
+[04:52] Porque o que vai difere essas duas funções, é justamente a partir de onde começa o multiplicador, e até onde que nós temos que multiplicar no nosso loop dos dígitos do CPF. Porque a conta vai ser a mesma. Então nós vamos usar o conceito de recursão, ou seja, nós vamos chamar essa função checaDigitoVerificador dentro dela mesma. Depois nós vamos ver um pouco melhor como vai funcionar essa recursão.
+
+[05:25] E como a única diferença vai ser multiplicador, que para o primeiro dígito ele começa com 10, e para o segundo ele é 11, ou seja, 10 + 1, nós podemos criar esse multiplicador fora, inicializar ele antes. Então const multiplicador = 10, e dentro dessa função de checaDigitoVerificador, olha como nós vamos chamar ela de novo dentro dela mesma, nós passamos, por exemplo, o multiplicador + 1.
+
+[05:50] Antes de começar realmente a desmembrar, a criar essa função checaDigitoVerificador, nós já podemos até separar essa nossa conta, que vai checar o dígito verificador, que vai retornar esse cálculo, essa soma e extrair isso em uma função já separada, que nós podemos chamar depois da checaDigitoVerificador.
+
+[06:12] Então o nome da função vai ser, por exemplo, confrimaDigito. E nós precisamos para poder trabalhar com essa confirmação de dígito, de uma soma, que a soma vai ser feita dentro da outra função.
+
+[06:28] Então o retorno dessa função, vai ser exatamente um valor, um digito, que vai ser exatamente (11 - soma % 11), como nós fizemos aqui em baixo. Nós chamamos essa função de confirmaDigito dentro da checaDigitoVerificador, no momento que nós formos comparar, após fazer toda a soma, nós comparamos o resultado desse confirmaDigito com que foi passado com o CPF. Então o nosso próximo passo agora vai ser criar essa função checaDigitoVerificador.
+
+
+
+

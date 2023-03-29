@@ -1,0 +1,944 @@
+Anotações do curso
+
+# JS - explorando a linguagem Web
+
+## Aula 1 - Introdução
+
+### Aula 1.1 - Introdução
+
+Ambiente de desenvolvimento
+  - VS Code
+  - NodeJS
+    - utilizado apenas como interpretador da linguagem
+  - não utilizará navegador
+  - terminal para rodar o programa (prompt comando)
+
+Conteúdo
+  - Conceitos básicos
+  - Boas práticas
+
+  - Condicionais
+  - Loops
+  - Variáveis
+  - Listas
+  - Debugger do VS Code
+
+
+### Aula 1.2 - Instalar requisitos
+
+Instalar NodeJS versão current (não instável)
+
+  Instalação via terminal
+    - abrir terminal
+    - digitar o comando
+    curl -fsSL https://deb.nodesource.com/setup_19.x | sudo -E bash - &&\
+    sudo apt-get install -y nodejs
+
+    - verificar versão instalada
+      node -v
+      npm version
+      npx -v
+
+    - referência de instalação
+      https://github.com/nodesource/distributions
+
+
+Como utilizar NodeJS no terminal
+
+  - abrir terminal
+  - iniciar o Node com o comando
+    node
+
+Criar programa de teste
+  - digitar comando no termimal/enter
+    console.log("Meu primeiro programa")
+
+  - perde o programa ao fechar o terminal
+  - programa não foi salvo
+
+Criar primeiro programa
+  - abrir VS Code
+  - criar pasta do projeto
+  - criar novo arquivo
+    1-meuPrimeiroPrograma.js
+  
+  - editar arquivo
+    console.log('Meu primeiro programa');
+
+  - pronto, programa criado / salvo
+
+
+### Aula 1.3 - Trabalhando com variáveis
+
+Declarar variável
+  const idade
+
+Atribuir valor à variável
+  idade = 26;
+
+Declarar e atribuir valor à variável
+  const idade = 26;
+
+Reatribuir valor à variável
+  let outraIdade;
+  outraIdade = 30;
+  outraIdade = outraIdade + 1;
+
+
+Guardar valores na memória
+  - criar a variável "const"
+  - nomear como "idade"
+  - atribuir valor "26"
+    const idade = 26;
+  
+  - para exibir o valor da variável
+    console.log(idade);
+
+Variável
+  - um espaço reservado na memória para armazenar/acessar um valor
+
+Alterar valor armazenado
+  - somar valor da idade mais dois e exibir
+    console.log(idade+2);
+
+Alterar valor da idade e armazenar
+  - criar nova variável e somar idade mais dois
+  - exibir valor
+    const idadeSomada = idade + 2;
+    console.log(idadeSomada);
+
+Sintaxe da linguagem
+  - nomes simples
+    - sempre letras minúsculas
+  - nomes compostos
+    - camelCase
+      - primeira inicial sempre minúscula
+      - demais iniciais sempre em Maiúscula
+
+Código final (aula 1)
+
+  console.log('Meu primeiro programa: trabalhando com variáveis');
+
+  const idade = 26;
+  const idadeSomada = idade + 2;
+
+  console.log(idade);
+  console.log(idade+2);
+  console.log(idadeSomada);
+
+
+## Aula 2 - Tipos de variáveis
+
+### Aula 2.1 - Boas práticas com variáveis
+
+Novo programa - Trabalhando com variáveis
+  - criar novo arquivo na pasta do projeto
+  - nomear como
+    2-trabalhandoComVariaveis.js
+
+Editar arquivo
+  - exibir novo do programa
+    console.log('Trabalhando com variáveis');
+
+Adicionar comentários
+  - não serão exibidos ao rodar o programa
+    // este é um comentário de uma linha
+
+    /*  este é um comentário
+        com mais de uma linha */
+  
+  - são úteis para desativar trechos do código
+
+Declarar variáveis
+  - JS permite declarar
+    - diferentes tipos de dados
+    - com mesma sintaxe
+    - iniciais maiúsculas ou minúsculas
+      - criar variáveis diferentes
+        idade
+        Idade
+
+  - uso das palavras especiais
+    var
+    const
+    let
+
+    - var (varaiável)
+      - escopo global
+      - valor armazenado pode ser reatribuído
+      - pode ser declara novamente
+
+    - const (constante)
+      - escopo de bloco (local)
+      - valor armazenado não pode ser alterado
+
+    - let
+      - escopo de bloco (local)
+      - valor armazenado pode ser atualizado
+      - não pode ser declarada novamente
+
+    - declarar variável
+      - sem a palavra especial
+        - insere o dado no escopo global do projeto
+      - com a palavra especial
+        - restringe uso local do dado
+
+
+### Aula 2/2 - Converte tipos de dados
+
+Criar novo programa "3-operacoesAritimeticas.js"
+  - declarar "console.log()"
+    - para exibir nome do programa
+    - para exibir algumas operações arritiméticas
+      (2+2);
+      (10+8*2)
+  
+ Executar o programa no terminal
+  - os resultados serão exibidos
+    4
+    26
+
+Ordem de execução das operações realidas pelo JS
+  - divisão e multiplicação
+  - soma e subtração
+  - no caso da operação acima
+    10 + (8 * 2) = 26
+
+Acrescentar nova operação
+  ((10 + 8) * 2);
+  - o resultado será
+    36
+  - utilizar parenteses
+    - determina quais operações deven ser feitas primeiro
+
+Exibir texto e número (concatenar)
+  - texto = tipo String
+  - número = tipo Inteiro (int)
+  - o texto deve ser declarado entre aspas (simples ou duplas)
+  ('ano' + 2023);
+  - o resultado será
+  ano2023
+
+  - para incluir espaço entre os dados
+    ('ano ' + 2023);
+  - o resultado será
+  ano 2023
+
+  - declarar número como texto
+    ('2' + '2');
+  - o resultado será
+    22
+
+Criar novo programa "4conversaoDeTipos.js"
+  - converter tipo texto para número
+  - "parse" é um comando para realizar conversão
+  - "parseInt" é comando para converter em número inteiro
+    (parseInt('2') + parseInt('2'));
+  - o resultado será
+    4 
+
+Concatenar texto com texto ou com númenro
+  - adicionar um texto com outro
+  - adicionar um texto com número
+
+Reconhecimento automático
+  - de números
+    - mesmo que estejam entre aspas
+    - JS reconhecerá como númnero
+      - se houver sintaxe de operação aritimética
+      ('10' / '2');
+    - o resultado será
+    5
+
+  - de texto com número
+    - ambos entre aspas
+    - dentro de uma sintaxe aritmética
+    - JS não reconhecerá como número
+      ('Ricardo' / '2');
+    - o resultado será
+      NaN (not a number)
+
+Linguagem fracamente tipada
+  - JS sempre tentará converter os dados para executar declarações
+  - É possível forçar conrvesão utilizando "parseInt"
+
+Número de ponto flutuante (float)
+  - são os números com casa decimal (não inteiros)
+    ('7'/'2') = 3.5
+  - separados por "ponto" e não "vírgula"
+  - a "vírgula" é utilizada para separar os dados
+  (6,5) = 6 5
+  - converter para número com casa decimal
+    parseFloat();
+  
+
+  ### Aula 2.3 - Atribuir imutabilidade
+
+Criar novo arquivo
+  "5-atribuicaoDeVariaveis.js"
+  - exibir nome do arquivo
+  
+Criar variáveis
+  const idade = 29;
+  const nome = 'Neto';
+  const sobrenome = 'Paiva';
+
+Exibir contatenação de variáveis
+  console.log(nome + sobrenome);
+
+  - exibe sem espaço entre nome e sobrenome
+    NetoPaiva
+  
+  - para incluir espaço
+    (nome + ' ' + sobrenome)
+    Neto Paiva
+    - ou utilizar "vírgula"
+    (nome, sobrenome)
+    Neto Paiva
+
+Outra maneira para trabalhar com Strings (texto)
+  - declarar entre "crases" (``)
+    (`Meu nome é ` + nome);
+
+Interpolar variáveis "${}"
+  - faz contatenação sem o uso do sinal de mais (+)
+  - declaração toda entre crases (``)
+    (`Meu nome é ${nome} ${sobrenome});
+    Meu nome é Neto Paiva
+
+Condensar valores de variáveis
+  - atribuir valores a uma única variável
+    nomeCompleto = nome + sobrenome;
+
+Tipo de variável "let"
+  - permite reatribuir valor armazenado
+  - alterar o tipo da variável "nome" para "let"
+    let nome = 'Neto';
+    nome = (nome + ' ' + sobrenome);
+    ou
+    nome = `${nome} ${sobrenome}`;
+  
+Reatribuir valor
+  - armazenar o nome completo na variável "nome"
+    nome = nome, sobrenome
+
+Boas práticas
+  - melhor condensar valores em nova variável
+  - evitar alterar o tipo de atribuição da variável
+    - manter uso de "const"
+  - o tipo "let"
+    - adequado para casos insconsntates
+      - valores mudam
+        - um contador de números
+  - utilizar nomes bem descritivos
+    - facilita compreensão
+    primeiroNome = Neto;
+    sobrenome = Paiva;
+    nomeCompleto = primeiroNome + sobrenome;
+
+
+# Aula 3 - Muitos elementos
+
+## Aula 3.1 - Criar listas (array
+
+Criar novo programa
+  "6-listas.js"
+
+Exibir nome do programa
+  console.log('Trabalhando com listas - arrays');
+
+Declarar e atribuir variáveis
+  const salvador = `Salvador`;
+  const saoPaulo = `São Paulo`;
+  const rioDeJaneiro = `Rio de Janeiro`;
+
+  - cada variável foi declarada individualmente
+  - dificulta o desenvolvimento do programa
+
+Exibir destinos possíveis e nome das cidades
+  console.log(`Destinos possíveis:`);
+  console.log(salvador, saoPaulo, rioDeJaneiro);
+
+Utilizando arrays
+
+  - estrutura para armazenar diversos dados do mesmo tipo
+  - sintaxe
+    - declarar uma constante
+    - atribuir com as palavras-chave
+      - new (criar nova estrutura de dados)
+      - Array (o tipo da estrutura)
+      - os dados entre parenteses
+      - separados por vírgula
+
+      const listaDeDestinos = new Array (
+        `Salvador`,
+        `São Paulo`,
+        `Rio de Janeiro`
+      );
+
+  - exibir lista de destinos
+    console.log(listaDeDestinos);
+  - o resultado será
+    [Salvador, São Paulo, Rio de Janeiro]
+
+Incluir itens na lista (push)
+
+  - utilizar a palavra-chave "push"
+    listaDeDestinos.push(`Curitiba`);
+
+  - exibir lista
+    console.local(listaDeDestinos);
+
+Alterar lista
+
+  - mesmo sendo declarada como "const"
+  - é possível inlcuir/excluir itens da lista
+  - a variável continua sendo uma lista
+  - apenas os itens são alterados.
+  - não é possível reatribuir a lista para outro tipo de dado
+    listaDeDestinos = 2;
+    - irá apresentar erro ao executar o programa
+
+
+## Aula 3.2 - Remover elementos
+
+Comando para remover itens da lista (splice)
+  - sintaxe
+    - a posição inicial dos itens (índice)
+      - começa no contador 0 (zero)
+    - a quantidade de itens a remover
+        (2,1)
+    - neste caso, o item removido foi "Rio de Janeiro"
+      - estava na posição "2" (ínidce 2)
+      - era para remover apenas "1" item
+        (1,1)
+    - neste caso, o item removido seria "São Paulo"
+
+Exibir item específico
+  - declarar a exibição do índice da lista entre colchetes
+    console.log(listaDeDestinos[1]);
+    - irá exibir "Rio de Janeiro"
+    console.log(listaDeDestinos[1], listaDeDestinos[0]);
+    - irá exibir "Rio de Janeiro" "Salvador"
+
+Diversas maneiras de manipular listas
+  - conhecer a documentação
+    pesquisar "array js"
+
+
+## Aula 4 - Condicionais - fluxo de execução
+
+### Aula 4.1 - Operadores lógicos de comparação
+
+Criar novo arquivo "7-condicionais"
+
+  - implementar nova regra de negócio
+    - vender pacotes de viagens para maiores de 18 anos
+    - exibir destinos possíveis
+    - remover item se for maior de 18 anos
+    - não remover se for menor de 18 anos
+
+
+Operadores lógicos de comparação
+
+  - maior que
+    >
+
+  - menor que
+    <
+
+  - maior ou igual a
+    >=
+  
+  - menor ou igual a
+    <=
+
+  - igual a
+    ==
+
+  - diferente de
+    !=
+
+  - estritamente igual a
+    ===
+  
+  - estritamente diferente de
+    !==
+
+  - referência MDN
+  https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Guide/Expressions_and_operators
+
+
+Criar varaiável "idadeComprador"
+
+    const idadeComprador = 15;
+
+  - exibir idade armazenada
+    console.log(idadeComprador);
+
+Criar condicional "if"
+
+  - condicional altera fluxo do código
+  - conforme a regra de negócio
+    - se o valor for maior ou igual a 18
+    - algo alcontece (item é retirado)
+  
+  - sintaxe
+    if(idadeComprador >= 18){
+      console.log('Comprador maior de idade');
+      listaDeDestinos.splice(1,1);
+    }
+
+  - nenhum item removido
+  - idade do comprador abaixo de 18 anos
+
+Criar condicional "if else"
+
+  - caso cumpra a condição
+    - realiza tal ação
+  - senão
+    - realiza outra ação
+
+  - sintaxe
+    if (idadeComprador >= 18) {
+      console.log('Comprador maior de idade');
+      listaDeDestinos.splice(1,1);
+
+    } else {
+      console.log('A idade do comprador é:', idadeComprador, 'anos.')
+      console.log('Não posso vender para menor de idade.')
+    }
+
+
+
+### Aula 4.2 - Ifs encadeados
+
+Copiar e renomear o programa
+  
+  "8-condicionaisEncadeadas.js"
+
+  - continuar programa
+  - criar mais uma opção na regra de negócio
+    - se for menor de idade acompanhado por maior de idade
+    - pode comprar
+
+Criar variável do tipo booleano
+
+  - representa valores "verdadeiro" ou "falso"
+    const estaAcompanhado = true;
+
+Adicionar nova condicional
+
+  - 3a condicional
+    - se for verdadeira
+      - realiza ação
+    - se for falsa
+      - realiza outra ação
+
+    if(estaAcompanhado == true){
+      console.log('Comprador está acompanhado');
+    } else{
+      console.log('Não posso vender para menor de idade.')
+    }
+
+Sintaxe completa da verificação condicional
+
+  - boas práticas para facilitar entendimento do código
+    - evitar uso de muitas condicionais
+
+  if (idadeComprador >= 18) {
+    console.log('Comprador maior de idade');
+    listaDeDestinos.splice(1,1);
+    console.log(listaDeDestinos);
+  } 
+    else if (estaAcompanhado == true){
+    console.log('A idade do comprador é:', idadeComprador, 'anos, mas está acompanhado de adulto.');
+    listaDeDestinos.splice(1,1);
+    console.log(listaDeDestinos);
+  } 
+    else {
+    console.log('A idade do comprador é:', idadeComprador, 'anos. Não posso vender para menor de idade.');
+    console.log(listaDeDestinos);
+  }
+
+
+### Aula 4.3 - Operadores lógicos encadeados
+
+  - condicionais
+    - maneira de controlar fluxo do código
+    - encadeamento
+      - expressões aritiméticas
+      - operadores lógicos
+
+Duplicar programa e renomear
+  "9-operadoresLogicosEncadeados.js"
+
+Analisar o código da condicional
+
+  - repetição de instrução
+    - remoção de itens
+    - exibir lista de detinos
+
+  - evitar repetições
+    - dificulta entendimento e manutenção
+  
+Operador lógico "ou" ( || )
+
+  - possibilita unir declarações mantendo comparações
+  - uma das duas condições precisa ser verdadeira
+
+    "ou" está acompanhado "ou" é maior de idade;
+    está acompanhado || é maior de idade;
+
+  - sintaxe condicional "ou"
+
+    if (idadeComprador >= 18 || estaAcompanhado == true){
+      console.log("Compador maior de idade");
+    } else {
+      console.log("Não é maior de idade e não posso vender.");
+    }
+
+Operador lógico "e" ( && )
+
+  - une duas declarações
+  - as duas condições precisam ser verdadeiras 
+    - isto "e" aquilo
+
+O Caractere especial "\n"
+
+  - possibilita pular linha ao imprimir a mensagem
+
+Criar nova condicional
+
+  - verificar se tem passagem comprada
+    - é maior de idade
+    - está acompanhado
+
+  - criar variável "temPassagemComprada"
+    const temPassagemComprada = true;
+
+  - criar condição
+    console.log("Embarque: \n");
+    if(idadeComprador >= 18 && temPassagemComprada){
+      console.log("Boa viagem");
+    } else {
+      console.log("Você não pode embarcar");
+    }
+
+
+## Aula 5 - Iterando coleções
+
+### Aula 5.1 - While
+
+Trabalhando com loops - While
+
+- trabalhar com iteração sobre vários elementos da lista
+  - Coletar itens da lista
+  - Verificar existência do elemento
+  - aplicar valor conforme resultado das condicionais
+
+Criar novo arquivo
+  "10-loops.js"
+
+Nova regra de negócio
+
+  - verificar se comprador é maior de idade ou menor acompanhado
+  - colocar estrutura de verificação em uma variavel
+  - exibir lista de destinos
+  - verificar se destino escolhido está na lista
+
+  - vender passagem
+  - senão, avisar que não pode vender passagem
+
+Alterar declaração da variável "temPassagemComprada"
+    - alterar tipo de variável para "let"
+    - inicar com valor "false"
+    - alterar valor se passagem for comprada ("true")
+
+Alterar fluxo de execução "idadeComprador || estaAcompanhado"
+  - criar variável "podeComprar"
+  - receber como valor a verificação de idade
+  - eliminar todo o corpo da antiga estrutura deste "if" da idade
+
+    const podeComprar = idadeComprador >= 18 || estaAcompanhado == true;
+
+
+Verificar se destino escolhido existe na lista
+
+  - criar variável para receber destino escolhido pelo cliente
+
+    const destino = "Curitiba"
+
+  - percorrer cada item da lista (iterar)
+  - comparar se destino escolhido é igual a algum item da lsita
+  - enquanto condição não for atendida
+    - continuar percorrendo a lista
+  - quando encontrar
+    - realizar tal ação
+    - senão, encerrar processo e exibir mensagem
+
+Estrutura de verificação "enquanto" (while)
+
+  - criar contador para elencar posição dos itens
+  - variável do contador inica com valor "0" (posição inicial da lista)
+  - reatribuir valor do contador (passar para próximo item)
+    - coletar o valor dentro do contador e somar 1 
+  - percorrer lista enquanto contador for menor do que o tamanho da lista
+  - exibir se destino existe ou não
+
+  let contador = 0;
+
+  while(contador<3){
+    if(listaDeDestinos[contador] == destino){
+      console.log('Destino existente.');
+    } else {
+      console.log('Destino inexistente.');
+    }
+    contador += 1;
+  }
+
+  - será exibido
+    Destino existente.
+    Destino inexistente.
+    Destino inexistente.
+
+Ainda falta atender a regra de negócio
+  - exibir destino escolhido se existir
+  - parar verificação ao encontrar
+
+
+## Aula 5.2 - Break e Debugger
+
+  - Antes de criar estrutura do código
+  - verificar execução do código, linha a linha
+
+Criar breakpoints
+
+  - identificar a linha do código a ser analiada
+  - clicar ao lado do númnero da linha (bolinha vermelha)
+  - criou breakpoint (ponto de parada)
+    - executa código até este ponto e para
+
+  - Outras maneiras de criar breakponits
+    - posicionar cursor na linha desejada
+    - menu Run/Toggler Breakponit (F9)
+
+Entrar em modo Debugger
+
+  - menu lateral / ícone do besouro
+  - ou menu Run/Start Debugger (F5)
+  - debug com Node.js
+  - irá exibir
+    - terminal de debug
+    - janela lateral com
+      - variveis locais e globais
+      - observar cada elemento (watch)
+        - mostra o contador como indefinido
+        - ao rodar o código
+        - contador terá incremento de 1 até 2
+        - quando chegar em 3 encerra o programa
+
+Executar passo a passo
+
+  - clicar em "step over" (f10)
+    - irá executar linha a linha a partir do breakpoint
+    - até cunprir todas as condicionais
+
+Voltar ao código
+
+  - sair do modo de Debug
+    - clicar em "stop" (shift F5)
+    - fechar o menu lateral
+
+Continuar a criar estrura de verificação
+
+  Comando "break"
+  - interromper o loop de verificação
+  - quando condição for encontrada
+  - para a repetição (break)
+
+  - inserir comando "break" após exibir existência do destino
+  - sair da estrutura de repetição
+  - exibir se destino existe ou não
+
+  Criar variável "destinoExiste" com valor "false"
+
+    - antes da estrutura de repetição (while)
+      let destinoExiste = false;
+  
+  Incluir "destinoExiste"
+    - na primeira condicional (if) com valor "true"
+    - antes do comando "break"
+    - a segunda condicional (else) não é necessária
+      - a condição original de "destinoExiste" já é falsa
+      - o if está programado para condição verdadeira
+    - remover a exibição da mensagem "destino existente" dentro do "if"
+  
+  Exibir se destino existe ou não
+    - fora da estrutura de repetição (while)
+    - declarar exibição
+
+
+## Aula 5.3 - Debugger
+
+Debug com criação de arquivo "launch.json"
+
+  - local do arquivo no projeto
+    - pasta: ".vscode"
+    - arquivo: "launch.json"
+
+Configuração do arquivo
+
+  type: node
+    - tipo de debug a ser realizado
+
+  request: launch
+    - inicia aplicação do zero ao fazer debug
+
+  name: nome-do-arquivo
+    - alterar nome do arquivo gerado
+
+  skipFiles [ ... ]
+    - exibe estruturas internas do "node" que não precisam de debug
+
+  program: ${workspaceFolder}nome-do-arquivo.js
+    - salva na pasta do projeto
+
+ Sintaxe da configuração
+
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "10-loops.js",
+      "skipfiles": [
+        "<node_internals>/**"
+      ],
+      "program": "${workspaceFolder}10-loops.js"
+    }
+
+Incluir outro arquivo no mesmo Debug
+
+  - encadear outro arquivo para ser debugado
+  - basta adicionar "vírgula" ao final da sintaxe "},"
+  - criar novo grupo de código após a "vírgula"
+    - com nome do arquivo nos campos
+      name
+      program
+
+  Sintaxe com mais de um arquivo no Debug
+
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "10-loops.js",
+      "skipfiles": [
+        "<node_internals>/**"
+      ],
+      "program": "${workspaceFolder}10-loops.js"
+    },
+
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "6-listas.js",
+      "skipfiles": [
+        "<node_internals>/**"
+      ],
+      "program": "${workspaceFolder}6-listas.js"
+    }
+
+  - na hora de rodar o Debug
+    - será possivel escolher qual arquivo debugar
+
+Configurar na versão 1.76 (fev/2023)
+
+  - Opção menu lateral
+    - clicar no ícone de Debug
+    - clicar no link para criar arquivo "launch.json"
+
+  - Opção menu "Run"
+    - selecionar "Add Configuration.."
+
+  - Configurar na barra que abrir no topo da janela
+    - selecionar o espaço de trabalho
+    - selecionar o tipo "node"
+    - arquivo será gerado com conteúdo:
+
+    {
+      "version": "0.2.0",
+      "configurations": [
+        
+        {
+          "type": "node",
+          "request": "launch",
+          "name": "Launch Program",
+          "skipFiles": [
+            "<node_internals>/**"
+          ],
+          "program": "${file}"
+        }
+      ]
+    }
+
+  - precisa terminar de configurar
+    - com o nome dos arquivos nos campos
+      name
+      program
+
+
+## Aula 5.4 - For
+
+Estrutura de repetição "for"
+
+  - criar arquivo "11-for.js"
+
+Laço de repetição "for"
+
+  - para determinada condição executar tal ação
+
+  - estrutura do "for"
+    - argumento com a contagem dividida em 3 partes
+      - iniciar contador
+      - declarar condição
+      - incrementar contador
+    - executar looping até condição ser verdadeira
+    - parar quando condição não for verdadeira
+    - executar comando no final do loop
+    
+  - sintaxe
+
+    for(let cont = 0; cont <3; cont++){
+      if(listaDeDestinos[contador] == destino){
+        destinoExiste = true;
+      }
+    }
+    
+    - o mais comum é nomear o contador com a letra "i"
+      for(let i = 0; i <3; i++)
+
+
+Executar código em modo Debug
+
+  - visualizar cada etapa da execução
+  - criar breakpoint na linha do "for"
+
+
+
+## Aula 5.5 - Conclusão
+
+Resumo do curso
+
+  - Sintaxe da linguagem
+  - Boas práticas
+  - Operações aritiméticas
+  - Execução no terminal
+  - Declaração e tipos de variáveis
+  - Conversão e aplicação de tipos
+  - Atribuição e alteração de variáveis
+  - Declaração e uso de listas
+  - Estrutura de condicionais e fluxo de execução
+  - Laços de reptição
+  - Verificação do código com modo Debug.
+
+
+/* --- fim ;)

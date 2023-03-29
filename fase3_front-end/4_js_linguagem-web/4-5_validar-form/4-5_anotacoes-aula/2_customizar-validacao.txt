@@ -1,0 +1,317 @@
+Anotações do curso
+
+# JS - Validar Formulário
+
+## Aula 2 - Customizar validação
+
+
+### Parte 2/1 - Validar data de nascimento
+
+- regras conforme a necessidade do projeto
+- Doguito
+  - formato válido
+    dia/mês/ano
+  - usuário maior de idade
+    acima de 18 anos
+
+Atributo "type" com valor "date"
+
+- incluir na tag do input da data de nascimento
+  type="date"
+
+- irá criar uma máscara no campo de entrada
+  - permite apenas um tipo de dado (números)
+  - navegador pode exibir calendário
+
+Validar maioridade (JS)
+
+- precisará calcular a idade do usuário
+  subtrair a data de nascimento com a data do cadastro
+
+- criar aquivo e pasta dentro do projeto
+  "projeto/js/validacao.js"
+
+Função para validar maioridade
+  - criar função para receber o input do formulário
+  - o valor do input é tipo String
+  - transformar em calendário
+  - criar constante para receber valor do input
+    function validaDataNascimento(input) {
+      const dataRecebida = new Date(input.value);
+    }
+
+Função para comparar datas
+  - constante para data do cadastro
+    - valor será colocado automaticamente
+    - formato padrão do JS
+      ano/mês/dia
+
+  - chamar função "maiorQue18" na função principal "validaDataNascimento"
+    - com o parâmetro da data recebida
+    function validaDataNascimento(input) {
+      const dataRecebida = new Date(input.value);
+      maiorQue18(dataRecebida);
+    }
+
+  Bloco da função "maiorQue18"
+    - data atual recebe "nova data"
+      - deixar parâmentro vazio para ser a data aual
+
+    - somar 18 com data atual
+      const dataMais18 = new Date()
+
+    - passar data no formato padrão como parâmetro
+      - ano + 18
+      - mês
+      - dia
+      (data.getUTCFullYear() + 18, data.getUTCMonth(), data.getUTCDate());
+
+    - retorno da função é a comparação
+    - verificar se é menor ou igual a data de hoje
+      - se for, o usuário é maior de idade (true)
+      - senão, usuário menor de idade (false)
+      return dataMais18 <= dataAtual;
+
+  Sintaxe completa da função "maior que 18 anos"
+
+    function maiorQue18(data) {
+      const dataAtual = new Date();
+      const dataMais18 = new Date(data.getUTCFullYear() + 18, data.getUTCMonth(), data.getUTCDate());
+  
+      return dataMais18 <= dataAtual;
+    }
+
+
+Propriedade do "input" para validar campo
+
+  - irá validar se verdadeiro ou falso no input
+  - navegador saberá se campo está válido ou não
+    setCustomValidity
+
+  - declarar na função principal
+    input.setCustomValidity();
+
+  - recebe variável "mensagem" como parâmentro
+    input.setCustomValidity(mensagem);
+  
+  - criar variável dentro da função principal
+    - valor é String vazia se input válido
+    let mensagem = '';
+  
+  - exibir mensagem de erro se menor de idade
+
+Criar condição para exibir mensagem se menor de idade
+  - se condição for falsa "if (!...)"
+  - exibir mensagem
+    if (!maiorQue18(dataRecebida)) {
+      mensagem = "Você deve ser maior que 18 anos para se cadastrar"
+    }
+
+Atribuir função para validação
+
+  - selecionar o elemento
+    - criar constante para receber input
+    const dataNascimento = document.querySelector('#nascimento');
+
+  - criar evento no input
+    - quando perder foco (blur)
+    dataNascimento.addEventListener('blur', ...);
+
+  - passar função anônima
+    - recebe "evento" como parâmentro
+    ('blur', (evento) => { ... });
+
+  - passar validação data nascimento como alvo
+    - chamar a função principal
+    - recebe como parâmetro o alvo do evento
+    (... {validaDataNascimento(evento.target);});
+
+
+Sintaxe completa do arquivo "validacao.js"
+
+// selecionar input
+const dataNascimento = document.querySelector('#nascimento');
+
+// detectar evento
+dataNascimento.addEventListener('blur', (evento) => {
+  validaDataNascimento(evento.target);
+});
+
+// função principal - validar data de nascimento
+function validaDataNascimento(input) {
+  // recebe valor do input
+  const dataRecebida = new Date(input.value);
+  // se maior de idade, mensagem vazia
+  let mensagem = '';
+
+  // compara se menor de idade
+  if (!maiorQue18(dataRecebida)) {
+    // exibe mensagem se for menor
+    mensagem = 'Você deve ser maior que 18 anos para se cadastrar.';
+  }
+
+  // validar se input é verdadeiro ou falso para exibir mensagem
+  input.setCustomValidity(mensagem);
+}
+
+// função para formatar e comparar a data de nascimento com a atual
+function maiorQue18(data) {
+  // recebe a data atual
+  const dataAtual = new Date();
+
+  // formata a data de nascimento e soma 18 anos
+  const dataMais18 = new Date(data.getUTCFullYear() + 18, data.getUTCMonth(), data.getUTCDate());
+
+  // retorna nascimento menor ou igual a data atual
+  return dataMais18 <= dataAtual;
+}
+
+
+Vincular script no HTML
+  - antes do fechamento do </body>
+  - declarar a tag <script>
+  - com o caminho do arquivo (src="./js/validacao.js")
+
+  - testar no navegador
+    - preeencher campo data
+      - se menor de idade
+        - exibe mensagem
+      - se maior de idade
+        - formulário envia os dados
+
+
+### Parte 2/2 - Melhorar código - Data Attributes
+
+  - substituir a referência para seletores JS
+    - de ID
+    - para Data Attributes
+
+Declarar Data Attributes no HTML
+  - na tag de input da data de nascimento
+    - declarar o atributo JS
+    - com o valor espcífico para este campos
+    data-tipo="dataNascimento"
+
+  - mesmo seletor poderá ser utilizado em outros campos
+    data-tipo="cpf"
+    data-tipo="email"
+    data-tipo="nome"
+    data-tipo="senha"
+
+Buscar seletor no JS
+
+  Função genérica para selecionar os elementos "data-tipo"
+
+    - não precisa mais detectar cada evento
+    - função irá detectar e identitificar o tipo de input
+      - pegar input guardar em variável
+      - verificar qual o tipo de input e o que fazer
+
+    - irá substituir a declaração
+      - da seleção do input
+        const dataNascimento = document.querySelector('#nascimento');
+      - da detecção do evento
+        dataNascimento.addEventListener('blur', (evento) => {
+          validaDataNascimento(evento.target);
+        });
+
+    - criar a função que vai ser chamada para todos os inputs
+      - verificação
+        - saber tipo de input
+        - qual ação deverá ser realizada
+      function valida () { ... }
+
+    - função recebe o input como parâmero
+      function valida (input) { ... }
+
+    - saber qual tipo de input
+      - "dataset" para acessar os data-attributes (data-tipo)
+        const tipoDeInput = input.dataset.tipo;
+
+    - criar objeto para selecionar tipo de input
+        - fora da função genérica
+        const validadores = { ... };
+
+    - dependendo do tipo de input terá uma função específica
+
+    - criar função para validar data nascimento
+      dataNascimento:input => validaDataNascimento(input)
+
+  Sintaxe do objeto
+
+    const validadores = {
+      dataNascimento:input => validaDataNascimento(input)
+    }
+
+  Criar verificação da validade
+    - dentro da função genérica
+    - verificar se o objeto tem o tipo de input (true)
+      if(validadores[tipoDeinput]){ ... }
+      - chamar a função relacionada ao tipoDeInput
+        validadores[tipoDeinput](input);
+
+  Sintaxe completa da função "valida"
+
+    function valida(input){
+      const tipoDeinput = input.dataset.tipo;
+
+      if(validadores[tipoDeinput]){
+        validadores[tipoDeinput](input);
+      }
+    }
+
+  Chamar a função
+    - não está sendo chamada ainda
+    - para ser genérica
+      - criar um arquivo para a função
+      - importar a função em outros arquivos
+
+  Exportar função genérica
+    - para ser utilizada em outros arquivos/programas
+    - usar palavra-chave "export" antes da declaração da função
+      export function valida(input) { ... }
+
+  Importar função genérica
+    - criar novo arquivo
+      "./projeto/js/app.js"
+
+    - importar função
+      import {nome-da-função} from"./local-do-arquivo"
+
+    - irá executar função para todos inputs
+
+    - criar constante que recebe seletor genérico
+      - seletor da tag "input"
+        const inputs = document.querySelectorAll('input');
+
+    - criar laço de repetição (forEach)
+      inputs.forEach(input => { ... });
+
+    - detectar evento
+      input.addEventListener(...);
+
+    - adicionar evento "blur" para todos inputs
+      ('blur', ... )
+
+    - função anônima como segundo parâmentro da detecção
+      - recebe evento como parâmetro
+      ('blur', evento => {...});
+
+    - chamar a função valida e evento como alvo
+      {valida(evento.target)}
+
+  Sintaxe completa do arquivo app.js
+
+    import { valida } from './validacao.js';
+
+    const inputs = document.querySelectorAll('input');
+
+    inputs.forEach(input => {
+      input.addEventListener('blur', evento =>{
+        valida(evento.target);
+      });
+    });
+
+    - irá chamar a função genérica "valida" para cada input
+      - dependendo do tipo de input
+      - executar função adequada

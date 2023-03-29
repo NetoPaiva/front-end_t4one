@@ -1,0 +1,15 @@
+Anotações do curso
+
+# JS - Validar Formulário
+
+
+## Aula 5 - Conectar API CEP
+
+
+### Parte 5/1 - Validar CEP - Regx
+
+
+### Parte 5/2 - Buscar CEP com API
+
+
+### Parte 5/3 - Preencher endereço

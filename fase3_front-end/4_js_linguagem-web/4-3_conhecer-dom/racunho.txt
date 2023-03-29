@@ -1,0 +1,52 @@
+CSS - estava na última linha do arquivo baixado
+
+/*# sourceMappingURL=style.css.map */
+
+-----------
+
+JS - funções auxiliares
+
+
+/* ---------------------------------------------------- */
+/*                simplificação do código               */
+/* ---------------------------------------------------- */
+/*
+  // função auxiliar para reduzir declaração do querySelector
+  let seletor = s => document.querySelector(s);
+
+  // utilização: seletor(nome-do-seletor);
+  const novaTarefa = seletor('[data-form-button]');
+
+
+  // função auxiliar para reduzir declaração do "addEventListener"
+  let captaEvento = (x,y,z) => x.addEventListener(y,z);
+
+  // utilização: captaEvento(nome-elemento, tipo-do-evento, o-que-fazer);
+  captaEvento(novaTarefa, 'click', ()=>{console.log('fui clicado')});
+*/
+
+
+/* ---------------------------------------------------- */
+/*  Funções auxiliares criadas na etapa iniciante t4f2  */
+/* ---------------------------------------------------- */
+
+/* 
+  let buscaId = b => document.getElementById(b);
+  let limpaArea = (a,b) => buscaId(a).value = b;
+  let copiaMemo = m => navigator.clipboard.writeText(m.value);
+  let colaMemo = () => navigator.clipboard.readText();
+  let captaEvento = (x,y,z) => x.addEventListener(y,z);
+  let recarrega = () => location.reload(true);
+  let mudaDisplay = (x,y) => x.style.display = y;
+*/
+
+
+
+
+
+
+
+
+
+
+

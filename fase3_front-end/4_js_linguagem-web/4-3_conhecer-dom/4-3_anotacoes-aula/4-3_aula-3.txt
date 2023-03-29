@@ -1,0 +1,176 @@
+Anotações do curso
+
+# JS - Manipular DOM
+
+
+## Aula 3 - Adicionar itens em lista
+
+
+### Parte 3/1 - Adicionar tarefa
+
+Adicionar tarefas
+
+Atribuir seletor no elemento HTML
+
+  - elemento HTML <li class=”task”>
+    - contém um parágrafo <p>
+      - contém o texto "comprar um abacate"
+  
+  - atribuir seletor "data-task" no elemento pai 
+    <li class=”task” data-task>
+
+Criar funcionalidade
+
+  - percorrer o DOM
+    - acessar o seletor "data-task"
+    - guardar em variável
+
+  - declarar dentro da função "criarTarefa"
+    const tarefa = document.querySelector('[data-task]');
+    
+Criar novo parágrafo com "template String"
+
+  - template String
+    - modelo (template)
+    - texto (String)
+    - expressão entre "crases" (`...`)
+
+  - utilização do template String
+    - interpolar o código HTML com o JavaScript
+
+  - objetivo do projeto
+    - criar elemento HTML (parágrafo)
+    - incluir valor no elemento
+    - valor é uma expressão JS
+
+  - sintaxe do template String
+    const nome = `conteúdo HTML ${conteúdo JS}`;
+
+  - sintaxe da declaração do projeto para criar novo parágrafo
+    const conteudo = `<p class="content">${valor}</p>`
+
+
+Incluir conteúdo no elemento
+
+  - acessar elemento pai (li)
+  - propriedade do DOM para acessar conteúdo do elmento
+    innerHTML
+
+  - sintaxe
+    tarefa.innerHTML = conteudo;
+    
+  - exibir no navegador
+    console.log(valor);
+
+  - recolocar a declaração de limpar o campo de input para o final das ações
+
+  - trocou o conteúdo existente pelo novo
+  - não adicionou novo item na lista
+  - precisa inlcuir novo elemento abaixo do existente
+
+
+
+### Parte 3/2 - Criar elemento
+
+- os itens da lista serão gerados dinamicamente
+
+Reorganizar documento HTML
+  - excluir o item da lista e o parágrafo
+  - manter apenas o elemento da lista <ul class="list">
+  - incluir seletor data na lista
+    <ul class="list" data-list>
+
+Ajustar o script JS
+  - excluir a variável que guardava o seletor <li>
+    const tarefa = document.querySelector(‘[data-task]’);
+
+  - excluir a expressão que insere conteúdo ao elemento
+    tarefa.innerHTML = conteudo
+  
+Percorrer o DOM
+  - encontrar o elemento lista <ul>
+  - guardar em uma variável
+    const lista = document.querySelector(‘[data-list]’);
+
+  - método para cirar elemento "createEment"
+    document.createElement,(‘li’);
+    
+  - guardar método em uma variável
+    const tarefa = document.createElement,(‘li’);
+
+  - inlcuir conteúdo no elemento
+    tarefa.innerHTML = conteudo;
+    
+  - método para criar elemento filho
+    lista.appendChild(tarefa);
+
+  - verificar funcionalidade no Navegador
+    - digitar e clicar botão
+    - adicionou item
+    - falta aplicar estilo
+
+Aplicar estilo dinamicamente
+
+  - propriedade para acessar classe CSS
+    classList
+
+  - método para adicionar classe no elemento
+    tarefa.classList.add(‘task’);
+
+Incluir tarefa abaixo de outra
+
+  - propriedade "appendChild"
+    - inclui elemento no final do nó
+      - "filho" dentro de elemento "pai"
+      - "irmão" após o último "irmão"
+
+Outros métodos para incluir/remover elementos/conteúdos
+  - Todos os elementos na árvore do DOM são nós
+  - Todos os nós podem ser acessados via JavaScript
+  - Podem ser manipulados
+    - deletados
+    - criados
+    - modificados
+
+- Métodos para manipular nós
+
+  insertBefore(pai, filho)
+    - coloca um nó antes do outro
+
+  replaceChild(elemento1, elemento2)
+    - substitui o nó elemento1 pelo nó elemento2
+
+  removeChild(elemento)
+    - remove um nó da árvore
+
+
+### Alura+ sobre “Template String”
+
+Sistema JS utilizado na concatenação de String
+  - interpolar informação HTML com informação JS
+    - código JS para criar e exibir estrutura HTML dinâmicamente
+  - evita conflitos em expressões que utilizam aspas e sinais especiais
+  - facilita desenvolvimento do código JS
+
+Sintaxe
+
+  - declarar expressões entre crases
+    `...`
+
+  - declarar expressão JS entre chaves precedidas por cifrão
+    ${...}
+
+  - exemplo de uso com base no projeto
+    const conteudo = `<p class="content">${valor}</p>`;
+
+    - expressão HTML
+      `<p class="content"> ... </p>`
+
+    - expressão JS
+      const conteudo = `... ${valor} ...`
+
+    - template string completo
+      `<p class="content">${valor}</p>`
+
+
+/* --- fim ;)

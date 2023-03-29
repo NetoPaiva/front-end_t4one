@@ -1,0 +1,17 @@
+Conclusão
+
+Obrigado por nos acompanhar até aqui, você concluiu o curso de introdução a linguagem JavaScript!
+
+Estudamos a sintaxe da linguagem e aprendemos algumas boas práticas de programação enquanto trabalhávamos com nosso código. Criamos nosso primeiro programa em que aplicamos operações matemáticas e realizamos execuções no PowerShell.
+
+Estudamos declarações de variáveis e seus pormenores, tudo separado em 8 arquivos que podem ser baixados e revisados para seus estudos. Vimos a conversão de tipos, como aplicá-los, atribuição de variáveis e sua mutabilidade ou não.
+
+Aprendemos que é uma boa prática manter as variáveis o mais constante possível para evitar problemas ao longo do código, trabalhamos com listas e descobrimos suas vantagens no momento de elencar conjuntos de elementos. Em nosso caso, utilizamos o exemplo de uma agência de viagens e seus destinos possíveis.
+
+Discutimos também a parte de condicionais, e como devemos usá-las como cuidado para não gerar problemas em nosso programa, ao termos muitos fluxos de execução diferentes.
+
+Conhecemos o laço while() que executa pedaços de código separadamente entre chaves enquanto a condição inicial que estipulamos for verdadeira. Conhecemos também o laço for que também é um recurso bastante popular.
+
+Ao final, aprendemos como se da o dbug do Visual Studio Code e como configurar o arquivo de debug, entender como o computador está interpretando nosso código linha a linha.
+
+Aprendemos, assim, o básico da linguagem que irá servir de base para nos aprofundarmos mais no assunto. Não pare por aqui e continue estudando!

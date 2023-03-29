@@ -1,0 +1,167 @@
+Anotações do curso
+
+# JS - Validar Formulário
+
+
+## Artigo - Preenchimento automático com Ajax
+
+Projeto web com busca automática de CEP
+
+
+Requisição AJAX do tipo GET com JS puro
+  - sem depender de bibliotecas
+  - recurso simples / eficiente
+
+
+Comportamento padrão de formulários
+  - recarrega a página a cada envio de dado
+  - solicitar a busca do CEP para preencher os campos
+    - recarregaria a página
+    - apagaria os campos já preenchidos
+
+
+Método AJAX
+  - enviar requisição para URLs
+  - obter respostas
+  - preencher os campos automaticamente
+  - sem recarregar a página
+
+  Soluções possiveis
+
+    Bibliotecas já prontas
+      - JQuery a mais utilizada
+      - muito recurso / pouca necessidade
+
+    Criar a própria funcionalidade JS
+      - mais viável
+      - solução do problema sem criar dependência
+
+
+Desenvolvimento da solução
+
+  - com o HTML já pronto
+
+  Implementar busca do CEP
+
+  - VIACEP
+    - serviço web gratuito
+    - recupera informações de CEPs
+    - criar requisição do tipo GET (XMLHttpRequest)
+
+  - XMLHttpRequest
+    - objeto JS
+    - responsável pr requisições AJAX
+    - recupera dados de determinada URL
+    - qualquer tipo de dado com suporte HTTP/FILE/FTP
+
+  1. Criar uma instância do objeto
+    let xhr = new XMLHttpRequest();
+
+  2. Iniciar criação da requisição com método "open" 
+    xhr.open('GET', url, true);
+
+    - método open recebe três parâmetros
+      - GET
+        - verbo HTTP realizar requisição
+        - seguir o padrão REST
+      - url
+        - o endereço web para acessar e obter os dados
+      - true/false
+        - argumento booleano
+        - informa se requisição será  síncrona/assíncrona
+
+  3. Implementar propriedade "onreadystatechange"
+    - disparada sempre que requisição sofrer alteração
+      xhr.onreadystatechange = function() { }
+
+  4. Criar função callback
+    - executada assim que a requisição sofrer alteração
+
+    - cuidados necessários:
+
+      - verificar se foi finalizada
+        if (xhr.readyState == 4) 
+        - método "xhr.readyState"
+          - código 4 mostra que foi finalizada
+
+      - verificar realizaão com sucesso
+        if (xhr.status = 200) 
+        - código 200 mostra sucesso durante processamento
+
+    Sintaxe completa da função callback
+      xhr.onreadystatechange = function() { 
+        if (xhr.readyState == 4) {
+        if (xhr.status = 200) 
+        // faz alguma coisa
+        } }
+
+  5. Criar função clique no botão
+    function buscaCep() { }
+
+  6. Pegar referência do campo do CEP e obter valor
+    let inputCep = document.querySelector('input[name=cep]');
+    let cep = inputCep.value;
+
+  7. Construir URL
+    let url = 'http://viacep.com.br/ws/' + cep + '/json';
+
+  8. Implementar o Request (XMLHttpRequest)
+    let xhr = new XMLHttpRequest(); 
+    xhr.open('GET', url, true); 
+    xhr.onreadystatechange = function() { 
+    if (xhr.readyState == 4) { 
+    if (xhr.status = 200) 
+    console.log(xhr.responseText); 
+    } } 
+    xhr.send();
+
+  9. Formatar CEP apenas com números
+    - realizar um "replace" para limpar formatação
+    - retirar traços e espaços
+    let cep = inputCep.value.replace('-', '');
+
+    Teste da função - retorno dos dados
+      { 
+        "cep" : "13845-373",
+        "complement" : "", 
+        "logradouro" : "Rua Caiapós", 
+        "bairro" : "Jardim Igaçaba", 
+        "localidade" : "Mogi Guaçu", 
+        "uf" : "SP", 
+        "unidade" : "", 
+        "ibge" : "3530706", 
+        "gia" : "4558" }
+
+  10. Convertar dados do JSON
+    - está em formato de string
+    - converter para um objeto JSON em Javascript (JSON.parse)
+      console.log(JSON.parse(xhr.responseText));
+
+    Saída do dado 
+      - é um objeto e não uma string:
+        Object {cep : "13845-373", logradouro : "Rua Caiapós", complemento : "", bairro : "Jardim Igaçaba", localidade : "Mogi Guaçu"...}
+
+  11. Pegar dados do objeto e preencher os campos
+    - criar função
+    - recebe o JSON como parâmetro 
+    - popula os campos
+      function preencheCampos(json) { 
+        document.querySelector('input[name=endereco]').value = json.logradouro;
+        document.querySelector('input[name=bairro]').value = json.bairro; 
+        document.querySelector('input[name=complemento]').value = json.complemento;
+        document.querySelector('input[name=cidade]').value = json.localidade; 
+        document.querySelector('input[name=estado]').value = json.uf; 
+      }
+
+Função completa
+
+  function buscaCep() { 
+    let inputCep = document.querySelector('input[name=cep]'); 
+    let cep = inputCep.value.replace('-', '');
+    let url = 'http://viacep.com.br/ws/' + cep + '/json'; 
+    let xhr = new XMLHttpRequest(); xhr.open('GET', url, true); 
+    xhr.onreadystatechange = function() { 
+    if (xhr.readyState == 4) { 
+    if (xhr.status = 200) preencheCampos(JSON.parse(xhr.responseText)); } } 
+    xhr.send();
+  }

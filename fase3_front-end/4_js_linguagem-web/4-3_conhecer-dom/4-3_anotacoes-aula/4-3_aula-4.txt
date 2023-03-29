@@ -1,0 +1,276 @@
+Anotações do curso
+
+# JS - Manipular DOM
+
+
+## Aula 4 - Concluir tarefa
+
+
+### Parte 4/1 - Criar botão conlcuir
+
+Sinalizar tarefa concluída 
+  - criar indicador de conclusão de tarefa
+    - grifar o texto da tarefa concluída (riscar o texto)
+  - criar botão para grifar o texto
+  - criar componente do "botão"
+
+  Componente
+    - aplicação é formada por diversos componentes
+    - componentes podem ser utilizados em várias partes da aplicação
+    - geralmente são independentes
+    - nomear com inicial Maiúscula para indicar que é um componente
+
+
+Criar componente do botão
+  - abaixo de "novaTarefa"
+  - declarar uma variável para receber o componente
+    const BotaoConclui = ();
+    
+  - transformar em função arrow
+    const BotaoConclui = () => {};
+
+  - incluir o construtor do elemento na função
+    const botaoConclui = document.createElement(‘button’);
+
+  - detectar evento do clique
+    botaoConclui.addEventListener(‘click’);
+
+  - criar função anônima para exibir evento como parâmentro do método
+    (click, () => {console.log( ‘fui clicado ’)});
+
+  - retornar o botão
+    return botaoConclui;
+
+  - colocar o botão dentro do item da lista (li)
+    - declarar dentro da função "criarTarefa"
+      tarefa.appendChild(BotaoConclui());
+
+  - botão só irá aparecer após criar tarefa
+
+  - sintaxe completa do componente
+    const BotaoConclui = () => {
+      const botaoConclui = document.createElement('button');
+    
+      botaoConclui.addEventListener('click', ()=> {
+        console.log('fui clicado');
+      })
+      return botaoConclui;
+    }
+
+Criar estilo do botão e inserir mensagem "esse é o botão de concluir"
+
+  Adiconar no componente
+
+    - usar a propriedade "classList"
+      botaoConclui.classList.add(‘check-button’);
+
+    - adicionar texto com a propriedade "innerText"
+      botaoConclui.innerText = ‘concluir’;
+
+  - sintaxe atualizada do componente
+    const BotaoConclui = () => {
+      const botaoConclui = document.createElement('button');
+    
+      botaoConclui.classList.add('check-button');
+      botaoConclui.innerText = 'concluir';
+      botaoConclui.addEventListener('click', ()=> {
+        console.log('fui clicado');
+      })
+      return botaoConclui;
+    }
+
+Visualizar alterações no navegador
+  - botão aparece ao lado do texto ao criar tarefa
+  - ao clicar no botão console mostra mensagem "fui clicado"
+  - falta aplicar estilo "riscado" no texto
+    - aparência do botão
+
+
+### Parte 4/2 - Estilizar ação de "concluir tarefa"
+
+Criar o estilo CSS de tarefa concluída - botão "concluirTarefa"
+
+  - criar uma função arrow em uma variável
+    const concluirTarefa = () => {};
+
+  - dentro da função "concluirTarefa"
+
+    - saber qual elemento foi clicado
+      const concluirTarefa = (evento);
+
+    - identificar o alvo do evento
+      const botaoConclui = evento.target;
+
+    - subir um nível hieráquico para declarar a classe CSS
+      - selecionar o item da lista (li)
+      - criar variável para guardar o método
+      - adicionar propriedade para selecionar elemento pai
+      const tarefaCompleta = botaoConclui.parentElement;
+      - O pai do botão é o item de lista (li)
+
+  - chamar a função "concluirTarefa" dentro da função "criarTarefa"
+  - substituindo a função arrow que exibe "console.log('fui clicado')"
+    botaoConclui.addEventListener(‘click’, concluirTarefa);
+
+  - aplicar efeito de texto grifado
+    - chamar elemento pai
+    - acessar classe do item de lita (classList)
+    - executar método para trocar a classe do elemento com o clique
+    - parâmentro do método é a classe CSS
+      tarefaCompleta.classList.toggle('done');
+
+  - Sintaxe completa da função grifar tarefa concluída
+    const concluirTarefa = evento => {
+      const botaoConclui = evento.target;
+      const tarefaCompleta = botaoConclui.parentElement;
+
+      tarefaCompleta.classList.toggle('done');
+    }
+
+Código completo até agora
+
+  - função criar tarefa
+    const criarTarefa = evento => {
+      evento.preventDefault();
+
+      const lista = document.querySelector('[data-list]');
+      const input = document.querySelector('[data-form-input]');
+      const valor = input.value;
+      const tarefa = document.createElement('li');
+      const conteudo = `<p class="content">${valor}</p>`;
+
+      tarefa.classList.add('task');
+      tarefa.innerHTML = conteudo;
+      tarefa.appendChild(BotaoConclui());
+
+      lista.appendChild(tarefa);
+
+      input.value = '';
+    }
+
+  - seletor/evento do botão  nova tarefa
+    const novaTarefa = document.querySelector('[data-form-button]');
+    novaTarefa.addEventListener('click', criarTarefa);
+
+  - componente botão concluir tarefa
+    const BotaoConclui = () => { 
+      const botaoConclui = document.createElement('button');
+
+      botaoConclui.classList.add('check-button');
+      botaoConclui.innerText = 'concluir';
+      botaoConclui.addEventListener('click', concluirTarefa);
+
+      return botaoConclui;
+    }
+
+  - função grifar tarefa concluída
+    const concluirTarefa = evento => {
+      const botaoConclui = evento.target;
+      const tarefaCompleta = botaoConclui.parentElement;
+
+      tarefaCompleta.classList.toggle('done');
+    }
+
+Organizar arquivo CSS
+  - conceito atomic design
+  - separar em arquivos CSS 
+    - elementos HTML (componentes)
+  - importar componentes no arquivo style.css
+  - vincular arquivo style.css no documento HTML
+
+
+### Parte 4/3 - JS IIFE
+
+Verificar código no DevTools do navegador (F12)
+  - inserir o nome da função "concluirTarefa"
+  - mostra livre acesso ao código JS (regra de negócio)
+  - todo o código está no escopo global
+  - boa prática é ocultar a regra de negócio
+
+Encapsular regra de negócio
+  - bloquear acesso ao código da aplicação
+  - retirar o código do escopo global
+
+  Escopo
+  - escopo global
+    - nível mais alto do projeto
+    - todas as instruções ficam acessíveis no projeto todo
+
+  - cada função tem seu próprio escopo (local)
+    - só é possível acessar conteúdo dentro da função
+    - fora da função acesso ao conteúdo é impossível
+
+  IIFE (Função de Invocação Imediata)
+  - Immediately Invoked Function Expression
+
+  - colocar todo o código dentro de uma função IIFE
+  - encapsular o código
+  - retira do escopo global
+  - fica inacessível fora de seu escopo
+
+  - sintaxe
+      (
+        () => {
+
+        }
+      ) ();
+
+    - abrir parêntese ()
+    - colocar todo o código dentro dos parênteses ( ... )
+    - declarar função anônima arrow
+      - incluir todo o código na função ( () => { ... } )
+    - executar a função anônima ( () => { ... } ) ();
+
+  - Sintaxe completa do código do projeto encapsulado
+    ( () => {
+
+      // função criar tarefa
+      const criarTarefa = evento => {
+        evento.preventDefault();
+      
+        const lista = document.querySelector('[data-list]');
+        const input = document.querySelector('[data-form-input]');
+        const valor = input.value;
+        const tarefa = document.createElement('li');
+        const conteudo = `<p class="content">${valor}</p>`;
+      
+        tarefa.classList.add('task');
+        tarefa.innerHTML = conteudo;
+        tarefa.appendChild(BotaoConclui());
+      
+        lista.appendChild(tarefa);
+      
+        input.value = '';
+      }
+      
+      // seletor/evento do botão nova tarefa
+      const novaTarefa = document.querySelector('[data-form-button]');
+      novaTarefa.addEventListener('click', criarTarefa);
+      
+      // componente botão concluir tarefa
+      const BotaoConclui = () => { 
+        const botaoConclui = document.createElement('button');
+      
+        botaoConclui.classList.add('check-button');
+        botaoConclui.innerText = 'concluir';
+        botaoConclui.addEventListener('click', concluirTarefa);
+      
+        return botaoConclui;
+      }
+      
+      // função grifar tarefa concluída
+      const concluirTarefa = evento => {
+        const botaoConclui = evento.target;
+        const tarefaCompleta = botaoConclui.parentElement;
+      
+        tarefaCompleta.classList.toggle('done');
+      }
+      }) ();
+
+  - Visualizar no navegador
+    - funcionalidade está OK
+    - executa o código e não está acessível
+    - mas aina está visível ao inspecionar código no navegador
+
+
+/* --- fim ;)

@@ -1,0 +1,244 @@
+Anotações do curso
+
+# JS - Manipular DOM
+
+
+## Aula 5 - Remover tarefa
+
+
+### Parte 5/1 - Remover tarefa
+
+Criar botão para deletar a tarefa
+
+  - criar componente em função arrow
+    const BotaoDeleta = () =>{ };
+
+  - criar elemento
+    const botaoDeleta = document.createElement(‘button’);
+    
+  - incluir texto no elemento
+    botaoDeleta.innerText = 'deletar';
+
+  - detectar evento do clique
+    botaoDeleta.addEventListener(‘click’);
+
+  - criar função anônima para exibir no console
+    botaoDeleta.addEventListener('click', ()=>{
+      console.log('deletado');
+    })
+
+  - retorna o botão
+    return botaoDeleta;
+
+  - chamar componente na função "criaTarefa"
+  - colocar dentro do elemento-pai (li)
+    tarefa.appendChild(BotaoDeleta());
+    
+  - visualizar no navegador
+    - funcionando do botão está OK
+    - falta remover o texto da tela
+    
+
+Selecionar o botão deletar
+
+  - passar para função anônima a função que vai executar a ação
+    - no lugar de exibir no console
+    ('click', deletarTarefa);
+
+  - criar a função "deletarTarefa"
+  - guardar em uma variável que recebe uma função arrow
+    const deletarTarefa = () => {};
+  
+  - identificar alvo do evento
+  - passar objeto como parâmentro da função arrow
+    const deletarTarefa = (evento);
+    
+  - no bloco da função criar variável e guardar o alvo 
+    const botaoDeleta = evento.target;
+
+  - exibir no console do navegador e retormar o botão deletar
+    console.log( botaoDeleta );
+    return botaoDeleta;
+
+  - sintaxe completa do componente
+    const BotaoDeleta = () =>{
+      const botaoDeleta = document.createElement('button');
+    
+      botaoDeleta.innerText = 'deletar';
+      botaoDeleta.addEventListener('click', deletarTarefa)
+      return botaoDeleta;
+    }
+
+  - verificar no navegador
+
+Criar no bloco da função "deletarTarefa" a função deletar item
+
+    - remover a exibição no console
+
+  - método para selecionar o elemento pai
+    botaoDeleta.parentElement
+  
+  - guardar método na variável
+    const tarefaCompleta = botaoDeleta.parentElement;
+
+  - método para remover o item da lista
+    tarefaCompleta.remove();
+
+  - sintaxe completa da função
+    const deletarTarefa = evento =>{
+      const botaoDeleta = evento.target;
+      const tarefaCompleta = botaoDeleta.parentElement;
+    
+      tarefaCompleta.remove();
+      
+      return botaoDeleta;
+    }
+
+
+### Parte 5/2 - Criar módulos
+
+  - organizar melhor o código
+
+Estruturar o código
+  - sessenta e oito linhas de código
+  - uma aplicação inteira
+  - funções bem descritivas
+  - componentes começam com a letra maiúscula
+  - quanto mais intuitivo o código é melhor
+
+Organizar o código
+  - mais simples 
+  - fácil de compreender e fazer manutençao
+
+  Salvar componentes em arquivos independentes
+  - criar pasta “componentes”
+  - criar arquivo para cada componente
+    concluiTarefa.js
+    deletaTarefa.js.
+
+  - inserir código dos componentes em cada arquivo
+  - remover código dos componentes do arquivo inicial
+
+    - concluiTarefa.js
+      const BotaoConclui = () => { 
+        const botaoConclui = document.createElement('button');
+        botaoConclui.classList.add('check-button');
+        botaoConclui.innerText = 'concluir';
+        botaoConclui.addEventListener('click', concluirTarefa);
+        return botaoConclui;
+      }
+
+      const concluirTarefa = evento => {
+        const botaoConclui = evento.target;
+        const tarefaCompleta = botaoConclui.parentElement;
+        tarefaCompleta.classList.toggle('done');
+      }
+
+    - deletaTarefa.js.
+      const BotaoDeleta = () =>{
+        const botaoDeleta = document.createElement('button');
+        botaoDeleta.innerText = 'deletar';
+        botaoDeleta.addEventListener('click', deletarTarefa)
+        return botaoDeleta;
+      }
+
+      const deletarTarefa = evento =>{
+        const botaoDeleta = evento.target;
+        const tarefaCompleta = botaoDeleta.parentElement;
+        tarefaCompleta.remove();
+        return botaoDeleta;
+      }
+
+Criar módulos
+  - outra maneira de encapsular o código
+  - transforma componentes em módulos
+    - exportar o componente
+    - módulos
+      - pequenas partes da aplicação
+      - juntas formam o código da aplicação
+      - encapsula cada trecho do código (semelhante ao IIFE)
+  - declarar a sintaxe no final do arquivo dos componentes
+    - sintaxe
+      export default nome-do-componente
+    
+    - no caso do projeto
+      export default BotaoConclui;
+      export default BotaoDeleta;
+
+
+  Importar módulos
+
+    - sintaxe de importação
+      import.nome-do-componente local-do-arquivo;
+  
+    - trazer para o script principal
+      - remover a estrutura IIFE do arquivo
+      - declarar importação na primeira linha do arquivo
+        import.BotaoConclui from "./componentes_js/concluiTarefa.js";
+        import.BotaoDeleta from "./componentes_js/deletaTarefa.js";
+
+      - renomear o arquivo "listaDeTarefas.js"
+      - para "main.js"
+
+  Vincular script "main" no documento HTML
+    - incluir a propriedade 'type="module"' na tag script
+    - sintaxe
+      <script type="module" src="./main.js"></script>
+    
+Bloqueio CORS
+  - permite acessar recursos de site em domínios diferentes
+  - por segurança o acesso é bloqueado (same origin policy)
+  - domínios diferentes = rotas diferentes
+    - módulos possuem rotas diferentes do script principal (portas)
+
+  - alterar a permissão
+  - utilizar um servidor
+  - no VS Code
+    - ativar a extensão "Live server"
+      - vai habilitar a função "Go live"
+      - simula um servidor para abrir aplicação no navegador em tempo real
+
+Outra forma de acessar servidor
+  - instalar "live server"
+  - acessar site "npmjs.com"
+  - buscar por "live"
+  - irá mostrar comando de instalação via terminal
+    mpm install -g live-server
+
+  - rodar aplicação
+    - abrir pasta do projeto no Terminal
+    - digitar "live-server"
+
+Estrutura do projeto
+  - documento HTML
+  - estilo CSS
+  - funcionalidades JS
+    - script principal (main.js)
+    - componentes
+      - deletar.js
+      - concluir.js
+
+
+### Parte 5/3 - Concluão
+
+Resumo
+
+  - o que é o DOM
+  - como percorrer a árvore de nós do DOM
+  - desenvolvimento da aplicação
+    - main.js
+    - prevenir comportamento padrão do formulário
+    - selecionar o valor do input utilizando a propriedade de value.
+    - método para buscar seletor
+    - seletor “Data Attributes”
+    - criar templates com “Template String”.
+    - colocar nó no final de outro nó
+    - colocar elemento-filho dentro do elemento-pai
+    - detectar evento do clique no botão
+    - conceito de componente / reutilização de componente
+    - exportar e importar componentes
+    - encapsular o código
+    - utilizar servidor para rodar aplicação com módulos
+    - política de segurança CORS
+
+/* --- fim ;)

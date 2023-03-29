@@ -1,0 +1,49 @@
+Debugger
+
+Esta será uma aula especial para aprendemos a configurar o debug do Visual Studio Code de versões anteriores. Será automaticamente criado um arquivo, dentro do projeto ele estará na pasta .vscode, com o nome launch.json.
+
+Como estávamos com o arquivo 8-loops.js aberto, foi alegado que o programa a ser executado está nesta pasta:
+
+"program": "${workspaceFolder}8-loops.js"
+
+Teremos, logo acima no código, o tipo de debug que será realizado: node; o request será launch, isto é, no momento do debug será iniciada a aplicação do zero. Na opção name podemos modificar o nome padrão por algo que seja mais referencial, como o nome do arquivo. Por fim, o skipFiles nos mostra as estruturas internas do node que não precisam ser debugadas.
+
+{
+"type": "node",
+"request": "launch"
+"name": "8-loops",
+"skipFiles": [
+    "<node_internals>/**"
+
+],
+"program": "${workspaceFolder}8-loops.js";
+}
+
+Trata-se de algo bem simples, com o algumas especificações e outros tópicos editáveis. Sabemos que o arquivo iniciará o programa em 8-loops.js, mas podemos modificar esse dado, basta inserir um novo grupo de código com type, request, name e skipFiles depois da última chave, com utilização de vírgula. Suponhamos a inicialização pelo arquivo 7-condicionais:
+
+{
+"type": "node",
+"request": "launch"
+"name": "8-loops",
+"skipFiles": [
+    "<node_internals>/**"
+
+],
+program": "${workspaceFolder}8-loops.js
+
+},
+{
+"type": "node",
+"request": "launch"
+"name": "7-condicionais",
+"skipFiles": [
+    "<node_internals>/**"
+
+],
+"program": "${workspaceFolder}7-condicionais.js"
+
+}
+
+Dessa maneira mudamos o arquivo a ser executado. Feito isso, podemos acionar o debug ao clicarmos novamente o ícone de inseto ao lado esquerdo da tela. Teremos a opção de executar o arquivo 8-loops ou 7-condicionais, e por fim, pressionar o ícone "play".
+
+Dessa maneira o debug será realizado sem problmas

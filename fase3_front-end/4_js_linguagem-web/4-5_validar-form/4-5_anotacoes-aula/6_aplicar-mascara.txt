@@ -1,0 +1,12 @@
+Anotações do curso
+
+# JS - Validar Formulário
+
+
+## Aula 6 - Aplicar máscara monetária
+
+
+### Parte 6/1 - Máscara monetária
+
+
+### Parte 6/2 - Conclusão

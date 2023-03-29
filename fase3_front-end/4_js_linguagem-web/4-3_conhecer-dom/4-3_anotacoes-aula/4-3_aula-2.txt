@@ -1,0 +1,348 @@
+Anotações do curso
+
+# JS - Manipular DOM
+
+
+## Aula 2 - Comportamento formulário
+
+
+### Parte 2/1 - Escutar evento
+
+Criar funcionalidade "adicionar tarefas"
+
+  - campo de input
+  - digitar texto
+  - clicar no botão
+  - gera um item de lista e exibe o texto na tela
+
+  - ainda não está acontecendo
+  - apenas a página é recarregada
+    - comportamento padrão de ação de elementos de formulário
+
+Criar script e vincular no HTML
+
+- no VS Code
+
+  - criar arquivo "assets/listaDeTarefas.js"
+    - desenvolver o código da aplicação (script)
+    
+  - vincular script no index.html
+    - incluir antes do fechamento da tag </body>
+      <script src="listaDeTarefas.js">
+
+- Razão para declarar script no final do documento HTML 
+  - Navegador lê o HTML de cima para baixo
+  - o último será o script
+  - evita interrupção no carregamento da página em caso de erro no código JS
+
+Percorrer DOM
+
+- no arquivo de script (JS)
+
+  - expressão para percorrer o DOM
+    document.querySelector()
+    - recebe seletor do elemento
+      - tag
+      - class
+      - id
+      - “Data Attributes”
+  
+Data Attributes
+
+  - seletor JS
+    data-form-button
+    - começa com o prefixo "data"
+    - recebe o complemento que identifica o elemento "form-button"
+
+  - seletor específico para JS
+    - separa responsabilidades
+    - evita perder seletor caso a classe do elemento seja alterada
+    - classe é um seletor do CSS
+    - data-attributes é seletor do JS
+
+  - sitnaxe do seletor dentro do método de seleção
+    document.querySelector('[data-form-button]');
+      
+  - mesmo seletor pode ser utilizado em diversas partes do código
+    - boa prática é guardar em uma variável
+    const novaTarefa = document.querySelector('[data-form-button]');
+
+  - incluir seletor no elemento HTML
+    <button class="form-button" data-form-button>
+
+  Ver Alura+ sobre “Data Attributes” 
+
+Confirmar seleção do elemento
+  - console.log( novaTarefa );
+  - abrir documento no navegador
+  - abrir console (f12)
+  - aparece o elemento do botão com o "data attributes"  
+
+Interagir com o elemento
+  - adicionar um detector de eventos (escutar evento)
+  - percebe quando elemento for clicado
+
+Componentes da sintaxe para escutar eventos
+  - tipo de evento (clique, teclado, mouse, arrasta e solta, ...)
+  - o elemento que deverá ser detectado o evento (botão, texto, imagem...)
+  - o que irá acontecer após o evento (avisar que ocorreu evento)
+
+Método para ouvir eventos
+  
+  addEventListener();
+  
+  - deve estar conectado ao elemento selecionado
+    novaTarefa.addEventListener();
+    
+  - recebe como parâmentro o evento e o que fazer
+    novaTarefa.addEventListener('click', console.log('fui clicado'));
+    
+  Ação para realizar o que fazer
+    - criar função (anônima)
+    - será executada assim que ocorrer evento
+
+    - sintaxe completa
+      novaTarefa.addEventListener('click', ()=>{
+        console.log('fui clicado')
+      })
+
+Estrutura completa da funcionalidade do evento
+
+  - elemento selecionado
+  - método para detectar evento
+  - evento
+  - função 
+  - o que fazer
+  
+Testar funcionalidade
+
+  - recarregar página no navegador
+  - clicar no botão
+  - exibe no console a mensagem "fui clicado"
+    - configurar o console para "preservar registro" (log)
+  - após clique, página é recarregada
+  - este recarregamento indesejado pode ser desativado 
+
+
+### Parte 2/2 - Capturar valor do elemento
+
+Incluir o seletor JS no elemento HTML
+
+- no index.html
+  - no input do formulário.
+  - incluir o seletor JS "[data-form-input]"
+
+- no script
+  - declarar a expressão para percorrer o DOM 
+    document.querySelector('[data-form-input]');
+
+  - guardar dentro de variável
+    const input = document.querySelector('[data-form-input]');
+
+  - exibir a seleção do elemento
+    console.log( input );
+
+  - visualizar no navegador
+
+Capturar o valor do elemento
+
+- Propriedade "value"
+  - valor do objeto
+    - input é o objeto selecionado
+  - expressão
+    input.value
+    - devolve o valor que está neste elemento
+
+  - guardar expressão em uma variável
+    const valor = input.value;
+  
+  - para exibir valor capturado
+    console.log(valor);
+
+  - visualizar no navegador
+    - recarregar a página
+    - digitar texto no campo de entrada
+    - clicar no botão
+    - identificar no console
+    - não mostrou o valor do elemento
+
+Alterar valor do elemento
+
+  - incluir na função
+    - input
+    - valor
+
+  - exibir no navegador
+    console.log( valor );
+
+  - expressão
+    novaTarefa.addEventListener('click', ()=>{
+      const input = document.querySelector('[data-form-input]');
+      const valor = input.value;
+      console.log(input);
+      console.log(valor);
+    });
+
+Testar no navegador
+  - digitar texto no campo de input
+  - clicar no botão
+  - após clique
+  - executa função
+    - percorre o DOM
+      - busca o input
+      - pega o valor do input
+      - coloca no console.log
+      - exibe no navegador
+
+
+### Parte 2/3 - Comportamento do forumlário
+
+Formulário
+  - um dos principais pontos de interação com usuário
+  - permite enviar dados para servidores Web
+  
+Comportamento padrão do formulário
+  - enviar dados
+  - evento associado ao formulário
+    - acionar botão "enviar"
+      - envia dados para o servidor
+  - recarrega a página após enviar
+      
+Trabalhando com evento
+
+  - navegador
+    - passa um objeto que contém informações sobre o evento
+  
+  - a função
+    novaTarefa.addEventListener(‘click’, (evento));
+    - parâmentros da função
+      - click 
+      - (evento)
+
+  - método para anular comportamento padrão “Prevent default”
+    preventDefault();
+
+  - declarar no bloco da função anônima
+    evento.preventDefault();
+
+  - visualizar no navegador
+    - pegar conteúdo do input
+    - sem recarregar a página
+    
+Melhorar organização do código
+
+  - criar função arrow "criar tarefa" e guardar em variável
+      const criarTarefa => ();
+
+  - incluir na função criarTarefa
+
+    - o parâmetro da função 
+      const criarTarefa = (evento)
+
+    - o método para evitar comportamento padrão
+      evento.preventDefault();
+
+    - o seletor do elemento
+      const input = document.querySelector('[data-form-input]');
+
+    - a captura do valor do elemento
+      const valor = input.value;
+
+    - exibir no console
+      console.log(valor);
+
+    - apagar campo "input" após clicar no botão
+      input.value = '';
+
+  - sintaxe completa da função "criarTarefa"
+    const criarTarefa = evento => {
+      evento.preventDefault();
+      const input = document.querySelector('[data-form-input]');
+      const valor = input.value;
+      console.log(valor);
+      input.value = '';
+    }
+
+  - sintaxe do seletor do botão "novo item"
+    const novaTarefa = document.querySelector('[data-form-button]');
+
+  - sintaxe do método "novaTarefa"
+    novaTarefa.addEventListener('click', criarTarefa);
+
+Visualiar no navegador
+  - tudo funcionando
+
+
+### Alura+ - Data Attibutes
+
+Boas práticas
+  - separar seletores CSS de JS
+    - CSS: tag / class / id
+    - JS: utilizar "data-attributes"
+    - torna o código mais semântico
+      - indica que elemento tem funcionalidade JS
+
+  - declarar os "data-attributes" nos elementos HTML
+    <button class="ativa" data-aba="entrar">
+    <button class="hide" data-aba="cadastrar">
+
+
+Sintaxe do Data Attibutes no HTML
+  data-nome="valor"
+
+  - palavra-chave "data"
+  - o nome do seletor (semântico ao elemento HTML)
+  - o valor que será dado ao seletor (diferencial do seletor)
+    - o valor é opcional / pode ser declarado ou não
+
+  - Exemplos
+    data-aba="entrar"
+    data-aba="cadastrar"
+    data-conteudo="entrar"
+    data-conteudo="cadastrar"
+
+Código JS
+
+  Encapsular código
+    - retirar do escopo global
+
+    - Sintaxe
+      ( ()=>{} ) ();
+
+      - abre e fecha parêntese
+        ()
+      
+      - cria dentro dos parênteses abertos uma função anônima tipo arrow
+        ( ()=>{} )
+
+      - ativa a execução com parênteses após a função
+        ( ()=>{} ) ();
+
+  Chamar o seletor data-attributes
+    - é do tipo String
+      - tem que estar entre aspas
+    - precisa estar cercado por colchetes []
+
+    - Sintaxe
+      '[data-aba]'
+
+      - exemplo de uso
+        document.querySelectorAll('[data-aba]');
+
+  Dataset
+    - é um objeto
+    - possui todos os "data" utiizados
+      - chave e valor
+    - utilizado para buscar detalhes do elemento e colocar em objetos
+    - informar
+      - o seletor e o objeto
+
+    - Sitnaxe
+      aba.dataset.aba
+
+--->>>> Pesquisar mais, compreender melhor!
+
+
+
+
+/* --- fim ;)

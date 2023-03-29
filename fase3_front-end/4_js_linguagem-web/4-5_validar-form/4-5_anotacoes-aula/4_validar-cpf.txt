@@ -1,0 +1,150 @@
+Anotações do curso
+
+# JS - Validar Formulário
+
+
+## Aula 4 - Validar CPF
+
+
+### Parte 4/1 - Números repetidos
+
+Validar CPF com números repetidos
+
+  - Forma bem interessante e única de identificação
+  - HTML com campo de CPF
+  - função para validar esse campo
+
+  Validação em 2 etapas
+
+    - A primeira é tratar o conteúdo informado (todos válidos)
+      - números separados por pontos e traço
+      - apenas números e traço
+      - só os númenros
+
+    - A segunda é validar o CPF
+
+
+Função JS para tratar input com conteúdos diferentes
+
+  - validar só após o tratamento do conteúdo
+
+  Criar função geral de validação do CPF (tratar formato)
+
+  - no final do arquivo "validacao.js"
+    - declarar a função que recebe o "input"
+    function validaCPF(input) { }
+
+  - criar constante para formatar CPF 
+  - que recebe o valor do input
+  - e a ferramenta de replace para formatar o númenro
+    const cpfFormatado = input.value.replace();
+  
+  - a ferramenta "replace" recebe uma regex
+    - com a regra de substituição
+    (/\D/g, '');
+      - pegar tudo que não for digito (/\D/g,)
+      - transformar em string vazia ('')
+
+  - Expressão completa da formatação do CPF
+    const cpfFormatado = input.value.replace(/\D/g, '');
+
+  - criar mensagens que serão enviadas
+    - criar variável que recebe string vazia
+      let mensagem = '';
+
+    - o objeto que verifica validade do input recebe a mensagem
+      input.setCustomValidity(mensagem);
+
+  Sintaxe da função "validaCPF"
+
+    function validaCPF(input){
+      const cpfFormatado = input.value.replace(/\D/g, '');
+      let mensagem ='';
+    
+      input.setCustomValidity(mensagem);
+    }
+
+  Criar função para verificar CPF válido
+    - se todos os números são iguais
+    - função recebe CPF
+      checaCPFRepetido(cpf){}
+
+    - criar dentro da função vetor (array)
+      const valoresRepetidos = [];
+
+      - vetor receber os números repetidos
+        '00000000000',
+        '11111111111',
+        '22222222222',
+        '33333333333',
+        '44444444444',
+        '55555555555',
+        '66666666666',
+        '77777777777',
+        '88888888888',
+        '99999999999'
+
+    - criar variável dentro da função, após o array
+      - recebe valor "true"
+      let cpfValido = true;
+
+    - retorno da função será o CPF válido ou não
+      return cpfValido;
+
+    - antes do retorno, criar laço de repetição (forEach)
+      - para cada valor dentro do vetor
+      - verificar uma condição (if)
+        - se valor igual ao CPF 
+          - se for, CPF não é válido (números repetidos)
+          - trocar o valor para "false"
+
+      valoresRepetidos.forEach(valor => {
+        if(valor ==cpf){ cpfValido = false; } });
+
+Chamar função checaCPFRepetido dentro da função principal "validaCPF"
+
+  - criando uma condição de verificação (if)
+    - que recebe a função checaCPFRepetido
+    - e a formatação como parâmetro
+    - para verificar se condição é falsa
+    if(!checaCPFRepetido(cpfFormatado));
+
+  - caso condição não seja verdadeira (retorno falso)
+    - exibir mensagem 'O CPF digitado não é válido.';
+    mensagem = 'O CPF digitado não é válido.';
+
+Chamar a função validaCPF junto com o objeto "dataNascimento"
+    - dentro dos validadores
+    cpf:input => validaCPF(input)
+
+Incluir mensagens de erro no objeto de mensagens de erro
+  - após a configuração da mensagem dataNascimento
+  - configurar as mensagens do CPF
+    - de campo vazio (valueMissing)
+    - de erro customizado (customError)
+
+Incluir data-attributes no HTML
+  - dentro da tag do CPF
+    data-tipo="cpf"
+
+Testar o validador
+  - no navegador
+  - preencher os campos
+  - verificar preenchimento inválido do CPF
+    - números repetidos
+      - formato inválido
+      - exibe mensagem de erro
+    - campo vazio / traço e pontos
+      - não exibe mensagem de erro
+
+
+### Parte 4/2 - Validar CPF com números repetidos
+
+
+
+### Parte 4/3 - Calcular CPF - 2
+
+
+
+
+/* --- fim :)

@@ -1,0 +1,207 @@
+Anotações do curso
+
+# JS - Manipular DOM
+
+
+## Aula 1 - Conhecer DOM
+
+
+### Parte 1/1 - Intodução
+
+Apresentar a aplicação Ceep
+  - desenvolver projeto de lista de tarefas
+    - inlcuir item
+    - remover item
+    - concluir tarefa
+
+Funções
+  - digitar nome da tarefa
+  - botão novo item
+  - exibir tarefas incluídas
+  - botões conlcuir / deletar / editar
+
+Objetivo
+  - gerar conteúdo dinâmico
+
+Conteúdo do curso
+  - Aprender DOM
+  - Como percorrer árvore do DOM
+  - selecionar elementos HTML com "data attributes"
+  - criar elementos e hierarquias de elementos (nós)
+  - gerar templates de elementos
+  - utilizar templates strings
+  - escutar eventos (click e formulário)
+  - componentes (partes da aplicação)
+  - exportar e importar
+  - subir aplicação no servidor
+  - rodar aplicação / criar tarefa
+
+
+### Parte 1/2 - Criar tarefa
+
+  - Abrir projeto inicial no VS Code
+  - Visualizar index no navegador
+
+
+Obs-1: no arquivo "index.html" original está faltando o fechamento da div "app".
+
+Obs-2: no arquivo "style.css" original tem duplicidade dos seletores iniciais, até o seletor ".form-button:hover".
+
+
+  Projeto já está estilizado
+  - focar em construir funcionalidades com JavaScript.
+  - lista de tarefas
+
+Adicionar tarefa - projeto estático
+  - comprar abacate
+  - clicar em “NOVO ITEM”
+  - nada acontece  
+  - é um projeto estático
+
+  - para adicionar tarefa
+    - criar item de lista no documento HTML (li)
+    - criar um parágrafo
+    - escrever "comprar abacate" dentro do parágrafo
+
+Visualiar no navegador
+  - apareceu a tarefa “comprar um abacate”
+
+Deixar o projeto dinâmico
+  - automatizar a inclusão / exclusão / edição de itens
+  - para isso
+    - entender como capturar elemento HTML
+    - fazer manipulações utilizando Java Script
+      - para adicionar item de lista / parágrafo
+
+
+### Parte 1/3 - Manipular DOM
+
+Objetivo
+  - alterar a visualização do projeto
+  - sem mexer no HTML
+  - com funcionalidades JS
+
+Navegador
+  - cria representação do HTML em formato de objetos
+    - cada elemento é um objeto
+      - form
+      - input
+      - texto
+
+Acessar objetos
+  - no navegador
+  - abrir console (F12)
+  - limpar console (clear console)
+  - digitar "document"
+    - objeto que representa a página atual
+      - dá acesso aos elementos da página
+      - mostra todos os elementos
+
+Trocar elementos
+  - de "comprar abacate" 
+  - para "comprar tomate"
+  - acrescentar um parágrafo (p)
+
+Estrutura de árvore
+  - parágrafo dentro do item de lista (li)
+  - item de lista dentro de lista (ul)
+  - lista dentro de divisão (div)
+  - divisão dentro de divisão (div)
+
+  - percorrer toda árvore até chegar no parágrafo
+
+Método de buscar seletores
+  - seletores são
+    - cada elemento HTML (tag)
+    - identificadores (id)
+    - classes (class)
+    - date attributes
+
+  - método de busca JS
+    "document.querySelector()"
+    - buscar seletor ("tal") no documento
+    - percorre toda a árvore até encontrar o primeiro seletor
+    - seleciona o elemento
+
+  - sintaxe para buscar a tag de parágrafo (p)
+    document.querySelector("p")
+    
+  - sintaxe para buscar pela classe CSS
+    document.querySelector(".nome-classe")
+    
+  - propriedade para retornar conteúdo do elemento
+    "textContent"
+    document.querySelector(".classe").textContent
+    
+  - alterar o conteúdo do elemento
+    - atribuir String que irá substituir o conteúdo
+
+  Sintaxe completa
+    document.querySelector(".classe").textContent = 'novo conteúdo';
+
+
+### Parte 1/4 - Funcionamento DOM
+
+Representação do documento HTML
+
+  - html
+    - head
+      - title
+    - body
+      - h1
+      - p
+
+DOM representa o HTML em nós
+  - cada nó é um objeto
+  - cada objeto representa tag/seletor
+
+Navegador
+  - interpreta arquivo HTML
+  - cria representação em objetos
+
+Hierarquia de objetos DOM em forma de árvore
+
+  - relação entre elementos
+    - "pais" (parent)
+    - "filhos" (children)
+
+  Window
+    Document
+      HTML
+        head
+          title
+        body
+          h1
+          p
+          ul
+            li
+              p
+            ...
+  
+  Window
+    - objeto com nível mais alto
+    - representa a janela do navegador
+
+  Document
+    - abaixo de Window
+    - representa o documento HTML (página atual)
+
+  HTML
+    - abaixo de Document
+    - representa toda a estrutura HTML
+  
+  Tags
+    - abaixo de HTML
+    - representa cada elemento HTML
+
+  Classes / IDs / Data Attributes
+    - abaixo das tags
+    - representa seletores declarados em cada elemento
+
+Representação em árvore
+  - percorrer a estrutura de dados
+  - permite selecionar cada elemento
+
+
+
+/* --- fim ;)
