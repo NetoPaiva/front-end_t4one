@@ -9,13 +9,16 @@
 }
 
 .input-container {
-    font-weight: var(--fonte-peso-input);
-    position: relative;
-    margin-bottom: 1rem;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
+    
+    position: relative;
+
     box-sizing: border-box;
+
+    margin-bottom: 1rem;
+    font-weight: var(--fonte-peso-input);
 }
 
 .input {

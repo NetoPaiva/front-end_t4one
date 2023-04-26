@@ -1,0 +1,768 @@
+https://cursos.alura.com.br/course/posicione-elementos-com-flexbox
+
+Alura, CSS, curso online, front-end, HTML, MDN, ONE, programação
+
+
+### Curso
+
+# Flexbox: posicione elementos na tela
+
+Documentação
+  - Can I use
+    http://caniuse.com/
+  - MDN
+    https://developer.mozilla.org/pt-BR/docs/Learn/CSS/CSS_layout/Flexbox
+
+
+### Aulas
+
+## 1. Introdução ao flexbox / fazer cabeçalho
+## 2. Fazendo o footer e controlando melhor os elementos
+## 3. Grid principal / limitações do flexbox
+## 4. Arrumando os elementos com flex para mobile
+## 5. Mais sobre flexbox / desafios
+
+
+#### Anotações
+
+### 1. Introdução ao flexbox / fazer cabeçalho
+
+https://cursos.alura.com.br/course/posicione-elementos-com-flexbox/task/22644
+
+
+1.1. Introdução
+
+Manusear flexbox
+  - especificação CSS
+  - posicionamento de elementos
+
+Desenvolver a página Alurinha
+  - gerenciador de cursos online
+  - Estrutura básica definida - HTML e CSS
+  - Seguir o layout proposto
+    - desktop
+    - mobile
+  - Reposicionar elementos com flexbox
+
+
+1.2. Arrumando cabeçalho (título e navegação)
+
+Criar e vincular arquivo de estilização
+  - criar novo arquivo de estilo
+    - "flexbox.css"
+  - vincular novo arquivo ao "index.html"
+    - dentro da tag "head"
+    - incluir:
+      <link rel="stylesheet" href="css/flexbox.css"
+      <link rel="stylesheet" href="css/flexbox.css">
+
+Especificações de alinhamento CSS
+  - display
+  - inline-block
+  - float
+  - position
+  - flexbox
+
+Posicionamento flexbox
+  - a mais adequada
+    - prática / simples
+  - Identificar os elementos a serem posicionados
+    - elemento pai recebe a especificação
+    - elementos filhos são reposicionados
+
+Código no arquivo CSS
+
+  - posicionar o cabeçalho (título e navegação)
+    - chamar a classe do cabeçalho
+    - chamar a classe da div do título/navegação
+    - declarar:
+      .cabecalhoPrincipal .container {
+          display: flex;
+          align-items: center;
+      }
+
+  - Os elementos do cabeçalho
+    - centralizados pela altura (vertical)
+    - posicionados à esquerda
+    - sem espaço entre eles
+    - itens de navegação um abaixo do outro
+
+  - distribuir espaço entre título e navegação
+    - declarar:
+      justify-content: space:between;
+
+
+1.3. Terminando cabeçalho
+
+  - elementos navegação
+    - distribuir na horizontal
+
+  - identificar elemento pai
+    - nav class="cabecalhoPrincipal-nav"
+
+  - no arquivo CSS
+    - chamar a classe do elemento pai
+    - declarar especificação "display: flex;"
+   
+      .cabecalhoPrincipal-nav {
+          display: flex;
+      }
+
+  - posicionamento
+    - título colado na margem esquerda
+    - navegação colada na margem direita
+    - espaço vazio entre título e navegação
+
+
+1.4. Comparação das formas de posicionamento
+
+  - display: inline
+    - posicionamento lado a lado
+    - não permite alterar tamanho dos elementos
+      - width / height
+  
+  - display: inline-block
+    - posicionamento lado a lado
+    - permite alterar tamanho dos elementos
+    - espaçar elementos é limitado
+      - apenas com "margins"
+      - não responsivo
+  
+  - float: left | right
+    - mais complicado
+    - empurra elementos para as laterais (esquerda/direita)
+    - elemento flutua por cima dos outros
+      - o que está embaixo sobe
+    - não permite centralização vertical
+      vertical-align:midle
+    - teria que definir
+      margin-top / margin-bottom
+
+  - display: flex
+    - facilita posicionamento
+    - permite, entre outros recursos
+      - posicionamento lado a lado
+      - espaços dinâmicos entre elementos
+      - alinhamento vertical simplificado
+
+1.5. Alinhando adequadamente os elementos
+
+  - atividade de fixação
+    - valor "flex" da propriedade "display"
+    - aplicada ao elemento pai
+    - posiciona elementos filhos
+
+1.6. Espaçando com flexbox
+
+  - atividade de fixação
+  - alinhar elementos lado a lado
+    - display: flex;
+    - justify-content: space-between
+
+1.7. Alinhando adequadamente os elementos
+
+  - atividade de fixação
+  - alinhar elementos com alturas diferentes
+  - para alinhar na vertical
+    - declarar no elemento pai
+      align-items: center;
+
+
+### 2. Fazendo o footer e controlando melhor os elementos
+
+2.1. Arrumando o footer
+
+  - Alinhar logos dos patrocinadores e formulário do rodapé
+    - lado a lado
+    - distribuir espaço nas laterais e entre elementos
+    - centralizar na vertical
+
+  - Posicionar lado a lado os dois elementos (logos e formulário)
+    - chamar a classe pai dos elementos
+      .rodapePrincipal-patrocinadores .container
+    - declarar
+      diplay:flex
+      justify-content: space-between;
+
+  - Redistribuir logos lado a lado
+    - chamar a classe pai dos logos
+      .rodapePrincipal-patrocinadores-list
+    - declarar
+      display: flex;
+
+  - Alinhar logos na vertical e com espaço entre eles
+    - declarar na classe pai
+      align-items: center;
+      justify-content: space-between;
+      width: 75%; (para definir largura do container)
+
+  - Definir largura do formulário
+    - chamar a classe pai
+      .rodapePrincipal-contatoForm
+    - declarar
+      width: 25%;
+
+  - Distribuir espaço entre o formulário e logos
+    - reduzir largura do container dos logos
+      width:70%;
+    - adicionar margem direita
+      margin-right: 5%;
+
+  - Distribuir espaço no entorno dos elementos
+    - alterar valor do espaço entre os elementos para ao redor
+      justify-content: space-around:
+
+  - Ajustar botão do formulário
+    - chamar classe pai
+      .rodapePrincipal-contatoForm-fieldset
+    - declarar
+      display: flex;
+    - os filhos ficam com mesma aparência do pai
+
+
+2.2. Arrumando o course map
+
+  - Ajustar o Mapa de cursos
+    - cada área de curso em uma coluna
+    - lista de curso em cada coluna
+
+  - Utilizar o "inspect" do navegador para observar os elementos
+    - "nav" engloba
+      - h4 - título (área de curso)
+      - link de diversos cursos (lista de cursos)
+
+  - reorganizar os itens
+    - chamar o elemento pai
+      .rodapePrincipal-navMap-list
+    - utilizar flex
+      display: flex;
+    - indicar fluxo vertical
+      flex-direction: column;
+    - definir altura do container
+      height: 250px;
+    - distribuir colunas lado a lado
+      flex-wrap: wrap;
+    - ou pode substituir o column e wrap por flow
+      flex-flow: column wrap;
+
+
+2.3. Formas de espaçar os elementos
+
+  - valores de justify-content
+
+  - outras formas de distribuir espaço com justify-content
+  
+    - flex-end
+      - todo espaço à esquerda
+      - conteúdo à direita
+      
+    - flex-start (é o padrão do flex)
+      - todo espaço à direita
+      - conteúdo à esquerda
+      
+    - center
+      - espaço à esquerda e à direita
+      - conteúdo no centro
+
+    - space-between
+      - espaço entre os elementos
+      - elementos colados nas laterais
+
+    - space-around
+      - espaço distribuído em volta dos elementos
+
+
+2.4. Elementos na vertical
+
+  - atividade de fixação
+    - elemento um em baixo do outro
+    - utilizar
+      flex-direction: column no elemento pai
+    
+
+2.5. Indo para a próxima coluna
+
+  - flex-wrap
+    - para quebrar a coluna
+    - ao atingir o limite de altura do elemento pai
+
+
+### 3. Grid principal / limitações do flexbox
+
+3.1. Arrumando course grid
+
+  - Ajustar os itens de "nossos cursos" (ul)
+    
+  - elementos filho (li)
+    - não consegue calcular próprio tamanho
+      - tamanho definido como 0px
+      - position absolute
+        - retira objetos do fluxo da página
+
+  - definir largura dos "li"
+    - chamar a classe do elemento
+      .conteudoPrincipal-cursos-link
+    - declarar
+      width:23%;
+
+  - definir elemento pai
+    - chamar a classe
+      .conteudoPrincipal-cursos
+    - declarar wrap para quebrar linha
+      flex-wrap:wrap;
+
+  - criar espaço vertical entre os elementos
+    - espaço embaixo
+      margin-bottom: 1%;
+      
+
+3.2. Terminando course grid
+
+  - alterar a margem das "li"
+    margin: 1%;
+  - chamar elementos filhos na posição 4
+    .conteudoPrincipal-cursos-link:nth-child(4n)
+  - declarar
+    margin-right:0;
+  - chamar elementos depois da posição 4
+    .conteudoPrincipal-cursos-link:nth-child(4n+1)
+  - declarar
+    margin-left:0;
+
+  - de fato, foi criado um tipo de grid para posicionar as "li"
+
+
+3.3. Começando o grid
+
+  - utilizando flex para criar grid
+    - focar apenas no posicionamento dos elementos
+    - declarar
+      display: flex;
+      flex-wrap: wrap;
+    - formando o grid:
+      - elementos ficaria lado a lado
+      - quebra linha ao atingir limite de largura do pai
+    
+
+3.4. Espaçando os elementos do grid
+
+  - atividade de fixação
+    - space-between ou space-around em grid
+    - não são boas soluções
+      - não distribuiria espaços em caso de menos elementos na última linha
+    
+
+3.5. Como espaçar corretamente os elementos de um grid
+
+  - utilizar "margin" e "width"
+    - divir a largura pela quantidade de elementos por linha
+    - aplicar um pequena margem ao redor dos elementos
+
+
+### 4. Arrumando os elementos com flex para mobile
+
+4.1. Começando responsivo / mobile
+
+- Referência MDN
+https://developer.mozilla.org/pt-BR/docs/CSS/Usando_caixas_flexiveis_css
+
+https://developer.mozilla.org/pt-BR/docs/Learn/CSS/CSS_layout/Responsive_Design
+
+https://developer.mozilla.org/pt-BR/docs/Web/CSS/CSS_Flexible_Box_Layout/Basic_Concepts_of_Flexbox
+
+
+  - Abrir Dev Tools do navegador
+  - selecionar Toggle device toolbar
+    - (modo de design responsivo)
+    - simula tela de diversos dispositivos
+
+  - Inspecionar os elementos e analisar o código do menu
+    - "nav" é elemento pai de diversos elementos
+    - chamar o elemento pai no CSS
+      .cabecalhoPrincipal-nav
+    - declarar
+      flex-direction:column;
+    - chamar o container da classe
+      .cabecalhoPrincipal .container
+    - declarar
+      flex-direction:column;
+
+  - Display-flex
+    - transforma elemento pai automaticamente para "flex-container"
+    - os filhos serão "flex items"
+    - o eixo principal é o horizontal
+    - a propriedade deste eixo é "justify-content:space-between"
+      - distribui espaço entre os elementos
+    - o eixo vertical alinha os elementos pelo centro
+      - "align-items:center"
+    - alterar o eixo principal
+      - "flex-direction"
+        - column
+        - row
+
+  - Analisando os conceitos do flex
+    - o que alinha elementos no centro é o sentido, a direção "column"
+    - "align" ajuda na distribuição dos elementos
+      - comprime os elementos
+    - com isso, pode desativar o "align" do menu
+    - e manter no container apenas
+      - "flex-direction:column"
+      - "align-items:initial"
+    - o Texto do menu permanece alinhado à esquerda
+      - para centralizar
+        - declarar
+          text-align:center;
+
+
+4.2. Terminando mobile
+
+  - Ajustar "nossos cursos"
+    - posicionar um curso embaixo do outro
+    - alterar a largura e a direção dos itens
+    - chamar a classe dos cursos
+      .conteudoPrincipal-cursos-link
+    - declarar
+      width:100%;
+    - chamar a classe pai dos cursos
+      .conteudoPrincipal-cursos
+    - declarar
+      flex-direction:column;
+
+  - Ajustar mapa de cursos
+    - posicionar elementos embaixo um do outro
+    - desativar a altura fixa do container
+    - chamar a classe pai
+      .rodapePrincipal-navMap-list
+    - declarar
+      height:auto;
+
+  - Ajustar patrocinadores
+    - inverter o eixo do flex
+    - chamar a classe pai dos elementos (container)
+    - chamar a classe acima do pai
+      . rodapePrincipal-patrocinadores .container
+    - declarar
+      flex-direction:column;
+    - centralizar os elementos
+    - declarar
+      align-items:center;
+    - alterar a largura do formulário
+    - chamar a classe do formulário
+      . rodapePrincipal-contatoForm
+    - declarar
+      width:100%;
+    - colocar logos embaixo um do outro e centralizar
+    - chamar a classe pai
+      .rodapePrincipal-patrocinadores-list
+    - declarar
+      flex-direction:column;
+      margin:0;
+      width:100%;
+
+  - Ajustar largura para outros formatos de tela
+    - desktop
+      - acima de 780px
+    - mobile
+      - abaixo de 780px
+    - declarar no final do CSS
+      @media(max-width:768px){}
+    - colocar todas as configurações do mobile dentro das {}
+      
+
+  - Resumo adaptar mobile/desktop
+    - praticamente, é alterar direção do flex
+      - de row (desktop)
+      - para column (mobile)
+
+
+4.3. Flex order
+
+  - CSS para alterar ordem do menu
+  - o último item é o mais importante
+  - mover para topo da lista
+  - flex permite alterar ordem dos elementos
+  - atribuir no HTML uma classe para o item
+  - chamar a classe no CSS
+    .cabecalhoPrincipal-nav-link-app
+  - declarar
+    order:-1;
+  - o padrão dos itens "flex" é 0
+    order:0;
+  - a posição -1 move o item para o início da lista
+  - site de referência
+    - CSS Tricks
+      https://css-tricks.com/snippets/css/a-guide-to-flexbox/
+  
+
+4.4. Vantagens e o vídeo
+
+  - Ajustar a área de vídeo da página para desktop
+  
+  - imagem e texto lado a lado
+    - chamar a classe pai dos elementos e classe acima
+      .videoSobre .container
+    - declarar
+      display:flex;
+
+  - centralizar texto e botão
+    - chamar a classe pai dos elementos
+      .videoSobre-sobre
+    - declarar
+      text-align: center;
+      display:flex;
+      flex-direction:column;
+      flex-grow:2;
+
+  - afastar texto do botão
+    - chamar a classe pai do texto
+      .videoSobre-sobre-list
+    - declarar
+      flex-grow:1;
+
+  - redimensionar imagem do vídeo
+    - chamar a classe do elemento
+      .videoSobre-video
+    - declarar
+      flex-grow:1;
+
+
+4.5. Vantagens responsivo
+
+  - ajustar vídeo e texto para redução de tela
+  - propriedade "flex-shrink"
+    - reduz os elementos
+  - aplicar na classe do vídeo (desktop)
+  - para reduzir 2 vezes mais que outros elementos
+
+  - chamar a classe do elemento
+    .videoSobre-video
+  - declarar
+    flex-grow:1;
+    flex-shrink:2;
+
+  - ajustar elementos um embaixo do outro para mobile
+    - chamar a classe pai e a superior
+      .videoSobre .container
+    - declarar
+      flex-direction:column;
+
+  - alinhar os elementos
+    - chamar a classe do vídeo
+      .videoSobre-video
+    declarar
+      margin: 0 auto;
+
+4.6. De desktop para mobile
+
+  - atividade de fixação
+    - ajustar de desktop para mobile
+      - declarar "flex-direction:column"
+
+4.7. Flex container e flex items
+
+  - elemento com "display:flex"
+    - declarados no elemento pai
+    - afetam os elementos filho
+    - navegador considera como "flex container"
+  - elementos filho
+    - ficam lado a lado (eixo principal "row")
+    - ficam embaixo do outro (eixo principal "column")
+    - aceita espaçamento entre elementos
+    - navegador considera como "flex items"
+
+  - propriedades de espaçamento e distribuição
+    - declarar no elemento pai (flex container)
+      - eixo principal e cruzado (row ou column)
+    - declarar no elemento filho (flex items)
+      - tamanho principal e cruzado
+
+
+4.8. Propriedades do flex container e dos flex items
+
+  - atividade de fixação
+    - propriedades apenas do flex container
+    - propriedades apenas do flex items
+
+  - referência:
+      https://css-tricks.com/snippets/css/a-guide-to-flexbox/
+
+  - flex container
+    - display:flex
+    - flex-direction
+    - justify-content
+    - flex-wrap
+    - flex-flow
+    - align-items
+    - align-content
+
+  - flex items
+    - order
+    - flex-grow
+    - flex-shrink
+    - flex-basis
+    - flex
+    - align-self
+    
+
+4.9. Ordenando o nosso menu
+
+  - alterar posição do item utilizando "order"
+
+
+
+### 5. Mais sobre flexbox / desafios
+
+5.1. Relembrando e projeto simples
+
+  - vídeo
+
+  - Relembrar propriedades utilizadas
+  - observar documento HTML
+  - distribuir elementos com "diplay:flex"
+
+
+5.2. Propriedade flex em detalhes
+
+  - vídeo
+
+  - expandir / reduzir tamanho dos elementos filhos
+  
+  - "flex-grow"
+    - expande o tamanho dos elementos
+      - divide o espaço vazio
+      - distribui a cada elemento
+        - considerando o fator atribuído a cada um
+          .flexItem1{flex-grow:1;}
+          .flexItem2{flex-grow:2;}
+
+  - "flex-shrink"
+    - reduz o tamanho dos elementos
+    - semelhante ao "grow"
+          
+
+
+5.3. Desafios e fim
+
+  - vídeo
+
+  - praticar as propriedades de distribuição "flexbox"
+
+    - jogo do sapo
+      http://flexboxfroggy.com/ 
+
+    - jogo dos canhões
+      http://www.flexboxdefense.com/
+
+
+5.4. Fazendo os elementos preencherem o espaço vazio
+
+  - baixar projeto completo até aqui
+https://github.com/alura-cursos/posicione-elementos-com-flexbox/archive/e6dfec99045e720c2f9f24002c715f2631846721.zip
+
+  - atividade de fixação
+    - elemento filho ocupar todo o espaço do container
+      - flex-item { flex-grow:1; }
+
+
+5.5. Contas no flex
+
+  - Cálculo do espaço entre elementos
+    elemento1: 200px
+    elemento2: 200px
+    espaço vazio: 600px
+    container:  1000px
+
+    - "flex-grow:1" no elemento1 = 800px
+      espaço vazio + elemento1 = 800px
+      elemento2 continua com 200px
+      
+
+    - "flex-grow:1" nos 2 elementos = ?
+      flex-grow = 1 + 1 = 2
+
+      navegador divide espaço vazio pela quantidade de "flex-grow"
+      600 : 2 = 300px
+
+      navegador distribui o espaço dividido para cada "flex-grow"
+      elemento1 = 300 + 200 = 500px
+      elemento2 = 300 + 200 = 500px
+
+      - portanto, cada elemento ficaria com 500px de largura
+      
+
+5.6. Mantendo o vídeo do mesmo tamanho
+
+  - atividade de fixação
+    - "flex-item" não pode reduzir em tela menores
+      - declarar
+        flex-shrink:0;
+  
+
+5.7. Diminuindo proporcionalmente os elementos
+
+  - atividade de fixação
+    - flex-grow / flex-shrink com redução de tela
+    - mesmo cálculo para grow e shrink
+
+
+5.8. Definindo largura dos elementos com flex
+
+  - atividade de fixação
+
+  - flex-basis defini nos elementos filhos
+    - largura se o eixo principal for row (padrão)
+    - altura se o eixo principal for column
+
+
+5.9. Condensando flex-grow, shrink e basis
+
+  - link do projeto completo no GitHub
+https://github.com/alura-cursos/posicione-elementos-com-flexbox/commit/83011a092c4a44e2d353fc6ea32047a90d47f746
+
+  - atividade de fixação
+    - propriedade para condensar as declarações de "grow / shrink / basis"
+      - flex: 1 1 300px
+        a ordem dos valores: grow shrink basis
+
+
+5.10. Invertendo a ordem de todos os elementos
+
+  - atividade de fixação 
+    - uso do "reverse" para inverter valor da declaração
+    - declarar
+      flex-wrap: wrap-reverse
+        - tudo que estava em baixo foi parra cima
+      flex-direction: row-reverse
+        - inverteu ordem dos elementos na linha
+      flex-direction: column-reverse
+        - inverte ordem na coluna
+
+
+5.11. Jogos e align-self
+
+  - atividade de fixação
+
+  - link do projeto no GitHub
+https://github.com/alura-cursos/posicione-elementos-com-flexbox/archive/6328132f40ade023bc0b03dcc6db46cf18fc4f7a.zip
+
+  - links dos projetos dos jogos
+http://www.flexboxdefense.com/
+http://flexboxfroggy.com/
+  
+  - tentar finalizar
+
+  - propriedade align-self
+    - aplicada ao flex-item
+    - alinha elemento individualmente
+    - semelhante ao align-items aplicada ao flex-container
+    
+
+
+5.12. Próximos passos
+
+  - vídeo de finalização do curso
+  - link sobre organizar estudos e criar portfolio
+https://www.alura.com.br/artigos/organizando-estudos-portfolio-notion-linkedin
+
+
+/* --- fim ;)

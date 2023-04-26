@@ -86,7 +86,7 @@ Configurando mensagem de erro
       - mensagens de erro
     - opção "valid"
       - se o campo não for válido (false)
-    - o campo "nome" tem o atributo "reqired"
+    - o campo "nome" tem o atributo "required"
       - precisa ser preenchido
       - se estiver em branco
         - valor será falso
@@ -113,7 +113,7 @@ Criar lógica de verificação
     if (input.validity.valid){ ... }
 
     - irá remover a classe do input inválido
-      {input.parenteElement.classList.remove('input-container--invalido')}
+      {input.parentElement.classList.remove('input-container--invalido')}
 
     - caso contrário adicionar a classe do input invalido
       - selecionar o elemento pai para adicionar no filho

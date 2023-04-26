@@ -1,0 +1,1276 @@
+https://cursos.alura.com.br/course/arquitetura-css
+
+Alura, curso, front-end, ONE, t4f3
+
+
+Referências:
+
+
+
+Front-end / Cursos de HTML e CSS
+
+
+Curso
+
+# Arquitetura CSS: descomplicando os problemas
+
+  - simplificar organização dos arquivos do projeto
+  - arquititetura simples e robusta CSS
+  - boas práticas / metodologias CSS
+  - site responsivo
+
+
+Aulas
+
+## 1.  Layout base e Estilização de cabeçalho 
+
+
+### 1.1.  Preparando o ambiente
+
+  - baixar arquivos
+  
+    - projeto base
+      https://github.com/alura-cursos/arquitetura-css/archive/assets.zip
+      
+    - layout Figma
+https://www.figma.com/file/0gMF5BPgplPYqQA6Om1T1sk9/alura-bootstrap
+
+    - VS Code
+      https://code.visualstudio.com/Download
+
+
+
+### 1.2.  Introdução
+
+  - vídeo aula
+
+  - Desenvolver site de receitas Fruta & Fruto
+
+  - Estrutura do site (responsivo)
+    - cabeçalho
+    - sobre
+    - seção sobre
+    - lista de receitas
+    - seção quem somos / equipe
+    - rodapé / contato
+
+  - Boas práticas
+    - organização mais eficiente / fácil manutenção
+    - atomic design
+    - metodologia de nomenclatura padrão para classes
+
+
+### 1.3.  Conhecendo o projeto
+
+  - vídeo aula
+
+  - Ambiente de desenvolvimento
+  - abrir projeto no VS Code
+  - informações de layout no Figma (protótipo)
+  - visualizar estrutura do projeto no VS Code
+    - arquivo "index.html"
+      - tags html
+    - arquivos CSS
+      - normalize
+      - reset
+
+  - Estrutura inicial do projeto
+    - readme
+      - link para Figma do projeto
+    - assets
+      - organiza todos os arquivos estáticos
+        - css
+        - imagens
+        - js
+        - fontes / ícones
+    - index.html
+      - head
+      - importação de fonte Google
+      - configuração de tela (responsividade)
+      - vinculação dos arquivos de estilo
+        - normalize (semelhante "reset" do curso "responsivo")
+          - anula estilos padrões dos navegadores
+          - primeiro arquivo a ser importado no html
+        - reset (semelhante "base" do curso "responsivo")
+          - aplicar estilos padrões ausentes no normalize
+          - fontes do projeto (body)
+          - espaçamentos dos títulos e listas
+
+
+### 1.4.  Criando o cabeçalho
+
+  - vídeo aula
+
+  - extrair informações do layout no Figma
+    - cabeçalho
+    - sobre
+    - título
+    - sobre
+    - receitas
+    - quem somos
+    - rodapé
+
+  - iniciar desenvolvimento
+    - de cima para baixo
+    - cada seção
+    - do topo da página até o rodapé
+
+  - elementos do cabeçalho
+    - logo
+      - imagem
+    - menu de navegação
+      - lista
+
+  - criar as tags dentro do "body"
+    <header>
+      <img>
+      <nav>
+        <ul>
+          <li>
+            <a>
+
+  - verificar no CSS se estes elementos já possuem seletores
+    - se são class/id/tag
+
+  - usar a sintaxe Emmet para criar a estrutura com os seletores
+
+    header>img+nav>ul>li*4>a
+
+  - código base (sem os seletores CSS):
+
+    <body>
+      <header>
+        <img>
+        <nav>
+          <ul>
+            <li><a></a></li>
+            <li><a></a></li>
+            <li><a></a></li>
+            <li><a></a></li>
+          </ul>
+        </nav>
+      </header>
+    </body>
+
+  - incluir os texto das tags
+
+    Início
+    Receitas
+    Quem somos
+    Comunidade
+
+  - visualizar página no navegador
+
+
+
+### 1.5.  Estilizando o cabeçalho
+
+  - vídeo aula
+
+  - criar estilização CSS
+    - style.css
+    - seletores (tags dos elementos html)
+    - propriedades
+    - valores
+
+  - incluir os seletores dos elementos HTML
+
+    - header { }
+      - logo à esquerda / lista à direita
+
+    - header nav ul { }
+      - itens da lista na mesma linha
+
+    - header nav ul li { }
+      - alterar estilo dos itens da lista
+
+    - header nav ul li:last-child { }
+      - retirar margem do último item da lista
+
+    - header nav ul li a { }
+      - alterar estilo dos links
+
+    - header nav ul li a#ativo { }
+      - negrito no link ativo
+
+    - header nav ul li a:hover { }
+      - aplicar sublinhado ao passar o mouse
+
+  - vincular CSS no HTML
+    - cabecalho.css
+  
+
+### 1.6.  Simplificando os seletores
+
+  - vídeo aula
+
+  - ajustar código
+    - seletores complexos
+    - CSS amarrado
+
+  - declarar classes/id no HTML
+    - para usar como seletores no CSS/JS
+    - facilita / melhora projeto
+
+  - elemento / classe
+    - header / cabecalho
+    - img / logo
+    - nav / menu
+    - ul / menu__lista
+    - li menu__item
+    - a / menu__link
+    - a:ativo / menu__link--ativo
+
+  - incluir classes nas tags do HTML
+  - alterar os seletores no CSS
+
+  - separar código CSS (cada elemento em um arquivo)
+    - cabecalho.css
+    - menu__item.css
+    - menu__link.css
+    - menu__lista.css
+
+  - criar pasta "header" em assets
+    - mover para a pasta todos os arquivos CSS referentes ao menu
+
+  - criar nesta pasta arquivo "header.css"
+    - importar todos os arquivos do header
+      @import url("cabecalho.css");
+      @import url("menu__item.css");
+      @import url("menu__link.css");
+      @import url("menu__lista.css");
+
+  - vincular arquivo CSS no documento HTML
+    - ./assets/css/header/header.css
+
+  - conceito de atomic design
+  
+    - facilitar
+      - organização dos documentos do projeto
+      - criar novos componentes / elementos
+    
+    - átomo
+      - cada tag HTML
+
+    - molécula
+      - átomos unidos
+
+    - organismo
+      - união de diversas moléculas
+
+    - padrão (template)
+      - união de organismos
+      - com elementos modelos / exemplo / não reais
+
+    - corpo (página)
+      - forma final da aplicação
+      - elementos reais
+
+    - o header é o organismo formado por átomos e moléculas
+      - img
+      - nav
+      - ul
+      - li
+
+
+### 1.7.  Criando seletores simples
+
+  - atividade de fixação
+    - seletores simples
+      - sobrescrever
+      - fácil entendimento
+
+
+### 1.8.  Faça como eu fiz na aula
+
+  - implementar desenvolvimento
+  - esclarecer dúvidas
+
+
+### 1.9.  O que aprendemos?
+
+  - utilizar seletores CSS mais simples
+  - organizar estrutura dos arquivos CSS
+  - metodologia atomic design
+
+
+
+## 2. Estilização de Banner e Sobre
+
+
+### 2.1.  Projeto da aula anterior
+
+  - baixar projeto desta etapa
+  https://github.com/alura-cursos/arquitetura-css/archive/aula1.zip
+
+
+
+### 2.2.  Criando o banner e sobre
+
+  - vídeo aula
+  
+  - padrão BEM para nomear as classes
+
+    - B = block
+      - pequenos contextos
+      - descreve o elemento HTML pai (principal)
+      - ex.: "sobre"
+
+    - E = element
+      - descreve o elemento HTML filho (filho)
+      - utiliza "__" (duplo sublinhado) para separar o elemento
+      - ex.: "sobre__imagem"
+
+    - M = modifier
+      - descreve característica específica do elemento filho
+      - torna a classe semelhante ao seletor "id" (única)
+      - utiliza "--" (duplo traço)parra separar o modificador
+      - ex.: "sobre__imagem--pequena"
+
+    - Sintaxe BEM
+
+      bloco
+      bloco__elemento
+      bloco--modificador
+      bloco__elemento--modificador
+
+
+  - nova estrutura html - Banner
+    - section .sobre
+      - img .sobre__imagem
+      - h2 .sobre__titulo
+      - p .sobre__descricao
+
+
+  - sintaxe Emmet
+    section.banner__container>img.banner__imagem+h2.banner__titulo
+
+
+  - estrutura criada Banner
+
+   <section class="banner__container">
+      <img src="" alt="" class="banner__imagem">
+      <h2 class="banner__titulo"></h2>
+   </section>
+
+
+  - nova estrutura html - Sobre
+    - section .sobre
+      - h2 .sobre__titulo
+      - p .sobre__descricao
+
+
+  - sintaxe Emmet
+    section.sobre__container+h2.sobre__titulo+p.sobre__descricao
+
+
+  - estrutura criada Sobre
+
+   <section class="sobre__container">
+      <h2 class="sobre__titulo"></h2>
+      <p class="sobre__descricao"></p>
+   </section>
+
+
+  - incluir informações
+    - textos
+    - dados da imagem
+  
+
+
+### 2.3.  Estilizando o Banner
+
+  - vídeo aula
+
+  - seguir layout Figma
+  
+  - documento HTML
+    - vincular endereço da imagem do banner (src="endereço")
+
+  - na pasta do projeto
+    - criar pasta "banner" para guardar arquivos CSS do banner
+
+  - na pasta banner
+    - criar 3 arquivos de estilo
+      - banner.css
+      - banner__imagem.css
+      - banner__titulo.css
+
+  - no documento HTML
+    - vincular os arquivos CSS do banner (link href="./assets/...")
+
+  - editar os arquivos CSS do banner com as propriedades de estilo
+
+    .banner__container { position: relative; }
+
+    .banner__imagem {
+      height: calc (100vh - 72px);
+      width:100%;
+    }
+
+    .banner__titulo {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      
+      color: #fdfdfd;
+      
+      font-family: Pacifico, cursive;
+      font-size: 5.0625rem;
+      text-align: center;
+      text-shadow: 0 4px 4px rgba(0, 0, 0, 0.75);
+      
+      transform: translate(-50%, -50%);
+      
+      width: 100%;
+    }
+
+
+  - calcular altura da foto desconsiderando altura do Cabeçalho
+    - altura total da tela - altura do Cabeçalho
+      - height: calc (100vh - 72px);
+
+
+  - Alinhar título no centro da foto
+    - a foto ocupa área total do banner (largura e altura)
+      - width:100%
+    - posicionamento
+      - position: absolute
+      - left: 50%
+      - top: 50%
+    - para posicionar com base na área do banner
+      - declarar no CSS do banner__container
+        - position: relative
+      
+
+
+### 2.4.  Para saber mais
+
+  - sugestão de cursos
+    - HTML5 e CSS3 / partes 1, 2, 3 e 4
+    - já realizados na fase iniciante
+
+
+### 2.5.  Estilizando o Sobre
+
+  - conferir layout Figma
+
+  - organizar/ vincular e editar arquivos CSS3 do "sobre"
+
+    .sobre __container {
+      text-align: center;
+      padding: 2.5rem;
+    }
+
+    .sobre__titulo {
+      color: #8d0606;
+      font-family: Pacifico, cursive;
+      font-size: 3.1875rem;
+    }
+
+  .sobre__descricao {
+    color: #595959;
+    font-size: 1.75rem;
+    font-weight: 100;
+  }
+
+
+  - pasta e arquivos CSS para a seção Sobre
+  - importar estilos no HTML
+
+
+  - incluir no sobre__container
+    - centralizado (text-align:center)
+    - espaçamento interno (padding: 2.5rem)
+
+
+### 2.6.  Metodologia BEM
+
+  - atividade de fixação
+    - metodologia BEM
+      - cabecalho é filho de painel
+        .painel__cabecalho {}
+
+
+### 2.7.  Faça como eu fiz na aula
+
+  - praticar
+  - esclarecer dúvidas
+
+
+### 2.8.  O que aprendemos?
+
+  - padrão para nomear classes
+  - metodologia BEM
+
+
+
+## 3. Estilização das Receitas
+
+
+### 3.1.  Projeto da aula anterior
+
+  - link para baixar projeto até esta etapa
+    https://github.com/alura-cursos/arquitetura-css/archive/aula2.zip
+
+
+### 3.2.  Preparando o ambiente
+
+  - código html fornecido da seção "receitas"
+
+  <section class="receitas">
+    <div class="receita">
+      <img alt="Tigela de abacate" class="receita__imagem" src="./assets/img/receitas/tigela-de-abacate.jpg" />
+      <div class="receita__conteudo">
+        <h4 class="receita__titulo">Tigela de abacate</h4>
+        <p class="receita__descricao">Receita refrescante e cheia de vitaminas para seu café da manhã.</p>
+        <button class="receita__botao">Ver receita</button>
+      </div>
+    </div>
+    <div class="receita">
+      <img alt="Salada de kiwi" class="receita__imagem" src="./assets/img/receitas/salada-de-kiwi.jpg" />
+      <div class="receita__conteudo">
+        <h4 class="receita__titulo">Salada de kiwi</h4>
+        <p class="receita__descricao">Receita refrescante e cheia de vitaminas para seu café da manhã.</p>
+        <button class="receita__botao">Ver receita</button>
+      </div>
+    </div>
+    <div class="receita">
+      <img alt="Mix de vegetais" class="receita__imagem" src="./assets/img/receitas/mix-de-vegetais.jpg" />
+      <div class="receita__conteudo">
+        <h4 class="receita__titulo">Mix de vegetais</h4>
+        <p class="receita__descricao">Receita refrescante e cheia de vitaminas para seu café da manhã.</p>
+        <button class="receita__botao">Ver receita</button>
+      </div>
+    </div>
+    <div class="receita">
+      <img alt="Pimentões à Juliana" class="receita__imagem" src="./assets/img/receitas/pimentoes-a-juliana.jpg" />
+      <div class="receita__conteudo">
+        <h4 class="receita__titulo">Pimentões à Juliana</h4>
+        <p class="receita__descricao">Receita refrescante e cheia de vitaminas para seu café da manhã.</p>
+        <button class="receita__botao">Ver receita</button>
+      </div>
+    </div>
+    <div class="receita">
+      <img alt="Prato oriental" class="receita__imagem" src="./assets/img/receitas/prato-oriental.jpg" />
+      <div class="receita__conteudo">
+        <h4 class="receita__titulo">Prato oriental</h4>
+        <p class="receita__descricao">Receita refrescante e cheia de vitaminas para seu café da manhã.</p>
+        <button class="receita__botao">Ver receita</button>
+      </div>
+    </div>
+    <div class="receita">
+      <img alt="Beterrabas assadas" class="receita__imagem" src="./assets/img/receitas/beterrabas-assadas.jpg" />
+      <div class="receita__conteudo">
+        <h4 class="receita__titulo">Beterrabas assadas</h4>
+        <p class="receita__descricao">Receita refrescante e cheia de vitaminas para seu café da manhã.</p>
+        <button class="receita__botao">Ver receita</button>
+      </div>
+    </div>
+  </section>
+
+
+  - altarar nome das classe
+    receitas >> receitas__container
+    receita >> receita__container
+
+  - sintaxe Emmet
+
+    section.receitas__container>(div.receita__container>img.receita__imagem+div.receita__conteudo>h4.receita__titulo+p.receita__descricao+button.recita__botao)*6
+
+
+### 3.3.  Estruturando as receitas
+
+  - vídeo aula
+
+  - preparar ambiente de pastas e arquivos na pasta do projeto
+
+    - na pasta "css"
+      - arquivo "receitas.css"
+
+    - pasta "css/receitas"
+      - arquivos
+        - "receitas__container.css"
+        - "receita__container.css"
+        - "receita__imagem.css"
+        - "receita__conteudo.css"
+        - "receita__titulo.css"
+        - "receita__descricao.css"
+        - "receita__botao.css"
+
+  - vincular todos os arquivos CSS ao documento HTML
+
+
+### 3.4.  Estilizando as receitas
+
+  - elemento pai da seção (receitas__container)
+
+  .receitas__container {
+    background: #e5e5e5;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 5rem 0 0 5rem;
+  }
+
+  - elemento pai das receitas
+    - definir largura descontando a margem direita
+      width: calc (25% - 5rem);
+
+  .receita__container {
+    background: #fdfdfd;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 5rem;
+    margin-right: 5rem;
+    /* width: 25%; */
+    width: calc (25% - 5rem);
+  }
+
+  .receita__imagem {
+    height: 200px;
+  }
+
+  .receita__titulo {
+    font-size: 1.4375rem;
+  }
+
+  .receita__descricao {
+    font-size: 1.1875rem;
+    line-height: 1.5;
+    text-align: justify;
+  }
+
+  .receita__conteudo {
+    padding: 1rem;
+  }
+
+  .receita__botao {
+    background: #8d0606;
+    border: none;
+    border-radius: 5px;
+    color: #fdfdfd;
+    padding: 1rem;
+    transition: all .1s ease-in-out;
+  }
+
+  .receita__botao:hover {
+    background: #620404;
+    cursor: pointer;
+  }
+
+
+### 3.5.  Organizando o CSS do painel
+
+  - atividade de fixação (não pertence ao projeto)
+  
+    - organizar arquivos css na pasta painel
+      painel/cabecalho.css
+      painel/titulo.css
+      painel/descricao.css
+      painel/botao.css
+
+    - melhor organizado na pasta painel
+      painel__cabecalho.css
+      painel__titulo.css
+      painel__descricao.css
+      painel__botao.css
+
+
+### 3.6.  Faça como eu fiz na aula
+
+  - praticar
+  - esclarecer dúvidas
+
+
+### 3.7.  O que aprendemos?
+
+  - organização / estrutura de arquivos CSS
+  - separa por responsabilidade
+  - criar / manter arquivos menores
+
+
+
+## 4. Estilização do Quem Somos
+
+
+### 4.1.  Projeto da aula anterior
+
+  - baixar projeto desta etapa
+    https://github.com/alura-cursos/arquitetura-css/archive/aula3.zip
+
+
+### 4.2.  Preparando o ambiente
+
+  - código HTML desta etapa - seção "Quem somos"
+
+  <section class="quem-somos">
+    <h3 class="quem-somos__titulo">Quem somos</h3>
+    <p class="quem-somos__descricao">Conheça a comunidade por trás da iniciativa</p>
+    <div class="pessoas">
+      <div class="pessoa">
+        <div class="pessoa__imagem pessoa__imagem--roberta"></div>
+        <span class="pessoa__nome">Roberta</span>
+        <span class="pessoa__funcao">Conteúdo</span>
+      </div>
+      <div class="pessoa">
+        <div class="pessoa__imagem pessoa__imagem--marcela"></div>
+        <span class="pessoa__nome">Marcela</span>
+        <span class="pessoa__funcao">Chef de cozinha</span>
+      </div>
+      <div class="pessoa">
+        <div class="pessoa__imagem pessoa__imagem--andreia"></div>
+        <span class="pessoa__nome">Andréia</span>
+        <span class="pessoa__funcao">Pequena Produtora</span>
+      </div>
+    </div>
+  </section>
+
+
+  - sintaxe Emmet
+
+  section.somos__container>h3.somos__titulo+p.somos__descricao+div.pessoas__container>(div.pessoa__container>div.pessoa__imagem.pessoa__imagem--+span.pessoa__nome+span.pessoa__funcao)*3
+
+  - estrutura criada
+
+    <section class="somos__container">
+      <h3 class="somos__titulo"></h3>
+      <p class="somos__descricao"></p>
+      <div class="pessoas__container">
+        <div class="pessoa__container">
+          <div class="pessoa__imagem pessoa__imagem--"></div>
+          <span class="pessoa__nome"></span>
+          <span class="pessoa__funcao"></span>
+        </div>
+        <div class="pessoa__container">
+          <div class="pessoa__imagem pessoa__imagem--"></div>
+          <span class="pessoa__nome"></span>
+          <span class="pessoa__funcao"></span>
+        </div>
+        <div class="pessoa__container">
+          <div class="pessoa__imagem pessoa__imagem--"></div>
+          <span class="pessoa__nome"></span>
+          <span class="pessoa__funcao"></span>
+        </div>
+      </div>
+    </section>
+
+    - incluir informações das tags
+
+
+### 4.3.  Estruturando o quem somos
+
+  - vídeo aula
+
+  - estrutura HTML
+
+
+### 4.4.  Estilizando quem somos
+
+  - vincular arquivos CSS
+
+  - estilização CSS
+  
+    .somos__container {
+      text-align: center;
+      padding: 5rem;
+    }
+
+  .somos__titulo {
+    margin-bottom: 1rem;
+    color: #8d0606;
+    font-size: 3.1875rem;
+    font-family: Pacifico, cursive;
+  }
+
+  .somos__descricao {
+    font-weight: 100;
+    font-size: 1.75rem;
+    color: #595959;
+  }
+
+
+### 4.5.  Estilizando as pessoas
+
+  - usar o "modificador" da metodologia BEM
+
+  - criar pasta e arquivos CSS
+    pessoa.css
+    pessoa/pessoa.css
+    pessoa/pessoa__imagem.css
+    pessoa/pessoa__nome.css
+    pessoa/pessoa__funcao.css
+
+  - vincular arquivos no documento HTML
+
+  - imagens ilustrativas
+    - não são importadas no documento HTML
+    - importadas no CSS
+
+  - códigos CSS
+
+  .pessoas__container {
+    display: flex;
+    padding-top: 3rem;
+    justify-content: space-around;
+  }
+
+  .pessoa__container{
+    display: flex;
+    flex-direction: column;
+  }
+
+  .pessoa__nome {
+    margin: 1rem 0;
+    font-family: Pacifico, cursive;
+    color: #8d0606;
+    font-size: 2rem;
+  }
+
+  .pessoa__funcao {
+    text-transform: lowercase;
+    color: #595959;
+    font-size: 1.25rem;
+  }
+
+  - usar os "modificadores" para adicionar as imagens de cada pessoa
+    .pessoa__imagem--roberta
+    .pessoa__imagem--marcela
+    .pessoa__imagem--andreia
+
+  .pessoa__imagem {
+    background: red;
+    background-size: cover;
+    height: 300px;
+    background-position: center;
+    width: 300px;
+    background-repeat: no-repeat;
+    border-radius: 100%;
+  }
+  
+  .pessoa__imagem--roberta {
+    background-image: url('../../img/pessoas/roberta.jpg');
+  }
+
+  .pessoa__imagem--marcela {
+    background-image: url('../../img/pessoas/marcela.jpg');
+  }
+
+  .pessoa__imagem--andreia {
+    background-image: url('../../img/pessoas/andreia.jpg');
+  }
+
+
+### 4.6.  Boas praticas com imagens
+
+  - padrão para ordenar as propriedades dos seletores nos arquivos CSS
+    - ordem alfabética
+    
+  - facilita compreensão
+
+  - padronizar arquivos
+    - reordenar propriedades
+
+  - ex.:
+    .pessoa__imagem {
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      border-radius: 100%;
+      height: 300px;
+      width: 300px;
+    }
+
+  - imagens ilustrativas
+    - é um estilo (CSS)
+    - não é informação (HTML)
+    - devem ser declaradas no CSS e não no HTML
+
+  .banner__imagem{
+    background-image: url('../../img/banner.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: calc(100vh - 72px);
+    width: 100%;
+  }
+
+  - ou melhor, sem tanta repetição "background"
+
+  .banner__imagem{
+    background: url('../../img/banner.jpg') no-repeat center / cover;
+    height: calc(100vh - 72px);
+    width: 100%;   
+  }
+
+
+### 4.7.  Referenciando imagens
+
+  - atividade de fixação
+    - importar e referenciar imagens ilustrativas
+      - código CSS
+        - seletor BEM
+          - atribuir estilo
+          - vincular imagem
+          - exibir imagem
+
+
+### 4.8.  Faça como eu fiz na aula
+
+  - praticar
+  - esclarecer dúvidas
+
+
+### 4.9.  O que aprendemos?
+
+  - imagens ilustrativas declaradas no CSS
+  - padrão para declarar propriedades
+
+
+
+## 5. Estilização do rodapé e Responsividade do site
+
+
+### 5.1.  Projeto da aula anterior
+
+  - baixar projeto desta etapa
+    https://github.com/alura-cursos/arquitetura-css/archive/aula4.zip
+
+
+### 5.2.  Criando o rodapé
+
+  - vídeo aula
+
+  - incluir código do rodapé no documento HTML
+
+    <footer class="rodape">
+      Contato: exemplo@email.com.br
+    </footer>
+
+  - sintaxe Emmet
+
+    footer.rodape__container>h3.rodape__contato
+
+  - estrutura criada
+
+    <footer class="rodape__container">
+      <h3 class="rodape__contato"></h3>
+    </footer>
+
+
+
+  - criar arquivo CSS na pasta do projeto
+    rodape.css
+
+  - vincular arquivo CSS no documento HTML
+
+  - código CSS
+
+  .rodape {
+    background: #bfbfbf;
+    color: #fdfdfd;
+    text-align: right;
+    padding: 1.5625rem 5rem;
+    text-transform: lowercase;
+  }
+  
+
+### 5.3.  Deixando o site responsivo
+
+  - transportar medidas padrão para maior tela
+    - espaçamentos
+    - margens
+    - larguras ...
+
+  - incluir nos arquivos CSS
+  
+    - @media screen and (...) {...}
+
+  - incluir a estilização para os tamanhos de tela
+
+    - telas menores (celular)
+
+      @media screen and (min-width: 0) {
+        .cabecalho {
+          justify-content: center;
+          padding: 0 1rem;
+        }
+      } 
+
+    - telas maiores (tabletes/desktop)
+
+      @media screen and (min-width: 768px) {
+        .cabecalho {
+          justify-content: space-between;
+          padding: 0 5rem;
+        }
+      }
+
+  - remover exibição do logo em telas pequenas
+    - criar arquivo CSS "logo.css"
+    - importar arquivo no documento HTML
+    - editar arquivo
+
+      @media screen and (min-width: 0){
+        .logo {
+          display: none;
+        }
+      }
+
+      @media screen and (min-width: 768px){
+      .logo {
+          display: block;
+        }
+      }
+
+    - ajustar banner__titulo.css
+
+      .banner__titulo {
+        font-family: Pacifico, cursive;
+        color: #fdfdfd;
+        position: absolute;
+        left: 50%;
+        text-shadow: 0 4px 4px rgba(0, 0, 0, 0.75);
+        top: 50%;
+        text-align: center;
+        transform: translate(-50%, -50%);
+        width: 100%;
+      }
+
+      @media screen and (min-width: 0) {
+        .banner__titulo {
+          font-size: 3rem;
+        }
+      }
+
+      @media screen and (min-width: 768px) {
+        .banner__titulo {
+          font-size: 5.0625rem;
+        }
+      }
+
+    - ajustar banner__imagem.css
+
+      .banner__imagem{
+        background: url('../../img/banner.jpg') no-repeat center / cover;
+        width: 100%;   
+      }
+
+      @media screen and (min-width: 0) {
+        .banner__imagem {
+          height: calc(100vh - 51px);
+        }
+      }
+
+      @media screen and (min-width: 768px) {
+        .banner__imagem {
+          height: calc(100vh - 72px);
+        }
+      }
+
+
+[ note: netopaiva]
+
+### 5.4.  Finalizando a responsividade
+
+  - vídeo aula
+
+  - ajustar arquivos sobre
+  
+    .sobre {
+      text-align: center;
+    }
+
+    @media screen and (min-width: 0) {
+      .sobre {
+        padding: 2.5rem 1rem;
+      }
+    }
+
+    @media screen and (min-width: 768px) {
+      .sobre {
+        padding: 2.5rem;
+      }
+    }
+
+
+    .sobre__titulo {
+      color: #8d0606;
+      font-family: Pacifico, cursive;
+    }
+
+    @media screen and (min-width: 0px) {
+      .sobre__titulo {
+        font-size: 2rem;
+      }
+    }
+
+    @media screen and (min-width: 768px) {
+      .sobre__titulo {
+        font-size: 3.1875rem;
+      }
+    }
+
+
+    .sobre__descricao {
+      color: #595959;
+      font-weight: 100;
+    }
+
+    @media screen and (min-width: 0px) {
+      .sobre__descricao {
+        font-size: 1.3rem;
+      }
+    }
+
+    @media screen and (min-width: 768px) {
+      .sobre__descricao {
+        font-size: 1.75rem;
+      }
+    }
+
+  - arquivo receita
+
+    .receita {
+      background: #fdfdfd;
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 5rem;
+    }
+
+    @media screen and (min-width: 0) {
+      .receita {
+        margin-right: 1rem;
+        width: 100%;
+      }
+    }
+
+    @media screen and (min-width: 768px) {
+      .receita {
+        margin-right: 2.5rem;
+        width: calc(33% - 2.5rem)
+      }
+    }
+
+    @media screen and (min-width: 992px) {
+      .receita {
+        margin-right: 5rem;
+        width: calc(25% - 5rem);
+      }
+    }
+
+
+  - arquivo receitas
+
+    .receitas {
+      background: #e5e5e5;
+      display: flex;
+      flex-wrap: wrap;
+
+    }
+
+    @media screen and (min-width: 0) {
+      .receitas {
+        padding: 5rem 0 0 1rem;
+      }
+    }
+
+    @media screen and (min-width: 768px) {
+      .receitas {
+        padding: 5rem 0 0 2.5rem;
+      }
+    }
+
+    @media screen and (min-width: 992px) {
+      .receitas {
+        padding: 5rem 0 0 5rem;
+      }
+    }
+
+  - arquivo pessoas
+
+    .pessoas {
+      display: flex;
+      justify-content: space-around;
+      padding-top: 3rem;
+    }
+
+    @media screen and (min-width: 0) {
+      .pessoas {
+          flex-direction: column;
+      }
+    }
+
+    @media screen and (min-width: 768px) {
+      .pessoas {
+        flex-direction: row;
+      }
+    }
+
+  - arquivo pessoa
+
+    .pessoa {
+      display: flex;
+      flex-direction: column;
+    }
+
+    @media screen and (min-width: 0) {
+      .pessoa {
+        margin-bottom: 2rem;
+      }
+    }
+
+    @media screen and (min-width: 768px) {
+      .pessoa {
+        margin-bottom: 0;
+      }
+    }
+
+
+### 5.5.  Site responsivo
+
+  - atividade de fixação
+    - criar site responsivo
+    - adaptar diversos tamanhos de tela
+
+
+### 5.6.  Faça como eu fiz na aula
+
+  - praticar
+  - esclarecer dúvidas
+
+
+### 5.7.  Conclusão
+
+  - vídeo
+
+  - revisão do projeto
+  
+    - site de receitas com seções
+      - cabeçalho
+      - banner
+      - sobre
+      - receitas
+      - pessoas
+      - rodapé
+      
+    - boas práticas de CSS (facilidade de manutenção)
+      - metodologia BEM
+        - nomear os seletores CSS
+      - metodologia Atomic Design
+        - criar um arquivo para cada seletor CSS
+      - ordem alfabética para declarar as propriedades dos seletores
+      - melhor utilizar seletores "class" do que "id" ou "tag"
+
+    - responsividade
+      - @media and (...) {...}
+
+### 5.8.  O que aprendemos?
+
+  - tornar site responsivo
+    - configuração para diferentes tamanhos de tela
+
+  - link do projeto finalizado
+    https://github.com/alura-cursos/arquitetura-css/archive/master.zip
+
+
+/* --- fim ;)

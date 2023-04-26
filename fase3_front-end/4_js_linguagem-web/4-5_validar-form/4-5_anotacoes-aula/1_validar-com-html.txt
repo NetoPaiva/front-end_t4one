@@ -2,7 +2,6 @@ Anotações do curso
 
 # JS - Validar Formulário
 
-
 ## Aula 1 - Apresentação
 
 

@@ -1,0 +1,1796 @@
+https://cursos.alura.com.br/course/mobile-first-layouts-responsivos
+
+Alura, curso, front-end, ONE, t4f3
+
+
+Referências:
+
+- Projeto inicial
+https://github.com/alura-cursos/projeto-apeperia/archive/b2501c63b2ebdfd8226473a6c8ffa8777e559efe.zip
+
+- Visual Studio Code:
+  https://code.visualstudio.com/
+
+- Projeto Figma
+https://www.figma.com/file/FidBn9f7BoBCoEs19EzbUD/Apeperia-Mobile-First
+
+
+Front-end / Cursos de HTML e CSS
+
+
+Curso
+
+# Layouts Responsivos: trabalhando com layouts mobile
+
+  - Processo de desenvolvimento web
+  - Escrita de código com plugin Emmet/VS Code
+  - Manutenção de código com variáveis CSS
+  - Acessibilidade e SEO com códigos semânticos
+  - Diferentes layouts
+  - Responsividade
+
+  Capacitação para criar páginas
+    - com base em layouts prontos
+    - responsivas (adaptação a diversos dispositivos)
+
+
+#### Aulas
+
+
+## 1.  Ferramentas, unidades e imagens 
+
+
+### 1.1.  Arquivos iniciais do projeto
+
+- baixar os arquivos do projeto / GitHub
+- abrir layout do projeto / Figma
+- abrir projeto no VS Code
+  - Arquivo
+  - Abrir pastas
+  - Selecionar a pasta do projeto no computador
+  - OK
+
+- ambiente de trabalho está pronto.
+
+
+### 1.2.  Introdução
+
+  - Desenvolvimento Web
+    - projeto responsivo
+    - seguir layout no Figma
+    - conceito mobile first
+    - plugin Emmet
+    - variáveis CSS
+    - tipos de imagens
+      - semântica
+      - media types
+
+
+### 1.3.  Introdução ao Emmet
+
+- Criar "index.html"
+  - VS Code
+    - pasta do projeto
+    - códigos novo arquivo
+    - nomear "index.html"
+
+- Criar base do HTML
+  - no arquivo "index.html"
+    - digitar
+      "html:5" + tecla enter
+        - Plugin Emmet cria a estrutura básica
+
+- Alterar os campos
+  - idioma da página
+    lang="pt-BR"
+  - título da página
+    <title>Home | Apeperia</title>
+
+- Verificar layout no Figma
+  - versão mobile
+  
+- Estrutura dos elementos
+
+  - tela 1 - inicial
+    - cabeçalho
+      - logo
+    - navegação
+      - lista links
+    - seção principal (main)
+      - título
+      - parágrafo
+      - link aparência de botão
+
+  - tela 2 - seção de destaques
+    - postagens
+      - fotos
+      - texto
+    - parágrafo / botão
+
+  - tela 3 - seção de diferenciais
+    - lista
+
+  - tela 4 - seção "sobre"
+    - texto
+    - ícones
+    - links
+
+  - tela 5 - seção "planos"
+    - destino do link dos "parágrafos/botões"
+    - cards
+      - textos
+      - botões para assinatura do plano
+
+  - tela 6 - seção "contato"
+    - texto
+    - parágrafo/botão
+
+  - tela 7 - seção "institucional"
+    - textos
+    - links
+    - vídeo
+
+  - tela 8 - rodapé
+    - logo da páginas
+    - logo redes sociais
+    - links das seções
+
+
+#### Início do desenvolvimento
+
+- tela 1
+    - tirar print da tela do figma
+
+- Cabeçalho - estrutura HTML
+  - header
+    - img (logo)
+    - nav (links)
+      - ul (lista de links)
+        - li (6 links)
+          - a (uma em cada li)
+
+- Criar elementos no HTML com a sintaxe do Emmet
+
+  - digitar após a tag de abertura do "body"
+    header>img+nav>ul>li*6>a
+    enter
+
+[antes de criar a estrutura, ver OBS do item 1.4.]
+    
+  - isso quer dizer para o Emmet
+    - tag header é pai das tags img e nav
+    - tag nav é pai da tag ul
+    - tag ul é pai das 6 tags li
+    - cada tag li tem 1 tag a
+
+
+  ! MAGIC !
+
+  - a estrutura ficará assim
+    <header>
+      <img src="" alt="">
+      <nav>
+        <ul>
+          <li><a href="" class=""></a></li>
+          <li><a href="" class=""></a></li>
+          <li><a href="" class=""></a></li>
+          <li><a href="" class=""></a></li>
+          <li><a href="" class=""></a></li>
+          <li><a href="" class=""></a></li>
+        </ul>
+      </nav>
+    </header>
+
+
+- Editar estrutura do Header
+
+  - Incluir as informações em cada tag
+
+    - img
+      - src="img/logo-apeperia.svg"
+      - alt="Logo da Apeperia"
+
+    - a (nome das seções)
+      - >Sobre</a>
+      - >Planos</a>
+      - >Blog</a>
+      - >Destaques</a>
+      - >Institucional</a>
+      - >Contato</a>
+
+    - a (endereço do link)
+      - ainda não tem o caminho
+      - colocar # em cada elemento
+      - href="#"
+
+  - Estrutura do Header ficou assim
+
+    <header>
+      <img src="img/logo-apeperia.svg" alt="Logo da Apeperia">
+      <nav>
+        <ul>
+          <li><a href="#" class="">Sobre</a></li>
+          <li><a href="#" class="">Planos</a></li>
+          <li><a href="#" class="">Blog</a></li>
+          <li><a href="#" class="">Destaques</a></li>
+          <li><a href="#" class="">Institucional</a></li>
+          <li><a href="#" class="">Contato</a></li>
+        </ul>
+      </nav>
+    </header>
+
+
+- Editar estrutura do Main
+
+  - criar a tag main abaixo do fechamento da tag header
+    <main></main>
+
+  - entre abertura e fechamento da tag main
+  - criar a seção da chamada
+    - digitar
+      section>h1+p+a
+
+  - estrutura inicial ficará asism
+      <section>
+        <h1></h1>
+        <p></p>
+        <a href=""></a>
+      </section>
+
+  - incluir os textos em cada tag
+      <section>
+        <h1>Aplicativos Na Medida</h1>
+        <p>Apeperia tem um jeito inovador de comparar e montar aplicativos para pequenas e médias empresas.</p>
+        <a href="#">Conheça os planos</a>
+      </section>
+
+
+### 1.4.  Aplicando estilos
+
+  - Buscar informações de estilo dos elementos no Figma
+  
+  - Fontes
+    - texto: Open Sans 300 / 400 / 700
+    - títulos: Montserrat 300 / 400 / 700
+
+  - Incorporar Google Fonts
+    - abrir aba no navegador
+    - buscar Google Fonts
+    - abrir site
+    - procurar as fontes Opens Sans / Montserrat
+    - selecionar as variações 300 / 400 / 700
+    - copiar comando de incorporação das fontes
+    - incluir no documento HTML
+      - dentro da tag <head>
+      - após a tag <title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&family=Open+Sans:wght@300;400;700&display=swap" rel="stylesheet">
+
+  - Cores
+    - já estão definidas
+    - listadas em um arquivo de texto dentro da pasta do projeto
+    - arquivos de estilos já estão criados (pasta css)
+    - incorporar arquivos de estilo ao documento HTML
+      - dentro da tag <head>
+      - após a tag das fontes
+        <link href="css/cabecalho.css" rel="stylesheet">
+        <link href="css/chamada.css" rel="stylesheet">
+
+  - Incluir nas tags HTML as classes dos seletores CSS
+    - abrir os arquivos CSS "cabecalho" e "chamada"
+    - todas as classes já no padrão BEM
+      - classes para blocos específicos
+        - nomes composto da classe interligado por 2 underscores
+
+    - header tem:
+      .cabecalho na tag header
+      .cabecalho__logo na tag img
+      .cabecalho__navegacao na tag nav
+      .cabecalho__link nas tags li
+
+    - chamada tem:
+      .chamada na tag 
+      .chamada__titulo
+      .chamada__texto
+      .chamada__botao
+
+--------------------------------------------------
+
+-OBS.:
+  - a inclusão das classe poderia ter sido feita, de forma automática,
+  junto com a criação da estrutura do "header", aproveitanto o recurso do Emmet.
+  
+  A sintaxe seria assim:
+
+header.cabecalho>img.cabecalho__logo+nav.cabecalho__navegacao>ul>li*6>a.cabecalho__link
+
+  A estrutura criada ficaria assim
+      <header class="cabecalho">
+        <img src="" alt="" class="cabecalho__logo">
+        <nav class="cabecalho__navegacao">
+          <ul>
+            <li><a href="" class="cabecalho__link"></a></li>
+            <li><a href="" class="cabecalho__link"></a></li>
+            <li><a href="" class="cabecalho__link"></a></li>
+            <li><a href="" class="cabecalho__link"></a></li>
+            <li><a href="" class="cabecalho__link"></a></li>
+            <li><a href="" class="cabecalho__link"></a></li>
+          </ul>
+        </nav>
+      </header>
+
+- O mesmo poderia ser feito para a seção "chamada" e para as próximas estruturas HTML a serem criadas no projeto
+
+A sintaxe para criação da chamada seria
+  section.chamada>h1.chamada__titulo+p.chamada__texto+a.chamada__botao
+
+A Estrutura criada ficaria assim
+      <section class="chamada">
+        <h1 class="chamada__titulo"></h1>
+        <p class="chamada__texto"></p>
+        <a href="" class="chamada__botao"></a>
+      </section>
+
+
+[ !!!  MAGIA AINDA MAIS MÁGICA !!! ]
+
+--------------------------------------------------
+
+  - Adicionar no documento HTML
+    - as classes dos elementos
+      - cabecalho
+      - chamada
+
+  - Criar arquivo base.css
+    - estilização geral do projeto
+    - incluir font-family
+    - vincular arquivo no documento HTML
+
+  - Vincular no documento HTML
+    - CSS Reset
+      - estilização para anular configuração padrão dos navegadores
+      - incluir acima dos outros vínculos css no documento HTML
+        - para evitar anular estilização do projeto
+
+
+### 1.5.  REM e EM
+
+  - vídeo aula
+
+  - unidades de medida relativas
+  - principal conceito de responsividade
+
+  - em = relativa ao font size do elemento pai
+    - proporcional ao elemento pai
+    - melhor se adapta em casos específicos
+      - controla casos isolados
+    
+  - rem = relativa ao font size do elemento raiz (html)
+    - proporcional ao documento todo
+    - melhor se adapta aos diferentes navegadores em geral
+    - alterar font-size root
+      - altera proporcionalmente todos o layout (todos os elementos)
+
+
+### 1.6.  Unidades relativas REM e EM
+
+  - atividade de fixação
+    - comportamento das unidades relativas
+      - rem
+        - variável à raiz
+        - proporcional ao "font-size" da tag <html>
+      - em
+        - variável ao "font-size" do elemento pai
+
+
+### 1.7.  SVG e tipos de imagem na web
+
+  - vídeo aula
+
+  - svg
+    - imagem formada por vetor (cálculos matemáticos)
+    - formato sem compactação
+    - melhor qualidade
+    - permite alterar dimensões sem perder qualidade
+    - arquivo mais leve (kb)
+    - ideal para ícones, logos, desenhos / cores chapadas
+
+  - png
+    - imagem formada por pixel
+    - formato pouco compactado
+    - melhor resolução / qualidade
+    - permite fundo transparente
+    - arquivo mais pesado (mb)
+    - ideal para fotos sem fundo
+
+  - jpg
+    - imagem formada por pixel
+    - formato mais compactado
+    - baixa resolução / qualidade
+    - não permite fundo transparente
+    - arquivo mais leve (kb)
+    - ideal para fotos com fundo
+
+  - gif
+    - iamgem formada por pixel
+    - formato pouco compactado
+    - baixa resolução / qualidade
+    - permite animação
+    - arquivo com peso variado (depende da animação)
+    - ideal para animação
+
+
+### 1.8.  Usando SVG
+
+  - atividade de fixação
+    - quando usar svg
+      - imagens vetoriais
+        - ícones
+        - logos
+
+
+### 1.9.  Para saber mais: SVG
+
+  - referência curso Alura
+    https://cursos.alura.com.br/course/svg-css-animacao
+  - não tem acesso
+
+
+### 1.10. Faça como eu fiz na aula
+
+  - praticar
+  - desenvolver o projeto da aula
+  - esclarecer dúvidas
+
+
+### 1.11. O que aprendemos?
+
+  - analisar / desmembrar layout recebido
+  - criar blocos de código HTML com plugin Emmet
+  - utilizar unidades de medida relativas (rem / em)
+  - identificar tipos de imagens (svg)
+
+
+
+## 2.  Layout mobile e variáveis CSS
+
+### 2.1.  Projeto da aula anterior
+
+  - link para baixar versão do projeto até o momento
+    https://github.com/alura-cursos/projeto-apeperia/archive/Aula1.zip
+
+
+### 2.2.  Conceitos de Mobile First
+
+  - vídeo
+
+  - demonstração do comportamento de layout
+    - fixo
+    - responsivo
+
+  - fixo
+    - quando aberto em tela menor
+      - quebra todo layout
+      - visualização muito ruim
+        - texto pequeno
+
+  - mobile first
+      https://www.caelum.com.br/
+    - criar primeiro layout mobile (menor)
+      - layout vertical
+    - depois escalar para outros tamanhos
+      - layouts horizontais
+
+
+### 2.3.  Seguindo um conceito
+
+  - Razões para usar mobile first
+    - maioria de acesso vendas online
+    - design minimalista
+    - foco em conteúdo
+
+  - Razões para desktop first
+    - interface mais elaborada
+    - maior capacidade de banda e processamento
+    - produtos otimizados para desktop
+
+  - Analisar objetivo do projeto
+    - perfil dos clientes
+    - características
+    - linguagem visual
+    - custo
+    - qual dispositivo é mais adequado
+
+
+### 2.4.  Viewport e seu conteúdo
+
+  - vídeo
+
+  - analisar no navegador
+
+  - declarar tag "meta viewport" no "header" do html
+    - habilita navegador visualizar página como dispositivo móvel
+    - largura = largura do dispositivo
+    - escala inicial = escala da página é a mesma do dispositivo (1.0)
+      - para garantir que documento sempre aparecerá
+        - 100% (zomm normal)
+        - ocupando tamanho total da tela
+      - menor que 1.0
+        - "zoom-in"
+        - aumenta o tamanho do "body"
+        - corta a página
+      - maior que 1.0
+        - "zoom-out"
+        - reduz tamanho do "body"
+        - página menor que a tela
+
+    <meta name="viewport" content="width=devide-width initial-scale=1.0">
+
+
+### 2.5.  Variáveis CSS
+
+  - vídeo
+
+  - ajustar layout (verificar no Figma)
+    - analisar restante do layout
+    - identificar elementos com mesmo estilo
+      - reaproveitar código
+
+  - base.css
+    - arquivo com os estilos básicos da página
+
+      - criar classe "container"
+        - declarar estilo no arquivo "base.css"
+        - incluir classe nos elementos HTML
+          - header
+          - chamada
+
+      - criar classe "botão"
+        - utilizado em diversas partes da página
+        - criar estilo CSS
+        - incluir nos elementos HTML
+
+  - reutilizar códigos
+
+    - variáveis de cores
+      - arquivo "cores.txt"
+        - copiar todo o texto
+      - arquivo "base.css"
+        - na primeira linha do arquivo
+        - declarar o seletor ":root { }"
+        - dentro das { } colar texto das cores
+
+      - aplicar variáveis de cores nos seletores CSS
+
+    - variável da fonte
+      - adicionar no seletor ":root"
+      - após lista de cores
+        - criar variáveis
+          montserrat
+          openSans
+
+
+### 2.6.  Variáveis CSS
+
+  - atividade de fixação
+
+  - declarar e usar variáveis CSS
+    - declarar no seletor "root{--nome-variavel:valor;}"
+    - utilizar nos seletores dos elementos "var(--nome-variavel);"
+
+  
+### 2.7.  Faça como eu fiz na aula
+
+  - implementar no projeto as etapas da aula
+  - esclarecer dúvidas
+
+
+### 2.8.  O que aprendemos?
+
+  - definição/utilização mobile-first
+  - funcionamento de "viewport / initial-scale"
+  - declarar e chamar variáveis no CSS
+
+
+
+## 3.  Particularidades de telas
+
+### 3.1.  Projeto da aula anterior
+
+  - link para baixar projeto início desta etapa
+    https://github.com/alura-cursos/projeto-apeperia/archive/Aula2.zip
+
+
+### 3.2.  Unidades de medida viewport
+
+  - vídeo
+
+  - desenvolver a seção de destaques
+
+  - desmembrar elementos
+    - captura tela da seção no Figma
+
+  - definir classes
+    - título
+    - paineis / links
+      - imagem
+      - texto
+    - botão / link
+
+  - planejar nome das classes dos elementos
+    - seção destaques / container
+    - título destaques__titulo
+    - figure destaques__painel
+    - imagem destaques__painel-imagem  
+    - texto destaques__painel-texto  
+    - botão destaques__botao / botao
+
+  - criar estrutura no documento HTML
+
+    - Sintaxe Emmet
+      section.destaques.container>h2.destaques__titulo+(a*2>figure.destaques__painel>img.destaques__painel-imagem+figc.destaques__painel-texto)+a.destaques__botao.botao
+
+    - código HTML
+
+      <section class="destaques container">
+        <h2 class="destaques__titulo"></h2>
+        <a href="">
+          <figure class="destaques__painel">
+            <img src="" alt="" class="destaques__painel-imagem">
+            <figcaption class="destaques__painel-texto"></figcaption>
+          </figure>
+        </a>
+        <a href="">
+          <figure class="destaques__painel">
+            <img src="" alt="" class="destaques__painel-imagem">
+            <figcaption class="destaques__painel-texto"></figcaption>
+          </figure>
+        </a>
+        <a href="" class="destaques__botao botao"></a>
+      </section>
+
+  - incluir os textos nos elememtos
+    - copiar do arquivo "textos"
+    - colar em cada elemento
+  
+  - criar estilização CSS
+    - na pasta css
+    - criar o arquivo destaques.css
+    - chamar os seletores das classes
+    - configurar os estilos
+    
+    - vincular arquivo CSS no documento HTML
+  
+
+### 3.3.  As unidades de viewport
+
+  - atividade de fixação
+    - unidade "vw"
+      - relacionada com a largura da tela (em px)
+
+
+### 3.4.  Medidas absolutas e relativas
+
+  - vídeo
+
+  - quando usar absolutas e relativas
+    - depende do objetivo
+
+  - relativa
+    - quando precisa se adaptar à tela
+    - mendidas em relação
+      - rem = tamanho da fonte do elemento raiz (html)
+      - em = tamanho da fonte do elemento pai
+      - vw / vh = tamanho da tela
+      - % = percentual da tela
+
+  - fixa
+    - quando precisa determinar tamanho preciso
+      - em caso de telas muito grandes
+        - muito grande = distorção / desproporção
+      - propriedade "max-width"
+
+
+### 3.5.  Limitações dos dispositivos
+
+  - vídeo
+
+  - analisando largura das telas
+  - espaçamentos
+
+  - mobile
+    - posição retrato
+    - largura reduzida
+    - interação por toque (tap)
+      - alta de precisa do local do toque
+      - definir tamanhos para garantir toque
+    - variação de performance da internet
+      - ocilação
+      - falta de sinal
+    - desenvolvimento mobile
+      - considerar estes aspectos
+
+
+### 3.6.  Limitação de dispositivos
+
+  - atividade de fixação
+    - dispositivos móveis
+      - complicado acesso de páginas web
+        - velocidade de internet móvel (rede G)
+
+
+### 3.7.  Responsividade
+
+  - sugestão de curso (sem acesso)
+    https://cursos.alura.com.br/course/web-design-responsivo
+
+
+### 3.8.  Faça como eu fiz na aula
+
+  - implementar projeto desenvolvido em aula
+  - esclarecer dúvidas
+
+
+### 3.9. O que aprendemos?
+
+  - utilizar unidades de viewport (vw / vh)
+  - diferenciara unidades absolutas / relativas
+  - analisar limitações dos dispositivos
+
+
+
+## 4.  Trabalhando a semântica HTML
+
+
+### 4.1.  Projeto da aula anterior
+
+  - link do projeto inicial desta etapa
+      https://github.com/alura-cursos/projeto-apeperia/archive/Aula3.zip
+
+
+### 4.2.  Preparando o ambiente
+
+  - copiar códigos para utilizar nas próximas etapas do projeto
+
+- Estrutura HTML seção "diferenciais"
+
+  - Sintaxe Emmet
+      section.diferenciais.container>ul.diferenciais__lista>li.diferenciais__item*3>h2.item__titulo+p.item__texto
+
+  - código HTML
+
+    <section class="diferenciais container">
+      <ul class="diferenciais__lista">
+        <li class="diferenciais__item">
+          <h2 class="item__titulo">Tempo</h2>
+          <p class="item__texto">Tempo é importante! Trabalhamos em ritmo acelerado, atendendo rigorosamente aos prazos.</p>
+        </li>
+        <li class="diferenciais__item">
+          <h2 class="item__titulo">Foco</h2>
+          <p class="item__texto">Focamos no empreendimento! Oferecemos serviços de qualidade com preços acessíveis.</p>
+        </li>
+        <li class="diferenciais__item">
+          <h2 class="item__titulo">Especialistas</h2>
+          <p class="item__texto">Equipe experiente e especializada! Testamos todos os produtos antes do lançamento.</p>
+        </li>
+      </ul>
+    </section>
+
+
+  - código CSS da seção "diferenciais"
+  - vincular arquivo "diferenciais.css" no documento html
+
+    .diferenciais {
+      padding-top: 3.5rem;
+      padding-bottom: 3.5rem;
+    }
+
+    .diferenciais__lista {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-evenly;
+    }
+
+    .diferenciais__item {
+      max-width: 350px;
+
+      box-sizing: border-box;
+
+      padding: 2rem 0 2rem 5rem;
+    }
+
+    .item__titulo {
+      color: var(--cinza-escuro);
+      font-weight: 700;
+      font-size: 1.2rem;
+      text-transform: uppercase;
+
+      margin-bottom: 1.5rem;
+    }
+
+    .item__texto {
+      line-height: normal;
+    }
+
+
+- Estrutura HTML da seção "Sobre"
+
+  - Sintaxe Emmet
+      section.sobre.container>(div.sobre__conteudo>h2.sobre__titulo+p.sobre__texto*3+(ul.sobre__plataformas>li*3>img)+p.sobre__texto)+img.sobre__imagem
+
+   section.sobre.container>
+      (div.sobre__conteudo>
+         h2.sobre__titulo
+         +p.sobre__texto*3
+         +(ul.sobre__plataformas>
+            li*3>
+               img)
+         +p.sobre__texto)
+      +img.sobre__imagem
+
+      
+
+  - código HTML
+
+    <section class="sobre container">
+      <div class="sobre__conteudo">
+        <h2 class="sobre__titulo">Sobre</h2>
+        <p class="sobre__texto">Criamos aplicativos personalizados para <strong class="sobre__texto--destaque">todas as pessoas</strong>!</p>
+        <p class="sobre__texto">A manutenção de um aplicativo não pode ser um custo extra para o cliente, Na Apeperia você assina nosso serviço e a manutenção já está inclusa. Assim, você não se preocupa com manutenção, é tudo por nossa conta.
+        </p>
+        <p class="sobre__texto sobre__texto--destaque sobre__texto--divisao">Conte com uma equipe especializada e exclusiva pra projetos incríveis em qualquer plataforma.</p>
+        <ul class="sobre__plataformas">
+          <li><img src="img/android.png" alt="Ícone do Android"></li>
+          <li><img src="img/blackberry.png" alt="Ícone da Blackberry"></li>
+          <li><img src="img/apple.png" alt="Ícone da Apple"></li>
+          <li><img src="img/windowsphone.png" alt="Ícone da Microsoft"></li>
+        </ul>
+        <p class="sobre__texto">Desenvolvemos aplicativos para todas as plataformas</p>
+      </div>
+      <img src="img/sobre-apeperia.png" alt="Sobre a Apeperia" class="sobre__imagem">
+    </section>
+
+
+  - código CSS da seção "sobre"
+  - vincular arquivo "sobre.css" no documento HTML
+
+    .sobre {
+      padding-top: 3rem;
+      padding-bottom: 3rem;
+    }
+
+    .sobre__titulo {
+      color: var(--cinza-escuro);
+      font-weight: 700;
+      font-size: 1.5rem;
+      font-family: var(--montserrat);
+      text-transform: uppercase;
+      text-align: center;
+
+      margin-bottom: 1.25rem;
+    }
+
+    .sobre__texto {
+      line-height: normal;
+
+      margin-bottom: 1rem;
+    }
+
+    .sobre__texto--destaque {
+      color: var(--cinza-escuro);
+      font-weight: 700;
+    }
+
+    .sobre__plataformas {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-evenly;
+
+      margin-bottom: 1rem;
+    }
+
+
+### 4.3.  Lidando com imagens
+
+  - vídeo
+
+  - trabalhar com imagens / ícones
+    - uso é fundamental?
+    - faz parte da estrutura
+      - declarar no documento HTML
+    - faz parte da estilização
+      - declarar no arquivo CSS
+  
+  - incluir ícones da seção "diferenciais"
+  
+    - no arquivo "diferenciais.css"
+      - declarar o seletore dos itens com os modificadores
+        .diferenciais__item--tempo
+        .diferenciais__item--foco
+        .diferenciais__item--especialisata
+      - declarar a propriedade par vincluir imagem
+        background-iamge:url(../img/icone...);
+
+      - incluir propriedades do seletor diferenciais__item
+        background-repeat: no-repeat;
+        background-position: top 1.25rem left 2.5rem;
+
+    - no documento HTML
+      - incluir as classes--modificadores nos elementos
+
+
+  - Editar a seção "sobre"
+
+    - layout Figma
+      - analisar / desmembrar / montar código
+
+    - Utiliza ícones dos sistemas operacionais
+      - é possivel compreender conteúdo sem os ícones?
+        - se sim, é etilização
+        - se não, faz parte da estrutura
+      - neste caso, imagem pertence ao conteúdo
+        - declarar na estrutura HTML
+
+    - criar arquivo de estilo "sobre.css"
+    - vincular no documento HTML
+
+
+
+### 4.4.  Preparando o ambiente
+
+  - novos códigos para próxima etapa
+
+- estrutura HTML seção "planos"
+
+  - Sintaxe Emmet
+
+    section.planos.container>h2.planos__titulo+ul.planos__cartoes>li.cartao*3>h3.cartao__titulo+article.cartao__conteudo>p.cartao__preco+(p.cartao__texto*3)+a.cartao__botao.cartao__botao--.botao
+
+  - Código HTML
+
+    <section class="planos container">
+      <h2 class="planos__titulo">Planos</h2>
+      <ul class="planos__cartoes">
+        <li class="cartao cartao--start">
+          <h3 class="cartao__titulo">Start</h3>
+          <article class="cartao__conteudo">
+            <p class="cartao__preco"><em>R$ 500</em></p>
+            <p class="cartao__texto">5 manutenções mensais</p>
+            <p class="cartao__texto">App SEO</p>
+            <p class="cartao__texto">1 sistema operacional</p>
+            <a href="plano.html" class="cartao__botao cartao__botao--start botao">Assinar plano</a>
+          </article>
+        </li>
+        <li class="cartao cartao--ultra">
+          <h3 class="cartao__titulo">Ultra</h3>
+          <article class="cartao__conteudo">
+            <p class="cartao__preco"><em>R$ 1500</em></p>
+            <p class="cartao__texto">20 manutenções mensais</p>
+            <p class="cartao__texto">App SEO</p>
+            <p class="cartao__texto">4 sistemas operacionais</p>
+            <p class="cartao__texto">24h de atendimento</p>
+            <a href="" class="cartao__botao cartao__botao--ultra botao">Assinar plano</a>
+          </article>
+        </li>
+        <li class="cartao cartao--mega">
+          <h3 class="cartao__titulo">Mega</h3>
+          <p class="cartao__preco"><em>R$ 1000</em></p>
+          <article class="cartao__conteudo">
+            <p class="cartao__texto">10 manutenções mensais</p>
+            <p class="cartao__texto">App SEO</p>
+            <p class="cartao__texto">2 sistemas operacionais</p>
+            <a href="" class="cartao__botao cartao__botao--mega botao">Assinar plano</a>
+          </article>
+        </li>
+      </ul>
+    </section>
+
+  - código CSS seção "planos"
+    - não fornecido nesta aula
+
+- Seção Contato
+
+  - Sintaxe Emmet
+    section.contato.container>h2.contato__titulo+p.+a.contato__botao.botao
+
+  - código HTML
+
+    <section class="contato container">
+      <h2 class="contato__titulo">Contato</h2>
+      <p>Entre em contato com a gente</p>
+      <a href="contato.html" class="contato__botao botao">Entre em contato</a>
+    </section>
+
+
+  - código CSS seção "contato"
+  - vincular arquivo no documento HTML
+
+    .contato {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      text-align: center;
+
+      padding-top: 2rem;
+      padding-bottom: 2rem;
+    }
+
+    .contato__titulo {
+      color: var(--cinza-escuro);
+      font-weight: 700;
+      font-size: 1.5rem;
+      font-family: var(--montserrat);
+      text-transform: uppercase;
+      text-align: center;
+
+      margin-bottom: 1.25rem;
+    }
+
+    .contato__botao {
+      color: var(--cinza-escuro);
+
+      border-color: var(--cinza-escuro);
+
+      margin-top: 1rem;
+    }
+
+
+  - estrutura HTML da seção "institucional"
+
+    - não fornecida nesta aula
+
+
+  - código CSS da seção "institucional"
+
+    .institucional {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      color: var(--fonte-cinza);
+      text-align: center;
+
+      padding-top: 2rem;
+      padding-bottom: 2rem;
+    }
+
+    .institucional__titulo {
+      color: var(--cinza-escuro);
+      font-weight: 700;
+      font-size: 1.5rem;
+      font-family: var(--montserrat);
+      text-transform: uppercase;
+      text-align: center;
+
+      margin-bottom: 2rem;
+    }
+
+    .institucional__descricao {
+      margin-bottom: 2rem;
+    }
+
+    .institucional__endereco {
+      font-size: 1.5rem;
+      line-height: normal;
+
+      margin-bottom: 2rem;
+    }
+
+    .institucional__contato {
+      font-size: 1.2rem;
+      line-height: 1.8;
+
+      margin-top: 2rem;
+    }
+
+    .institucional__contato-telefone {
+      line-height: normal;
+    }
+
+    .institucional__contato-email {
+      color: var(--fonte-link);
+      text-decoration: underline;
+      display: block;
+    }
+
+    .institucional__video {
+      width: 100vw;
+    }
+
+
+### 4.5.  As tags address, video e br
+
+  - vídeo aula
+
+  - analisar layout
+  - criar estruturas HTML das seções
+    - planos
+    - contato
+  - definir CSS
+  - vincular no HTML
+
+  - Seção "institucional"
+
+    - analisar seção
+    - atenção ao tipo de conteúdo
+      - informações relevantes da empresa
+        - endereço
+        - telefone
+        - email
+  
+  - tags semânticas (otimização CEO)
+
+    - address
+      - específica para endereços (relevância)
+      - otimizada para
+        - mecanismos de busca (SEO)
+        - ferramentas de acessibilidade
+    
+    - recomendação boas práticas W3C
+      - escrever o código o mais semântico possível
+      - utilizar apenas tag "address" na página
+        - com todas as informações de contato dentro da tag
+
+    - Criar estrutura HTML da seção "institucional"
+
+    - Sintaxe Emmet
+      section.institucional.container>h2.institucional__titulo+p.institucional__descricao+address.institucional__endereco>br+(article.institucional__contato>p>a.institucional__contato-*2)+video.institucional__video
+
+    - Código HTML
+        <section class="institucional container">
+          <h2 class="institucional__titulo"></h2>
+          <p class="institucional__descricao"></p>
+          <address class="institucional__endereco">
+            <br>
+            <article class="institucional__contato">
+              <p>
+                <a href="" class="institucional__contato-"></a>
+                <a href="" class="institucional__contato-"></a>
+              </p>
+            </article>
+            <video src=""></video>
+          </address>
+        </section>
+
+    - Incluir os textos em cada elemento
+
+    - links de telefone e email
+      href="tel:+551155712751"
+      href="mailto:contato@apeperia.com"
+
+    - arquivo de vídeo
+      - atributos da tag vídeo
+        - src="img/formacao-java.mp4"
+        - controls
+          - mostra controle de play / timeline / volume ...
+
+    - Criar estilização CSS
+    - Vincular css no documento HTML
+    
+
+### 4.6.  Preparando o ambiente
+
+  - Estrutura rodapé
+
+  - código CSS da seção "rodape"
+  - vincular arquivo no documento HTML
+
+    .rodape {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      background-color: var(--bg-rodape);
+
+      padding-top: 2.5rem;
+      padding-bottom: 2rem;
+    }
+
+    .rodape__social {
+      display: flex;
+    }
+
+    .rodape__midia {
+      display: block;
+
+      width: 42px;
+      height: 42px;
+
+      margin: 2rem 1rem;
+    }
+
+    .rodape__navegacao {
+      color: var(--branco);
+      text-align: center;
+      line-height: 3;
+    }
+
+
+    .rodape__link {
+      display: inline-block;
+
+      margin: 0 .5rem .7rem;
+    }
+
+
+### 4.7.  Atributo title
+
+  - vídeo aula
+
+  - estrutura do rodapé
+  - tag semântica "title"
+
+
+  - declarar após fchamento da tag "main"
+
+  - como lidar com as imagens (ícones)
+    - são conteúdo
+      - links das redes sociais
+    - declarar no HTML
+    - semãntica dos links
+      - adicionar atributo "title" na tag "a"
+        - informar nome de cada rede social (site)
+        title="facebook"
+
+- Sintaxe Emmet
+
+    footer.rodape.container>img.rodape__logo+(ul.rodape__social>li*3>a.rodape__midia>img)+nav>ul.rodape__navegacao>li*6.rodape__link>a
+
+- Código HTML
+      
+    <footer class="rodape container">
+      <img src="" alt="" class="rodape__logo">
+      <ul class="rodape__social">
+        <li><a href="" class="rodape__midia"><img src="" alt=""></a></li>
+        <li><a href="" class="rodape__midia"><img src="" alt=""></a></li>
+        <li><a href="" class="rodape__midia"><img src="" alt=""></a></li>
+      </ul>
+      <nav>
+        <ul class="rodape__navegacao">
+            <li class="rodape__link"><a href=""></a></li>
+            <li class="rodape__link"><a href=""></a></li>
+            <li class="rodape__link"><a href=""></a></li>
+            <li class="rodape__link"><a href=""></a></li>
+            <li class="rodape__link"><a href=""></a></li>
+            <li class="rodape__link"><a href=""></a></li>
+        </ul>
+      </nav>
+    </footer>
+
+  - Incluir valores dos atributos e textos de cada elemento
+
+
+### 4.8.  Semântica no código
+
+  - atividade de fixação
+    - vantagens do código semântico
+      - acessibilidade
+      - fácil compreensão do código
+      - mecanismos de indexação
+
+
+### 4.9.  Faça como eu fiz na aula
+
+  - implementar etapas do projeto
+  - esclarecer dúvidas
+
+### 4.10. O que aprendemos
+
+  - lidar com imagens do layout
+  - tags e atributos semânticos
+  - importância do código semântico
+
+
+
+## 5.  Evoluindo do mobile ao desktop
+
+
+### 5.1.  Projeto da aula anterior
+
+  - link para baixar projeto inicial desta etapa
+    https://github.com/alura-cursos/projeto-apeperia/archive/Aula4.zip
+
+
+### 5.2.  Evoluindo o layout para tablet
+
+  - vídeo aula
+
+  - alterações
+    - tamanho de tela
+    - cores
+    - posição dos elementos
+
+  - resolução tela tablete
+    - largura = 768 até 1024 px (referência: CSS Tricks)
+
+  - como alterar CSS para telas a partir de certos tamanhos
+    - media query (condição) { valores }
+      @media screen and (min-width:768px) { ... }
+        - "min-width" = a partir deste tamanho
+        - "screen and" = tipo de mídia é tela
+        - "print and" = tipo de mídia é impressão
+    
+  - analisar layout Figma
+    - comparar diferenças com mobile (celular)
+      - chamada com largura de texto mais limitada
+      - planos com largura maior
+      - institucional
+        - email e telefone na mesma linha
+        - vídeo ocupa toda largura do container
+          "width:100%" e não "100vw"
+  
+  - editar arquivo "chamada.css"
+    - incluir no final do arquivo
+
+      @media screen and (min-width:768px){
+        .chamada__texto {
+          max-width:600px;
+        }
+      }
+
+  - editar arquivo "planos.css"
+    - incluir no final do arquivo
+
+      @media screen and (min-width:768px){
+        .cartao {
+          max-width:400px;
+        }
+      }
+
+  - editar arquivo "institucional.css"
+    - incluir no final do arquivo
+
+      @media screen and (min-width:768px){
+        .institucional__contato-email {
+          display:inline-block;
+        }
+
+        .institucional__video {
+          width:100%;
+        }
+      }
+
+  - finalizada adaptação do layout para tablete
+
+
+### 5.3.  Media Query
+
+  - atividade de fixação
+    - sintaxe "media query"
+      @media (min-width:768px) {propriedade:valor;}
+
+
+### 5.4.  Para saber mais: breakpoints
+
+  - referẽncia de site
+    https://css-tricks.com/snippets/css/media-queries-for-standard-devices/
+
+
+### 5.5.  Adaptação estrutural
+
+  - vídeo aula
+
+  - criar layout desktop
+  - ajustar estruturas / estilos
+
+  - analisar layout Figma
+  - destacar diferenças
+
+    - cabeçalho
+      - elementos em linha
+      - logo à esquerda
+      - navegação à direita
+      - título com destaque
+      - fundo com imagem
+
+    - diferenciais
+      - fundo bege
+
+    - sobre
+      - inclui imagem à direita
+      - textos à esquerda
+
+    - planos
+      - eixo principal é horizontal
+    
+    - institucional
+      - vídeo menor à direita
+      - textos à esquerda
+    
+    - rodapé
+      - elementos em linha
+      - logo à esquerda
+      - ícones à direita
+  
+  - ajustar "cabecalho.css"
+
+    @media screen and (min-width:1024px){
+      .cabecalho {
+        flex-direction: row;
+        justify-content: space-between;
+
+        border: none;
+      }
+    }
+
+  - ajustar "chamada.css"
+
+    @media screen and (min-width:1024px){
+      .chamada {
+        background-image: url(../img/bg-intro.jpg);
+        background-size: cover;
+
+        padding: 8.25rem;
+      }
+
+      .chamada__titulo {
+        font-size: 3.25rem;
+        margin-bottom: 2rem;
+      }
+    }
+    
+    - ajustar "diferenciais.css"
+    
+    @media screen and (min-width:1024px) {
+      .diferenciais {
+        background-color: var(--cinza-claro);
+      }
+      
+      .diferenciais__lista {
+        justify-content: space-around;
+      }
+    }
+    
+    - ajustar "sobre"
+
+      - ajustar estrutura html
+        - 2 containers
+          - textos
+          - imagem
+        
+      - editar documento HTML / seção "sobre"
+      
+        - criar "div.sobre__conteudo"
+          - incluir todo o texto dentro desta div
+          - na terceira tag "p"
+            - inlcuir classe com modificador
+              .sobre__texto--divisão
+
+        - incluir a imagem depois do fechamento da div
+
+      - editar arquivo "sobre.css"
+
+        - ocultar imagem nas versões mobile
+          .sobre__imagem{
+            display: none;
+          }
+
+        - configurar versão desktop
+
+          @media screen and (min-width:1024px) {
+            .sobre {
+              display: flex;
+            }
+
+            .sobre__conteudo {
+              margin-right: 3rem;
+            }
+
+            .sobre__titulo {
+              text-align: left;
+            }
+
+            .sobre__texto--divisao {
+              border-bottom: 1px solid var(--cinza-medio);
+
+              padding-bottom: 1.5rem;
+            }
+
+            .sobre__imagem {
+              display: block;
+            }
+          }
+   
+  - finalizada configuração básica para desktop
+
+
+### 5.6.  Preparando o ambiente
+
+  - revisar códigos
+  
+- "base.css"
+  - será aplicado na próxima aula
+
+  @media screen and (min-width: 1024px) {
+    .container {
+      padding-left: calc((100% - 940px)/2);
+      padding-right: calc((100% - 940px)/2);
+    }
+  }
+
+- "cabecalho.css"
+
+    @media screen and (min-width: 1024px) {
+      .cabecalho {
+        flex-direction: row;
+        justify-content: space-between;
+
+        border: none;
+      }
+    }
+
+- "chamada.css"
+
+    @media screen and (min-width:768px){
+      .chamada__texto {
+        max-width:600px;
+      }
+    }
+
+    @media screen and (min-width:1024px){
+      .chamada {
+        background-image: url(../img/bg-intro.jpg);
+        background-size: cover;
+
+        padding: 8.25rem;
+      }
+
+      .chamada__titulo {
+        font-size: 3.25rem;
+        margin-bottom: 2rem;
+      }
+    }
+
+- código CSS para arquivo "diferenciais.css"
+
+    @media screen and (min-width: 1024px) {
+      .diferenciais {
+        background-color: var(--cinza-claro);
+      }
+
+      .diferenciais__lista {
+        justify-content: space-around;
+      }
+    }
+
+- código CSS para arquivo "institucional.css"
+
+    @media screen and (min-width:768px){
+      .institucional__contato-email {
+        display:inline-block;
+      }
+
+      .institucional__video {
+        width:100%;
+      }
+    }
+
+    @media screen and (min-width: 1024px) {
+      .institucional__conteudo {
+        width: 100%;
+
+        display: flex;
+        justify-content: space-between;
+
+        text-align: left;
+      }
+
+      .institucional__video {
+        align-self: flex-end;
+
+        width: 375px;
+      }
+
+      .institucional__contato-email {
+        display: block;
+      }
+    }
+
+- código CSS para arquivo "planos.css"
+
+    @media screen and (min-width:768px){
+      .cartao {
+        max-width:400px;
+      }
+    }
+
+    @media screen and (min-width: 1024px) {
+      .planos__cartoes {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-end;
+      }
+
+      .cartao {
+        max-width: 300px;
+      }
+    }
+
+- código CSS para arquivo "rodape.css"
+
+    @media screen and (min-width: 1024px) {
+      .rodape {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+      }
+
+      .rodape__navegacao {
+        text-align: left;
+
+        min-width: 600px;
+      }
+    }
+
+- código CSS para arquivo "sobre.css"
+
+    @media screen and (min-width: 1024px) {
+      .sobre {
+        display: flex;
+      }
+
+      .sobre__conteudo {
+        margin-right: 3rem;
+      }
+
+      .sobre__titulo {
+        text-align: left;
+      }
+
+      .sobre__texto--divisao {
+        border-bottom: 1px solid var(--cinza-medio);
+
+        padding-bottom: 1.5rem;
+      }
+
+      .sobre__imagem {
+        display: block;
+      }
+    }
+
+
+### 5.7.  Finalizando o layout desktop
+
+  - vídeo aula
+
+  - ajustar layout / estrutura
+  - finalizar projeto
+
+  - ajustar seção "planos"
+    - altera alinhamento e largura dos cartões
+
+    @media screen and (min-width: 1024px) {
+      .planos__cartoes {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-end;
+      }
+  
+      .cartao {
+        max-width: 300px;
+      }
+    }
+
+  - ajustar arquivo "base.css"
+    - espaçamento lateral de todos os containers
+    - utilizar cálculo do CSS
+
+    @media screen and (min-width: 1024px) {
+      .container {
+        padding-left: calc((100% - 940px)/2);
+        padding-right: calc((100% - 940px)/2);
+      }
+    }
+
+  - ajustar seção "institucional"
+
+    - incluir 2 divs na estrutura HTML
+      - uma após o h2
+        div.institucional__conteudo
+        - incluir texto e vídeo dentro da div
+      - outra div antes dos textos
+        div.institucional__informacoes
+    
+  - estrutura HTML final seção "institucional"
+
+    <section class="institucional container">
+      <h2 class="institucional__titulo">Institucional</h2>
+      <div class="institucional__conteudo">
+        <div class="institucional__informacoes">
+          <p class="institucional__descricao">Um pouco mais sobre a Apeperia</p>
+          <address class="institucional__endereco">
+            Rua Vergueiro, 3185<br>
+            Vila Mariana, São Paulo
+            <article class="institucional__contato">
+              <p>
+                <a href="tel:+551155712751" class="institucional__contato-telefone">(11) 5571-2751</a>
+                ou
+                <a href="mailto:contato@apeperia.com" class="institucional__contato-email"></a>contato@apeperia.com
+              </p>
+            </article>
+          </address>
+        </div>
+        <video src="img/formacao-java.mp4" controls class="institucional__video"></video>
+      </div>
+    </section>
+
+
+  - ajustar "institucional.css"
+
+    @media screen and (min-width: 1024px) {
+      .institucional__conteudo {
+        width: 100%;
+    
+        display: flex;
+        justify-content: space-between;
+    
+        text-align: left;
+      }
+    
+      .institucional__video {
+        align-self: flex-end;
+    
+        width: 375px;
+      }
+    
+      .institucional__contato-email {
+        display: block;
+      }
+    }
+
+  - ajustar seção "rodape"
+
+    @media screen and (min-width: 1024px) {
+      .rodape {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+      }
+    
+      .rodape__navegacao {
+        text-align: left;
+    
+        min-width: 600px;
+      }
+    }
+
+
+### 5.8.  Faça como eu fiz na aula
+
+  - implementar projeto
+  - esclarecer dúvidas
+
+### 5.9.  Projeto do curso
+
+  - baixar projeto finalizado
+    https://github.com/alura-cursos/projeto-apeperia/archive/Aula5.zip
+
+
+### 5.10. O que aprendemos?
+
+  - criar estilizações para diferentes dispositivos (media query)
+  - adaptar estruturas / conteúdos para diferentes layouts
+  - progredir layout mobile até desktop
+
+
+### 5.11. Conclusão
+
+  - vídeo aula
+
+  - resumo do projeto
+    - Plugin Emmet
+    - Unidades "em" e "rem" / "vw" e "vh"
+    - tipos de imagens (svg)
+    - tag meta / viewport / initial scale
+    - imagem ocupar toda largura (vw)
+    - variáveis CSS
+    - desenvolvimento mobile first / tablet / desktop
+    - media query / media types
+    - finalizar página
+      - tablete
+      - desktop
+
+
+/* --- fim ;)
