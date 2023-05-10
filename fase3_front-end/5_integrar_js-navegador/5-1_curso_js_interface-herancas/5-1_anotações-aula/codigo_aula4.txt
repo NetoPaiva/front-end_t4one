@@ -1,0 +1,491 @@
+Curso 5-1 - JS - interface e herança POO
+
+# Aula 4 - Sistema interno
+
+## 4-1 - Criar funcionários
+
+// - Sistema para gerentes e diretores
+// -- todos os funcionários terão
+// --- nome
+// --- cpf
+// --- salario
+
+// - Organizar a estrutura do projeto
+// -- criar na raiz do projeto a pasta "contas"
+// --- mover todos os arquivos dos tipos de contas para a pasta "contas"
+// --- atualizar as importações na "index"
+
+// -- criar na raiz do projeto a pasta "funcionarios"
+// -- na pasta "funcionarios"
+// --- criar a classe abstrata "funcionario.js"
+// -- com o construtor que recebe parâmetros e atributos:
+// --- _nome
+// --- _cpf
+// --- _salario
+
+    export class Funciorio{
+      constructor(nome, cpf, salario){
+        this._nome = nome;
+        this._cpf = cpf;
+        this._salario = salario;
+      }
+    }
+
+// -- criar as classes "Gerrente.js" e "Diretor.js" extendendo da classe "Funcionario.js"
+// --- o construtor recebe "nome", "cpf" e "salario"
+// --- passa para instancia superior (super)
+
+    export class Diretor extends Funcionario{
+      constructor(nome, cpf, salario){
+        super(nome, cpf, salario);
+      }
+    }
+
+    export class Gerente extends Funcionario{
+      constructor(nome, cpf, salario){
+        super(nome, cpf, salario);
+      }
+    }
+
+// -- diferenças entre "Diretor" e "Gerrente"
+// --- bonificações diferentes
+// --- incluir atributo "bonificação" na classe abstrata "Funcionario" com valor igual a "1" (equivale a 100% do salário)
+// --- do bonificação do gerente é 10% (1.1)
+
+    this._bonificacao = 1.1;
+
+// --- bonificação do diretor é 200% (2)
+
+    this._bonificacao = 2;
+
+// - código completo da classe abstrata "Funcionario.js"
+
+    export class Funcionario{
+      constructor(nome, cpf, salario){
+        this._nome = nome;
+        this._cpf = cpf;
+        this._salario = salario;
+        this._bonificacao = 1;
+      }
+    }
+
+
+// - código comleto da classe abstrata "Diretor.js"
+
+    import { Funcionario } from "./Funcionario";
+
+    export class Diretor extends Funcionario {
+      constructor(nome, cpf, salario) {
+        super(nome, cpf, salario);
+        this._bonificacao = 2;
+      }
+    }
+
+
+// - código comleto da classe abstrata "Gerente.js"
+
+    import { Funcionario } from "./Funcionario";
+
+    export class Gerente extends Funcionario{
+      constructor(nome, cpf, salario){
+        super(nome, cpf, salario);
+        this._bonificacao = 1.1;
+      }
+    }
+
+
+
+## 4-2 - Polimorfismo
+
+// - Autenticar os funcionário (uso de senhas)
+
+// - incluir atributo "senha" na classe abstrata "Funcionario.js"
+
+    this._senha;
+
+// - criar método "cadastrarSenha" na classe abstrata "Funcionario.js"
+// -- método recebe "senha" como parâmetro
+// -- e atribui ao "this._senha = senha"
+
+    cadastrarSenha (senha){
+      this._senha = senha;
+    }
+
+// - na "index"
+// -- instanciar novo diretor e novo gerente
+
+    const diretor = new Diretor (Rodrigo, 10000, 12345678900);
+    const gerente = new Gerente (Ricardo, 5000, 12368945601);
+
+// -- importa automaticamente as classes "Diretor" e "Gerente"
+
+
+// - criar método estático para realizar o "login"
+// -- na raiz do projeto criar arquivo "SistemaAutenticacao.js"
+// -- declarar a classe "SistemaAutenticacao"
+// -- com método "login" do tipo "static"
+// -- que recebe "funcionario" e "senha" como parâmetros
+// -- método irá retornar "verdadeiro" quando senha informada for igual à senha cadastrada para cada funcionário
+
+    export class SistemaAutenticacao{
+      static login(funcionario, senha){
+        return funcionario.senha == senha;
+      }
+    }
+
+// - proteger o cadastratamento da senha
+// -- na classe abstrata "Funcionario"
+// --- criar acessor do tipo "get"
+// --- que irá retornar a "senha"
+
+    get senha(){
+      return this._senha;
+    }
+
+// - na index, instanciar o Sistema de Autenticação
+
+    const estaLogado = SistemaAutenticacao.login(diretor, "12346")
+
+// -- exibir no console para verificar se está estaLogado
+// --- resultado foi "false" (não está logado)
+// --- funcionário ainda não cadastrou senha
+
+// - cadastrar senha funcionário
+// -- instanciar na "index"
+
+    diretor.cadastrarSenha("123456");
+    gerente.cadastrarSenha("456789");
+
+// -- agora, saída no console será "true"
+
+// -- sistema bem simples
+// --- apenas verifica se o valor recebido é igual ao cadastrado
+
+// - o Sistema de Autenticação utiliza o Polimorfismo
+// -- um mesmo código possibilita uso de várias formas sem alteração
+// --- sistema retorna "funcionario" genérico
+// --- e aplica funcionalidade em funcionários específicos (diretor e gerente)
+// --- sistema é aceito em qualquer objeto que contenha o atributo "senha"
+
+
+## 4-3 - Interfaces
+
+// - refatorar as instâncias do Sistema de Autenticação
+
+    const logadoDiretor = SistemaAutenticacao.login(diretor, "123456");
+    const logadoGerente = SistemaAutenticacao.login(gerente, "456789");
+
+    console.log(logadoDiretor, logadoGerente);
+
+// - criar login para Cliente
+// -- na classe abstrata "Cliente.js"
+// -- incluir "senha" no construtor
+
+    constructor(nome, cpf, rg, senha){
+      this.nome = nome;
+      this._cpf = cpf;
+      this._rg = rg;
+      this._senha = senha;
+    }
+
+
+// - instanciar Sistema de Autenticação para Cliente
+// -- na "index"
+// --- instanciar novo cliente "Lais"
+// --- cadastrar senha
+// --- instanciar autenticação
+
+// - verificar saída no console
+// -- senha da "cliente3" saiu como "false"
+// --- possui "_senha" no construtor de cliente
+// --- mas, no "SistemaAutenticacao.js" retorna apenas "senha" (atributo não está protegido)
+
+// - refatorar "SistemaAutenticacao"
+// -- classe não recebe apenas "funcionario"
+// -- alterar para "usuario"
+// -- todo "usuario" terá o método "autenticar"
+
+    export class SistemaAutenticacao{
+      static login(usuario, senha){
+        return usuario.senha == senha;
+      }
+    }
+
+// - tornar o código mais seguro
+
+// - na classe "SistemaAutenticacao"
+// -- torcar a chamada do atributo "senha" para a do método "autenticar" que recebe "senha" como parâmetro
+
+    export class SistemaAutenticacao{
+      static login(usuario, senha){
+        return usuario.autenticar(senha);
+      }
+    }
+
+
+// - na classe "Funcionario"
+// -- trocar o acessor "get senha" pelo método "autenticar"
+// --- que recebe "senha" como parâmetro
+// --- e retorna a senha cadastrada do usuário
+
+    /* get senha(){
+      return this._senha;
+    } */
+
+    autenticar(senha){
+      return senha == this._senha;
+    }
+
+// - assim, cada senha ficará protegida, não exposta
+
+// - chamar o método "autenticar" na classe "Cliente"
+// - se retornar verdadeiro
+
+    autenticar(){
+      return true;
+    }
+
+// - verificar saída no console
+// -- tudo ok, tudo "true"
+
+
+## Código completo do projeto (final aula 4)
+
+### - ./index.js
+
+// ============
+// FUNCIONÁRIOS
+// ============
+
+import { Cliente } from "./Cliente.js";
+import { Diretor } from "./funcionarios/Diretor.js";
+import { Gerente } from "./funcionarios/Gerente.js";
+import { SistemaAutenticacao } from "./SistemaAutenticacao.js";
+
+
+const diretor = new Diretor('Rodrigo', 12345678900, 10000);
+diretor.cadastrarSenha('123456');
+
+const gerente = new Gerente('Ricardo', 12368945601, 5000);
+gerente.cadastrarSenha('456789');
+
+const cliente3 = new Cliente('Lais', 98765432100, 98765432, '456');
+
+const logadoDiretor = SistemaAutenticacao.login(diretor, "123456");
+const logadoGerente = SistemaAutenticacao.login(gerente, "456789");
+const logadoCliente3 = SistemaAutenticacao.login(cliente3, "456");
+
+console.log(logadoDiretor, logadoGerente, logadoCliente3);
+
+
+/*  CÓDIGO REFERENTE AOS CLIENTES
+import { Cliente } from "./Cliente.js";
+import { ContaCorrente } from "./contas/ContaCorrente.js";
+import { ContaPoupanca } from "./contas/ContaPoupanca.js";
+import { ContaSalario } from "./contas/ContaSalario.js";
+
+const cliente1 = new Cliente ('Ricardo', 11122233345, 123456789);
+
+const conta1 = new ContaCorrente(cliente1, 101);
+const contaPoupanca1 = new ContaPoupanca(50, cliente1, 101);
+const contaSalario1 = new ContaSalario(cliente1);
+
+conta1.depositar(500);
+conta1.depositar(100);
+contaSalario1.depositar(100);
+
+conta1.sacar(50);
+conta1.sacar(600);
+contaPoupanca1.sacar(10);
+contaSalario1.sacar(10);
+
+// console.log(conta1);
+// console.log(contaPoupanca1);
+console.log(contaSalario1);
+
+*/
+
+
+
+### - ./Cliente.js
+
+export class Cliente {
+  get cpf(){
+    return this._cpf;
+  }
+
+  constructor(nome, cpf, rg, senha){
+    this.nome = nome;
+    this._cpf = cpf;
+    this._rg = rg;
+    this._senha = senha;
+  }
+
+  autenticar(){
+    return true;
+  }
+}
+
+
+### - ./SistemaAutenticacao.js
+
+export class SistemaAutenticacao{
+  static login(usuario, senha){
+    return usuario.autenticar(senha);
+  }
+}
+
+
+### - ./contas/Conta.js
+
+export class Conta{
+  
+  constructor(saldoInicial, cliente, agencia){
+    if (this.constructor == Conta) {
+      throw new Error('Esta é uma classe abstrata, não deve ser instaciada!');
+    }
+
+    this._saldo = saldoInicial;
+    this._cliente = cliente;
+    this._agencia = agencia;
+  }
+
+  // acessores - proteger atributos
+
+  set cliente(novoValor){
+    if(novoValor instanceof Cliente){
+      this._cliente = novoValor;
+    }
+  }
+
+  get cliente(){
+    return this._cliente;
+  }
+
+  get saldo(){
+    return this._saldo;
+  }
+
+// métodos de movimentação
+
+    sacar(){
+      throw new Error('Não instancie um método abstrato!');
+    }
+
+    _sacar(valor, taxa){
+      const valorSacado = taxa * valor;
+
+      if (this._saldo >= valorSacado) {
+        this._saldo -= valorSacado;
+        return valorSacado;
+      }
+
+      return 0;
+    }
+
+    depositar(valor){
+      if (valor <= 0) return;
+      this._saldo += valor;
+    }
+
+    transferir(valor, conta){
+      const valorSacado = this.sacar(valor);
+      conta.depositar(valor);
+    }
+}
+
+
+### - ./contas/ContaCorrente.js
+
+import { Conta } from "./Conta.js";
+
+export class ContaCorrente extends Conta {
+  static quantidadeContas = 0;
+  constructor(cliente, agencia){
+    super(0, cliente, agencia);
+    ContaCorrente.quantidadeContas += 1;
+  }
+
+  sacar(valor){
+    let taxa = 1.1;
+    return this._sacar(valor, taxa);
+  }
+}
+
+
+
+### - ./contas/ContaPoupanca.js
+
+import { Conta } from "./Conta.js";
+
+export class ContaPoupanca extends Conta{
+  constructor(saldoInicial, cliente, agencia){
+    super(saldoInicial, cliente, agencia);
+  }
+
+  sacar(valor){
+    let taxa = 1.05;
+    return this._sacar(valor, taxa);
+  }
+}
+
+
+### - ./contas/ContaSalario.js
+
+import { Conta } from "./Conta.js";
+
+export class ContaSalario extends Conta {
+  constructor(cliente){
+    super(0, cliente, 101);
+  }
+  sacar(valor){
+    let taxa = 1.01;
+    return this._sacar(valor, taxa);
+  }
+}
+
+
+### - ./funcionarios/Funcionario.js
+
+export class Funcionario{
+  constructor(nome, cpf, salario){
+    this._nome = nome;
+    this._cpf = cpf;
+    this._salario = salario;
+
+    this._bonificacao = 1;
+    this._senha;
+  }
+
+  autenticar(senha){
+    return senha == this._senha;
+  }
+
+  cadastrarSenha (senha){
+    this._senha = senha;
+  }
+}
+
+
+### - ./funcionarios/Diretor.js
+
+import { Funcionario } from "./Funcionario.js";
+
+export class Diretor extends Funcionario {
+  constructor(nome, cpf, salario) {
+    super(nome, cpf, salario);
+    this._bonificacao = 2;
+  }
+}
+
+
+### - ./funcionarios/Gerente.js
+
+import { Funcionario } from "./Funcionario.js";
+
+export class Gerente extends Funcionario{
+  constructor(nome, cpf, salario){
+    super(nome, cpf, salario);
+    this._bonificacao = 1.1;
+  }
+}

@@ -1,0 +1,363 @@
+Curso 5-1 - JS - interface e herança POO
+
+# Aula 5 - Interfaces e Duck Type
+
+## 5-1 - Verificar propriedade "tipo"
+
+// - Type Error
+// -- objeto que não tem a interface esperada
+
+// - Armazenamento de valores do JS
+// -- chave-valor
+// --- chave = nome dos objeto (endereço da memória)
+// --- valor = conteúdo armazenado
+
+// - Verificar se não possui interface padrão
+// -- criar método "ehUsuario" de verificação (if) dentro da classe "SistemaAutenticacao"
+
+    if (SistemaAutenticacao.ehUsuario(usuario)){
+      return usuario.autenticar(senha);
+    } return false;
+
+// - Verificar se uma "chave" existe
+// -- passa o nome da chave "autenticar" (nome do método)
+// -- verifica se chave existe dentro do objeto (usuario)
+// -- verificar se é do tipo esperado (função)
+
+    static ehUsuario(usuario){
+      return 'autenticar' in usuario &&
+      usuario.autenticar instanceof Function;
+    }
+
+// - incluir na classe "Cliente.js"
+// -- o atributo autenticar com valor igual a "1"
+
+    this.autenticar = 1;
+
+// - verificar no terminal
+// -- a saída foi "false"
+// --- existe a chave, mas não é do tipo Função
+
+// -  criar na classe "Cliente.js"
+// -- a função "autenticar"
+// -- e eliminar o atributo "this.autenticar = 1;"
+
+    autenticar(){
+      return true;
+    }
+
+
+
+## 5-2 - Duck Type
+
+// - Principais características da Orientação a Objetos
+// -- Polimorfismo
+// -- Encapsulamento
+
+// - Polimorfismo
+// -- tratar objetos diferentes de maneira semelhante
+// --- reduz quantidade de verificação (if)
+
+// - Duck Typing
+// -- um tipo de Polimorfismo
+// -- método de verificação não importa o tipo do objeto
+// --- o método de verificação do "SistemaAutenticacao" é um Duck Type
+// ---- se anda como pato
+// ---- se faz 'quack' como um pato
+// ---- então, deve ser um pato
+// ---- não importa se é realmente um pato
+// ---- no JS, não importa o tipo do objeto e sim se é semelhante
+// ----- se tem as características
+// ----- se tem determinados métodos e atributos
+// ----- então ele é do tipo esperado
+
+// - Encapsulamento
+// -- proteger máximo possível atributos dos objetos
+// --- exemplo é a classe "Conta.js"
+// --- com os acessores e métodos
+
+
+
+## 5-3 - Conclusão
+
+// - Código seguro, compartilhado
+// -- classe abstrata
+// -- método abstrato
+// -- verificação de erros
+// -- atributos privados
+// -- herança de classes (extends)
+// -- sobreescrita de métodos
+// -- encapsulamento do código (proteção)
+// -- polimorfismo para tratar da mesma forma objetos diferentes
+// -- boas práticas
+
+## - Código final do curso
+
+### - index.js
+
+// ============
+// FUNCIONÁRIOS
+// ============
+
+import { Cliente } from "./Cliente.js";
+import { Diretor } from "./funcionarios/Diretor.js";
+import { Gerente } from "./funcionarios/Gerente.js";
+import { SistemaAutenticacao } from "./SistemaAutenticacao.js";
+
+
+const diretor = new Diretor('Rodrigo', 12345678900, 10000);
+diretor.cadastrarSenha('123456');
+
+const gerente = new Gerente('Ricardo', 12368945601, 5000);
+gerente.cadastrarSenha('456789');
+
+const cliente3 = new Cliente('Lais', 98765432100, 98765432, '456');
+
+const logadoDiretor = SistemaAutenticacao.login(diretor, "123456");
+const logadoGerente = SistemaAutenticacao.login(gerente, "456789");
+const logadoCliente3 = SistemaAutenticacao.login(cliente3, "456");
+
+console.log(logadoDiretor, logadoGerente, logadoCliente3);
+
+
+/*  CÓDIGO REFERENTE AOS CLIENTES
+import { Cliente } from "./Cliente.js";
+import { ContaCorrente } from "./contas/ContaCorrente.js";
+import { ContaPoupanca } from "./contas/ContaPoupanca.js";
+import { ContaSalario } from "./contas/ContaSalario.js";
+
+const cliente1 = new Cliente ('Ricardo', 11122233345, 123456789);
+
+const conta1 = new ContaCorrente(cliente1, 101);
+const contaPoupanca1 = new ContaPoupanca(50, cliente1, 101);
+const contaSalario1 = new ContaSalario(cliente1);
+
+conta1.depositar(500);
+conta1.depositar(100);
+contaSalario1.depositar(100);
+
+conta1.sacar(50);
+conta1.sacar(600);
+contaPoupanca1.sacar(10);
+contaSalario1.sacar(10);
+
+// console.log(conta1);
+// console.log(contaPoupanca1);
+console.log(contaSalario1);
+
+*/
+
+
+### - Cliente.js
+
+export class Cliente {
+  get cpf(){
+    return this._cpf;
+  }
+
+  constructor(nome, cpf, rg, senha){
+    this.nome = nome;
+    this._cpf = cpf;
+    this._rg = rg;
+    this._senha = senha;
+  }
+
+  autenticar(){
+    return true;
+  }
+}
+
+
+### - SistemaAutenticacao.js
+
+export class SistemaAutenticacao{
+  static login(usuario, senha){
+    if(SistemaAutenticacao.ehUsuario(usuario)){
+      return usuario.autenticar(senha);
+    }
+    return false;
+  }
+  static ehUsuario(usuario){
+    return 'autenticar' in usuario 
+    && usuario.autenticar instanceof Function;
+  }
+}
+
+
+### - package.json
+
+{
+  "name": "bytebank",
+  "version": "1.0.0",
+  "description": "Projeto do bytebank para seus clientes",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Neto Paiva",
+  "license": "ISC",
+  "type": "module"
+}
+
+
+### - ./contas/Conta.js
+
+export class Conta{
+  
+  constructor(saldoInicial, cliente, agencia){
+    if (this.constructor == Conta) {
+      throw new Error('Esta é uma classe abstrata, não deve ser instaciada!');
+    }
+
+    this._saldo = saldoInicial;
+    this._cliente = cliente;
+    this._agencia = agencia;
+  }
+
+  // acessores - proteger atributos
+
+  set cliente(novoValor){
+    if(novoValor instanceof Cliente){
+      this._cliente = novoValor;
+    }
+  }
+
+  get cliente(){
+    return this._cliente;
+  }
+
+  get saldo(){
+    return this._saldo;
+  }
+
+// métodos de movimentação
+
+    sacar(){
+      throw new Error('Não instancie um método abstrato!');
+    }
+
+    _sacar(valor, taxa){
+      const valorSacado = taxa * valor;
+
+      if (this._saldo >= valorSacado) {
+        this._saldo -= valorSacado;
+        return valorSacado;
+      }
+
+      return 0;
+    }
+
+    depositar(valor){
+      if (valor <= 0) return;
+      this._saldo += valor;
+    }
+
+    transferir(valor, conta){
+      const valorSacado = this.sacar(valor);
+      conta.depositar(valor);
+    }
+}
+
+
+### - ./contas/ContaCorrente.js
+
+import { Conta } from "./Conta.js";
+
+export class ContaCorrente extends Conta {
+  static quantidadeContas = 0;
+  constructor(cliente, agencia){
+    super(0, cliente, agencia);
+    ContaCorrente.quantidadeContas += 1;
+  }
+
+  sacar(valor){
+    let taxa = 1.1;
+    return this._sacar(valor, taxa);
+  }
+}
+
+
+### - ./contas/ContaPoupanca.js
+
+import { Conta } from "./Conta.js";
+
+export class ContaPoupanca extends Conta{
+  constructor(saldoInicial, cliente, agencia){
+    super(saldoInicial, cliente, agencia);
+  }
+
+  sacar(valor){
+    let taxa = 1.05;
+    return this._sacar(valor, taxa);
+  }
+}
+
+
+### - ./contas/ContaSalario.js
+
+import { Conta } from "./Conta.js";
+
+export class ContaSalario extends Conta {
+  constructor(cliente){
+    super(0, cliente, 101);
+  }
+  sacar(valor){
+    let taxa = 1.01;
+    return this._sacar(valor, taxa);
+  }
+}
+
+
+### - ./funcionarios/Diretor.js
+
+import { Funcionario } from "./Funcionario.js";
+
+export class Diretor extends Funcionario {
+  constructor(nome, cpf, salario) {
+    super(nome, cpf, salario);
+    this._bonificacao = 2;
+  }
+}
+
+
+### - ./funcionarios/Funcionario.js
+
+export class Funcionario{
+  constructor(nome, cpf, salario){
+    this._nome = nome;
+    this._cpf = cpf;
+    this._salario = salario;
+
+    this._bonificacao = 1;
+    this._senha;
+  }
+
+  autenticar(senha){
+    return senha == this._senha;
+  }
+
+  cadastrarSenha (senha){
+    this._senha = senha;
+  }
+}
+
+
+### - ./funcionarios/Gerente.js
+
+import { Funcionario } from "./Funcionario.js";
+
+export class Gerente extends Funcionario{
+  constructor(nome, cpf, salario){
+    super(nome, cpf, salario);
+    this._bonificacao = 1.1;
+  }
+}
+
+
+### - Saída no terminal
+
+  node ./index.js
+  true true true
+
+
+--- fim ;)

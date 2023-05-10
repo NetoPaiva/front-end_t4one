@@ -1,0 +1,290 @@
+## aula 2-1 - comportamento da classe
+
+// - criar classe ContaCorrente
+// - criar objeto contaCorrente do cliente
+// - criar movimentação da conta corrente
+// - criar condicional para calcular saldo
+// - criar lógica de saque, transferência (movimentação da conta)
+// -- adicoinar comportamento no objeto "cliente" (método/função)
+// --- sacar
+// --- this. (substitui a conta corrente do cliente)
+// - declarar o método de sacar da conta corrente
+
+// código até aqui
+
+// uso de classes e objetos (evitar repetições)
+// ============================================
+
+// criar classe (molde) com atributos do cliente
+class Cliente {
+  nome;
+  cpf;
+  
+  // facilita incluir novos atributos
+  rg;
+}
+
+// instanciar classe "conta corrente"
+class ContaCorrente {
+  agencia;
+  saldo;
+
+  // adicionar comportamento ao objeto (regra do negócio)
+  // método "sacar"
+  sacar(valor){
+    if (this.saldo >= valor) {
+      this.saldo -= valor;
+    }
+  }
+}
+
+// instanciar (criar) objetos para cada cliente
+// atribuir a classe a uma variável
+const cliente1 = new Cliente ();
+cliente1.nome = 'Ricardo';
+cliente1.cpf = 11122233345;
+cliente1.rg = 123456789;
+
+const cliente2 = new Cliente ();
+cliente2.nome = 'Alice';
+cliente2.cpf = 66622233345;
+
+const contaCorrenteRicardo = new ContaCorrente();
+contaCorrenteRicardo.saldo = 0;
+contaCorrenteRicardo.agencia = 1001;
+
+// criar movimentação da conta corrente
+console.log(contaCorrenteRicardo.saldo);
+contaCorrenteRicardo.saldo = 100;
+console.log(contaCorrenteRicardo.saldo);
+
+contaCorrenteRicardo.sacar(50);
+
+console.log(contaCorrenteRicardo.saldo);
+
+console.log(cliente1, '\n', cliente2);
+
+
+
+## aula 2-2 - atributos privados
+
+// - melhorar código do saldo
+// -- depositar (saldo += quantia despositada)
+// -- comportamento "depositar" para proteger movimentação
+// --- verificar se valor é negativo
+// - limpar consoles.log desnecessários, código está funcionando
+// - código refatorado
+
+        class Cliente {
+          nome;
+          cpf;
+          rg;
+        }
+
+        class ContaCorrente {
+          agencia;
+          saldo;
+
+          sacar(valor){
+            if (this.saldo >= valor) {
+              this.saldo -= valor;
+            }
+          }
+
+          depositar(valor){
+            if (valor > 0) {
+              this.saldo += valor;
+            }
+          }
+        }
+
+        const cliente1 = new Cliente ();
+        cliente1.nome = 'Ricardo';
+        cliente1.cpf = 11122233345;
+        cliente1.rg = 123456789;
+
+        const cliente2 = new Cliente ();
+        cliente2.nome = 'Alice';
+        cliente2.cpf = 66622233345;
+
+        const contaCorrenteRicardo = new ContaCorrente();
+        contaCorrenteRicardo.saldo = 0;
+        contaCorrenteRicardo.agencia = 1001;
+
+        contaCorrenteRicardo.depositar(100);
+        contaCorrenteRicardo.sacar(50);
+
+        console.log(contaCorrenteRicardo);
+
+// - criar proteção para atributos da classe
+// -- proposta de proteção (class field declaration - GitHub)
+// --- campos privados (iniciar atributo com "#")
+// ---- não tem como acessar fora da classe
+// ---- já incorporado ao Node versão 12
+// --- iniciar o "saldo" com valor "0"
+// --- não é exibido fora da classe
+// ---- console.log dentro da classe para exibir alterações no saldo
+// --- não fica exposto, impede alterar atributo e regra
+
+      class ContaCorrente {
+        agencia;
+        #saldo = 0;
+
+        // adicionar comportamentos ao objeto (regras do negócio)
+
+        // método "sacar"
+        sacar(valor){
+          if (this.#saldo >= valor) {
+            this.#saldo -= valor;
+          }
+        }
+
+        // método "depositar"
+        depositar(valor){
+          if (valor > 0) {
+            this.#saldo += valor;
+            console.log(this.#saldo);
+          }
+        }
+      }
+
+// - criar proteção sem a proposta
+// -- é uma conveção, não bloqueia de fato mas comunidade assim considera
+// --- não deveria acessar de fora da classe
+// -- iniciar atributo com "_" (_saldo)
+
+
+// código até aqui
+
+class Cliente {
+  nome;
+  cpf;
+  rg;
+}
+
+class ContaCorrente {
+  agencia;
+  _saldo = 0;
+
+
+  sacar(valor){
+    if (this._saldo >= valor) {
+      this._saldo -= valor;
+    }
+  }
+
+  depositar(valor){
+    if (valor > 0) {
+      this._saldo += valor;
+      console.log(this._saldo);
+    }
+  }
+}
+
+const cliente1 = new Cliente ();
+cliente1.nome = 'Ricardo';
+cliente1.cpf = 11122233345;
+cliente1.rg = 123456789;
+
+const cliente2 = new Cliente ();
+cliente2.nome = 'Alice';
+cliente2.cpf = 66622233345;
+
+const contaCorrenteRicardo = new ContaCorrente();
+contaCorrenteRicardo._saldo = 0;
+contaCorrenteRicardo.agencia = 1001;
+
+contaCorrenteRicardo.depositar(100);
+contaCorrenteRicardo.depositar(100);
+contaCorrenteRicardo.depositar(100);
+contaCorrenteRicardo.sacar(50);
+
+console.log(contaCorrenteRicardo);
+
+
+
+## aula 2-3 - métodos com retorno
+
+// - criar variável para valor sacado
+// - não devolve nada (undefined)
+// - criar retorno no final do método "sacar"
+
+    sacar(valor){
+      if (this._saldo >= valor) {
+        this._saldo -= valor;
+        return valor;
+      }
+    }
+
+// - técnica "early return"
+// -- verificar primeiro tudo que não quer
+// --- método "depositar"
+// ---- soma do valor ao saldo ficará fora do "if"
+// ---- dentro do if, verificar se valor <= 0, retorna e sai da condição
+// ---- elimina todas as possibilidades que não quer
+// ---- se passar está tudo correto
+
+      depositar(valor){
+        if (valor <= 0) {
+          return;
+        }
+        this._saldo += valor;
+        console.log(this._saldo);
+      }
+
+// --- simplificar declaração da verificação
+// ---- "if" não necessita das "chaves" {} em declarações simples
+
+      depositar(valor){
+        if (valor <= 0) return;
+        this._saldo += valor;
+        console.log(this._saldo);
+      }
+
+// código completo até aqui
+
+      class Cliente {
+        nome;
+        cpf;
+        rg;
+      }
+
+      class ContaCorrente {
+        agencia;
+        _saldo = 0;
+
+        sacar(valor){
+          if (this._saldo >= valor) {
+            this._saldo -= valor;
+            return valor;
+          }
+        }
+
+        depositar(valor){
+          if (valor <= 0) return;
+          this._saldo += valor;
+          console.log(this._saldo);
+        }
+      }
+
+      const cliente1 = new Cliente ();
+      cliente1.nome = 'Ricardo';
+      cliente1.cpf = 11122233345;
+      cliente1.rg = 123456789;
+
+      const cliente2 = new Cliente ();
+      cliente2.nome = 'Alice';
+      cliente2.cpf = 66622233345;
+
+      const contaCorrenteRicardo = new ContaCorrente();
+      contaCorrenteRicardo._saldo = 0;
+      contaCorrenteRicardo.agencia = 1001;
+
+      contaCorrenteRicardo.depositar(100);
+      contaCorrenteRicardo.depositar(100);
+      contaCorrenteRicardo.depositar(100);
+
+      const valorSacado = contaCorrenteRicardo.sacar(50);
+
+      console.log(valorSacado);
+      console.log(contaCorrenteRicardo);

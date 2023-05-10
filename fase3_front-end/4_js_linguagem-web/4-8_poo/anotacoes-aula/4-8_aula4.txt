@@ -1,0 +1,369 @@
+t4f3 - 4-8 Curso: JavaScript: programando a Orientação a Objetos
+
+https://cursos.alura.com.br/course/javascritpt-orientacao-objetos
+
+
+Evernote - estudo
+
+
+Aula 4 - Acessando Atributos privados
+
+
+Parte 1 - Projeto da Aula anterior
+
+Aqui você pode baixar o projeto do curso no ponto em que paramos na aula anterior.
+
+Baixe o zip
+https://github.com/alura-cursos/js-orientacao-objetos/archive/aula3.zip
+
+ou visualize os arquivos no Github!
+https://github.com/alura-cursos/js-orientacao-objetos/tree/aula3
+
+
+
+Parte 2 - Null e undefined
+
+Transcrição
+
+Aprendemos que devemos tomar alguns cuidados quando passamos objetos como parâmetros dos métodos de nosso sistema, já que esse parâmetro atuará como referência ao próprio objeto.
+
+Isso está relacionado à maneira como o computador e o JavaScript lidam com a memória. Toda vez que instanciamos uma nova ContaCorrente, estamos reservando um espaço na memória para as informações contidas nessa classe, que são agência, cliente e saldo. Da mesma forma, quando instanciamos um Cliente estamos reservando um espaço para as informações "nome" e "cpf".
+
+Com esse espaço reservado na memória, o que temos armazenado, por exemplo, em contaCorrenteRicardo, não é o objeto em si, mas sim uma referência ao objeto criado (ao espaço de memória onde as informações podem ser manipuladas). Costumamos chamar de objetos ou instâncias as variáveis que criamos, como cliente1, cliente1, contaCorrenteRicardo e conta2, mas, estritamente falando, se tratam de referências.
+
+Isso tem algumas implicações. Por exemplo, se cliente2 = new Cliente() nos devolve uma referência para um endereço de memória, sabemos que em conta2.cliente = cliente2 estamos passando essa mesma referência de memória. Isso também significa que podemos substituir essa chamada pela instanciação direta de um novo Cliente.
+
+  const conta2 = new ContaCorrente();
+  conta2.cliente = new Cliente();
+  conta2.agencia = 102;
+
+Com isso, teremos acesso a conta2.cliente.nome - ou seja, ao tributo nome do objeto atribuído ao atributo cliente do nosso objeto conta2. Atribuiremos a ele o mesmo valor que tínhamos em cliente2.nome, "Alice". Repetiremos esse processo para conta2.cliente.cpf e comentaremos todos os pontos do código em que trabalhávamos com a variável cliente2.
+
+  //código omitido 
+  //const cliente2 = new Cliente();
+
+  //cliente2.nome = "Alice";
+  //cliente2.cpf = 88822233309;
+
+  //código omitido 
+
+  const conta2 = new ContaCorrente();
+  conta2.cliente = new Cliente();
+  conta2.cliente.nome = "Alice";
+  conta2.cliente.cpf = 88822233309;
+  conta2.agencia = 102;
+
+  let valor = 200;
+  contaCorrenteRicardo.transferir(valor, conta2);
+
+  console.log("valor: ", valor);
+  console.log(conta2);
+
+Ao executarmos, teremos o mesmo resultado obtido anteriormente.
+
+  valor: 200 ContaCorrente { agencia: 102, cliente: Cliente { nome: 'Alice', cpf: 88822233309 }, _saldo: 200 }
+
+Assim aprendemos que, trabalhando com referências, é possível acessarmos diversos níveis de profundidade. Mas o que acontece se comentarmos a linha em que criamos a instância de Cliente?
+
+  const conta2 = new ContaCorrente();
+  //conta2.cliente = new Cliente();
+  conta2.cliente.nome = "Alice";
+  conta2.cliente.cpf = 88822233309;
+  conta2.agencia = 102;
+
+  let valor = 200;
+  contaCorrenteRicardo.transferir(valor, conta2);
+
+  console.log(conta2);
+
+Ao executarmos, receberemos:
+
+  conta2.cliente.nome = "Alice"; ^ TypeError: Cannot set property 'nome' of undefined
+
+Esse erro indica que é impossível definir a propriedade nome de algo indefinido. Inclusive, se pararmos de tentar acessá-lo comentando as linhas em que fazíamos as atribuições indevidas, veremos que o objeto conta2 realmente recebeu o valor padrão undefined no atributo cliente, que não foi inicializado.
+
+  const conta2 = new ContaCorrente();
+  //conta2.cliente = new Cliente();
+  //conta2.cliente.nome = "Alice";
+  //conta2.cliente.cpf = 88822233309;
+  conta2.agencia = 102;
+
+  let valor = 200;
+  contaCorrenteRicardo.transferir(valor, conta2);
+
+  console.log(conta2);
+
+    ContaCorrente { agencia: 102, cliente: undefined, _saldo: 0 }
+
+Também obteremos o mesmo resultado se explicitamente atribuirmos o valor null à propriedade conta2.cliente.
+
+  const conta2 = new ContaCorrente();
+  conta2.cliente = null;
+  //conta2.cliente.nome = "Alice";
+  //conta2.cliente.cpf = 88822233309;
+  conta2.agencia = 102;
+
+  let valor = 200;
+  contaCorrenteRicardo.transferir(valor, conta2);
+
+  console.log(conta2);
+
+    ContaCorrente { agencia: 102, cliente: null, _saldo: 0 }
+
+Ambos os casos significam a mesma coisa, com a diferença do null estar explícito no nosso código (ou seja, é intencional). Se tentarmos acessar uma propriedade de um valor nulo, também receberemos um erro.
+
+  const conta2 = new ContaCorrente();
+  conta2.cliente = null;
+  conta2.cliente.nome = "Alice";
+  //conta2.cliente.cpf = 88822233309;
+  conta2.agencia = 102;
+
+  let valor = 200;
+  contaCorrenteRicardo.transferir(valor, conta2);
+
+  console.log(conta2);
+
+    conta2.cliente.nome = "Alice"; ^ TypeError: Cannot set property 'nome' of null
+
+Retornaremos nosso código ao estado original, com a instância de Cliente, eliminando o problema da referência indefinida ou nula.
+
+  const conta2 = new ContaCorrente();
+  conta2.cliente = new Cliente();
+  conta2.cliente.nome = "Alice";
+  conta2.cliente.cpf = 88822233309;
+  conta2.agencia = 102;
+
+  let valor = 200;
+  contaCorrenteRicardo.transferir(valor, conta2);
+
+  console.log(conta2);
+
+
+
+
+Parte 3 - Getters e Setters
+
+Transcrição
+
+No vídeo anterior aprendemos que é possível passar um objeto diretamente para uma propriedade de outro objeto, já que ele é uma referência a uma instância de uma classe. Também aprendemos que é possível passar qualquer valor para essa propriedade, como null ou mesmo 0. Por conta disso, é uma boa prática mantermos a inicialização do objeto em uma variável, já que iremos popular seus atributos - por exemplo de cliente2 - antes de utilizá-lo como atributo de outro objeto.
+
+  const cliente2 = new Cliente();
+
+  cliente2.nome = "Alice";
+  cliente2.cpf = 88822233309;
+
+  //...código omitido
+
+  const conta2 = new ContaCorrente();
+  conta2.cliente = cliente2;
+  conta2.agencia = 102;
+
+Entretanto, nada garante que durante a execução do nosso sistema, ou conforme ele é desenvolvido em parceria com outras pessoas, um valor inadequado seja passado para nosso atributo cliente, como um valor 0.
+
+  const conta2 = new ContaCorrente();
+  conta2.cliente = 0;
+  conta2.agencia = 102;
+
+  let valor = 200;
+  contaCorrenteRicardo.transferir(valor, conta2);
+
+  console.log(conta2);
+
+    ContaCorrente { agencia: 102, cliente: 0, _saldo: 0 }
+
+Anteriormente, conseguimos proteger o atributo _saldo da nossa ContaCorrente, e conhecemos a proposta para a implementação de campos privados no JavaScript. Da maneira que o definimos atualmente, o _saldo só deverá ser manipulado por meio das funções sacar(), depositar() e transferir(), que pertencem à própria classe.
+
+Para fazermos o mesmo com cliente, vamos transformá-lo em um atributo privado com a adição do underline, resultando em _cliente. Porém, se agora temos outro atributo privado, será que precisaremos criar novos métodos para atribuí-lo, como atribuirCliente(), e outro para utilizá-lo, como pegarCliente()?
+
+  export class ContaCorrente {
+      agencia;
+      _cliente;
+
+      _saldo = 0;
+
+      atribuirCliente(){}
+      pegarCliente(){}
+  //...código omitido
+
+Isso parece estranho, pois precisaremos de novos métodos para cada campo privado que tivermos em nossas classes. Pensando nisso, o JavaScript possui uma sintaxe especial para casos em que temos um atributo privado e precisaremos dar acesso a ele de maneira controlada, os chamados métodos assessores.
+
+Começaremos com o método que define _cliente. Sua construção se inicia utilizando a palavra reservada set seguida do nome que usaremos para nos referir a essa propriedade - nesse caso, cliente, sem underline e com letra minúscula. Algumas linguagens fazem diferenciação entre letras maiúsculas para propriedades e assessores desse tipo, e letras minúsculas para atributos, mas o JavaScript não. Prosseguindo, abriremos e fecharemos parênteses, definindo que esse assessor poderá receber parâmetros, e abriremos o seu escopo com chaves ({}).
+
+  export class ContaCorrente {
+      agencia;
+      _cliente;
+
+      _saldo = 0;
+
+      set cliente() {
+
+      }
+  //código omitido
+
+Note que nosso assessor se parece muito com os demais métodos da nossa classe, e ele funciona da mesma maneira. Se queremos atribuir um valor a _cliente, faremos this._cliente, dessa vez utilizando underline, já que estamos trabalhando diretamente com aquele atributo privado. Mas que valor exatamente gostaríamos de atribuir?
+
+Como citado anteriormente, nosso assessor do tiop set pode receber um parâmetro, por exemplo novoValor, o qual poderemos atribuir normalmente.
+
+  export class ContaCorrente {
+      agencia;
+      _cliente;
+
+      _saldo = 0;
+
+      set cliente(novoValor) {
+          this._cliente = novoValor;
+      }
+  //...
+
+O assessor set, diferente de um método, possui uma característica especial, permitindo que façamos a atribuição de valores normalmente com uma igualdade, sem utilizarmos a sintaxe dos outros métodos (nesse caso, algo como conta2.cliente()).
+
+  const conta2 = new ContaCorrente();
+  conta2.cliente = 0;
+  conta2.agencia = 102;
+
+  let valor = 200;
+  contaCorrenteRicardo.transferir(valor, conta2);
+
+  console.log(conta2);
+
+    ContaCorrente { agencia: 102, _cliente: 0, _saldo: 0 }
+
+Como queremos proteger nosso atributo privado, podemos incluir uma condicional definindo que a atribuição de novoValor só será feita se ele for uma instância de cliente, algo que conseguimos verificar usando o operador instanceof.
+
+    Nesse ponto precisaremos fazer a importação da classe Cliente como aprendemos nas aulas anteriores.
+
+  import { Cliente } from "./Cliente.js";
+
+  export class ContaCorrente {
+      agencia;
+      _cliente;
+
+      _saldo = 0;
+
+      set cliente(novoValor) {
+          if (novoValor instanceof Cliente) {
+              this._cliente = novoValor;
+          }
+
+      }
+  //..
+
+Ao executarmos nosso código dessa forma, o atributo _cliente será devolvido como undefined.
+
+    ContaCorrente { agencia: 102, _cliente: undefined, _saldo: 0 }
+
+Ou seja, a verificação não passou e o valor 0 não foi atribuído, recebendo um valor padrão. Se passarmos uma instância de Cliente, como cliente1, tudo ocorrerá como deveria.
+
+  const conta2 = new ContaCorrente();
+  conta2.cliente = cliente1;
+  conta2.agencia = 102;
+
+  let valor = 200;
+  contaCorrenteRicardo.transferir(valor, conta2);
+
+  console.log(conta2);
+
+    ContaCorrente { agencia: 102, _cliente: Cliente { nome: 'Ricardo', cpf: 11122233309 }, _saldo: 0 }
+
+Os assessores são muito poderosos, pois nos concedem acesso a propriedades privadas ao mesmo tempo em que nos permitem definir uma regra de proteção dentro deles. Já se for necessário pegar o valor de _cliente, precisaremos de um novo assessor, dessa vez do tipo get. Ele também será semelhante a um método, mas nesse caso simplesmente retornaremos o valor de this._cliente.
+
+  import { Cliente } from "./Cliente.js";
+
+  export class ContaCorrente {
+      agencia;
+      _cliente;
+
+      _saldo = 0;
+
+      set cliente(novoValor) {
+          if (novoValor instanceof Cliente) {
+              this._cliente = novoValor;
+          }
+
+      }
+
+      get cliente() {
+          return this._cliente;
+      }
+  //...
+
+Feito isdso, será possível acessarmos o valor de conta2.cliente normalmente.
+
+  const conta2 = new ContaCorrente();
+  conta2.cliente = cliente1;
+  conta2.agencia = 102;
+
+  let valor = 200;
+  contaCorrenteRicardo.transferir(valor, conta2);
+
+  console.log(conta2.cliente);
+
+    Cliente { nome: 'Ricardo', cpf: 11122233309 }
+
+Nesse caso, nossa maior preocupação era a criação do assessor set de modo a protegermos nosso atributo, fazendo com que somente o tipo esperado (Cliente) fosse aceito. Já no caso do atributo _saldo, que também é privado, podemos manipulá-lo por meio dos métodos sacar() e depositar(), mas ainda não temos algo que nos retorne seu valor atual para o exibirmos em uma interface gráfica. Nessa situação, precisaremos somente do assessor do tipo get, que criaremos da mesma forma que o anterior, simplesmente retornando this._saldo.
+
+  import { Cliente } from "./Cliente.js";
+
+  export class ContaCorrente {
+      agencia;
+      _cliente;
+
+      _saldo = 0;
+
+  //...código omitido
+
+      get saldo() {
+          return this._saldo;
+      }
+  //...
+
+Após essa alteração, conseguiremos receber o valor de conta2.saldo com um console.log().
+
+  const conta2 = new ContaCorrente();
+  conta2.cliente = cliente1;
+  conta2.agencia = 102;
+
+  let valor = 200;
+  contaCorrenteRicardo.transferir(valor, conta2);
+
+  console.log(conta2.saldo);
+
+    200
+
+Entretanto, se tentarmos fazer uma atribuição direta, receberemos um erro informando que não é possível atribuir um valor à propriedade saldo, já que ela só possui um método assessor de leitura (tipo get).
+
+  conta2.saldo = 30000;
+  console.log(conta2.saldo);
+
+    conta2.saldo = 30000; ^ TypeError: Cannot set property saldo of # which has only a getter
+
+Dessa forma temos um encapsulamento melhor da nossa classe, protegendo os atributos mais sensíveis e permitindo acesso somente quando assim o desejamos.
+
+
+
+Parte 4 - Encapsulando com assessores
+
+Sobre os assessores do tipo get e set marque as alternativas corretas:
+
+Alternativas corretas:
+
+Usando assessores do tipo set podemos alterar a regra de como um atributo pode ou não ser modificado sem precisar alterar isso em diversos pontos do código
+  Excelente! Essa é a ideia mesmo, assim se qualquer regra de atribuição mudar só precisamos modificar um único lugar.
+
+Usar assessores do tipo set é uma boa prática para garantirmos que a atribuição de propriedades está sempre segura
+  Sim! Chamamos essa ideia de proteger atributos de nossas classes de encapsulamento e devemos sempre manter o máximo de encapsulamento possível.
+
+Alternativa incorreta:
+
+Podemos usar assessores do tipo get para atribuir novos valores para um atributo.
+  Não, o get sempre ira te retornar um valor e não alterá-lo
+
+
+
+Parte 5 - O que aprendemos?
+
+  Diferenças entre null e undefined
+  Aprofundando nos conceitos de referências a um espaço de memória
+  Get e Set
+  Melhor encapsulamento da classe
+  Protegendo atributos sensíveis

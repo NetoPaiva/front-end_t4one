@@ -1,0 +1,612 @@
+5-8 - Curso 6 - JS Web - Crud Assíncrono
+
+# Aula 5 - Async e await
+
+
+## Parte 5-1 - Async await
+
+Refatorar as funções que aguardam o resultado de uma ação
+
+  - são funções que aguardam uma reposta
+  - para depois executar ação
+  - são funções "assíncronas"
+
+  - referência sobre funções assíncronas
+  https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Statements/async_function
+
+
+  Refatorar função que remove cliente da lista de clientes
+
+    - no arquivo "listaClientes-controller.js"
+    - dentro do método que detecta o evento para depois executar função
+    - declarar antes do parâmetro "evento"
+      - a palavra-chave que define função assíncrona (async)
+
+      tabela.addEventListener('click', async (evento) => {
+
+    - declarar antes da função "removeCliente"
+      - palavra-chave que aguarda realização da ação (await)
+
+      await clienteService.removeCliente(id)
+
+    - essas duas palavras-chave (async / await)
+    - substituem o método "then"
+      - pode deletar a expressão do método "then"
+      - mantendo apenas a ação de remover a linha (linhaCliente.remove();)
+
+      .then( () => {  });
+
+    - o código fica mais limpo e atualizado com a linguagem
+    - facilita identificação de função assíncrona
+
+  Função original com método "then"
+
+    tabela.addEventListener('click', (evento) => {
+      let botaoExcluir = evento.target.className === 'botao-simples botao-simples--excluir';
+      if (botaoExcluir) {
+        const linhaCliente = evento.target.closest('[data-id]');
+        let id = linhaCliente.dataset.id;
+        clienteService.removeCliente(id)
+        .then( () => { linhaCliente.remove() });
+      }
+    });
+
+  Função refatorada com os termos "async / await"
+
+    tabela.addEventListener('click', async (evento) => {
+      let botaoExcluir = evento.target.className === 'botao-simples botao-simples--excluir';
+      if (botaoExcluir) {
+        const linhaCliente = evento.target.closest('[data-id]');
+        let id = linhaCliente.dataset.id;
+        await clienteService.removeCliente(id);
+        linhaCliente.remove();
+      }
+    });
+
+  Refatorar a função que lista os clientes
+
+    - ainda no arquivo "listaClientes-controller.js"
+    - criar variável "render"
+    - que recebe uma função arrow anônima
+    - indicar que é função assíncrona (async)
+    - no bloco da função
+    - criar variável "listaClientes"
+    - que recebe a função importada "listaClientes"
+    - precedida do termo "await"
+    - eliminar a declaração do método "then"
+    - substituindo o retorno "data" por "listaClientes"
+    - preservando toda execução do "forEach"
+    - chamar a execução da função "render();"
+
+  Função original "listaClientes"
+
+    clienteService.listaClientes()
+  .then( data => {
+    data.forEach(element => {
+      tabela.appendChild(criaNovaLinha(
+        element.nome, 
+        element.email,
+        element.id
+        ));
+    });
+  });
+
+  Função "listaClientes" refatorada para "render"
+
+    const render = async () => {
+      const listaClientes = await clienteService.listaClientes();
+    
+      listaClientes.forEach(elemento => {
+        tabela.appendChild(criaNovaLinha(
+          elemento.nome, 
+          elemento.email,
+          elemento.id
+          ));
+      });
+    }
+    
+    render();
+
+
+Refatorar as funções que editam dados do cliente
+
+  Função que detecta evento no formulário
+
+    - no arquivo "editaCliente.js"
+    - a função que detecta evento do formulário
+    - inlcuir o termo "async" antes de declarar o evento como parâmetro
+    - incluir o termo "await" antes da função "atualizaCliente"
+    - elimina a declaração "then"
+    - mantém a URL da página de sucesso
+
+  Função original que detecta evento do formulário
+
+    formulario.addEventListener('submit', (evento) => {
+      evento.preventDefault();
+      clienteService.atualizaCliente(id, inputNome.value, inputEmail.value)
+      .then( () => {
+        window.location.href = '../telas/edicao_concluida.html'
+      })
+    })
+
+  Função refatorada que detecta evento do formulário
+
+    formulario.addEventListener('submit', async (evento) => {
+      evento.preventDefault();
+      await clienteService.atualizaCliente(id, inputNome.value, inputEmail.value)
+      window.location.href = '../telas/edicao_concluida.html'
+    })
+
+  Refatorar a função "editaCliente"
+
+    - criar variável "dados"
+    - que recebe o termo "await"
+    - para aguardar retorno com os dados do cliente
+    - elimina o método "then" e função arrow com parâmetro "dados"
+    - mantendo as variáveis que guardam os valores dos inputs
+
+
+    Função original "editaCliente"
+
+    clienteService.editaCliente(id)
+    .then( dados => {
+      inputNome.value = dados.nome;
+      inputEmail.value = dados.email;
+    })
+
+  Função refatorada "editaCliente"
+
+    const dados = await clienteService.editaCliente(id);
+    inputNome.value = dados.nome;
+    inputEmail.value = dados.email;
+
+
+  Refatorar o controlador "editaCliente"
+
+    - ainda no arquivo "editaCliente-controller.js"
+    - transformar todo o controlador "editaCliente" para auto-executável
+      - irá executa todo o código quando carregar página no navegador
+      - sintáxe IIFE
+        ( () => { }) ()
+
+    - abrir parênteses "()"
+    - incluir dentro dos parêntes
+      - o termo "async"
+      - função arrow "() => { }"
+      - incluir dentro da função arrow
+        - todo o código do arquivo
+          - exceto a linha de importação de "clienteService"
+
+  Código completo e refatorado do arquivo "editaCliente-controller.js"
+
+    import { clienteService } from "../service/cliente-service.js";
+
+    (async () => {
+      const pegaURL = new URL(window.location);
+      const id = pegaURL.searchParams.get('id');
+      const inputNome = document.querySelector('[data-nome]');
+      const inputEmail = document.querySelector('[data-email]');
+      const formulario = document.querySelector('[data-form]');
+    
+      const dados = await clienteService.editaCliente(id);
+      inputNome.value = dados.nome;
+      inputEmail.value = dados.email;
+    
+      formulario.addEventListener('submit', async (evento) => {
+        evento.preventDefault();
+        await clienteService.atualizaCliente(id, inputNome.value, inputEmail.value)
+        window.location.href = '../telas/edicao_concluida.html'
+      })
+    }) ();
+
+Refatorar as funções assíncronas de serviço
+
+  - no arquivo "cliente-service.js"
+  - são funções assíncronas (utilizam método "then")
+    - listaClinte
+    - criaCliente
+    - editaCliente
+    - atualizaCliente
+
+  Refatorar a função listaClientes
+
+    - incluir o termo "async" antes do parâmentro da função arrow
+    - inlcuir o termo "await" antes do método "fetch"
+    - eliminar o método "then" e sua função arrow
+    - no retorno, incluir o termo "await" antes de "resposta"
+
+
+    Função original "listaCliente"
+
+      const listaClientes = () => {
+        return fetch(`http://localhost:3000/profile`)
+        .then(resposta => {
+          return resposta.json();
+        })
+      }
+
+    Função refatorada "listaCliente"
+
+      const listaClientes = async () => {
+        const resposta = await fetch(`http://localhost:3000/profile`);
+        return await resposta.json();
+      }
+
+
+  Refatorar a função "criaCliente"
+
+    - incluir o termo "async" antes do parâmetro da função
+    - incluir o termo "await" antes do método "fetch"
+    - eliminar o método "then"
+    - retornar apenas o corpo da resposta
+
+    Função original "criaCliente"
+
+      const criaCliente = (nome, email) => {
+        return fetch(`http://localhost:3000/profile`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:JSON.stringify({
+            nome: nome,
+            email: email
+          })
+        })
+        .then(resposta => {
+          return resposta.body;
+        })
+      }
+
+    Função refatorada "criaCliente"
+
+      const criaCliente = async (nome, email) => {
+        const resposta = await fetch(`http://localhost:3000/profile`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            nome: nome,
+            email: email
+          })
+        });
+        return resposta.body;
+      }
+
+  Refatorar a função "editaCliente"
+
+    - incluir o termo "async" antes do parâmetro da função
+    - inlcuir o termo "await" antes do método "fetch"
+    - eliminar o método "then"
+    - no retorno, inlcuir o termo "await" antes da reposta
+
+    Função original "editaCliente"
+
+      const editaCliente = (id) => {
+        return fetch(`http://localhost:3000/profile/${id}`)
+        .then(resposta => {
+          return resposta.json();
+        })
+      }
+
+    Função refatorada "editaCliente"
+
+      const editaCliente = async (id) => {
+        const resposta = await fetch(`http://localhost:3000/profile/${id}`);
+        return await resposta.json();
+      }
+
+
+  Refatorar a função "atualizaCliente"
+
+    - incluir o termo "async" antes do parâmetro da função
+    - incluir o termo "await" antes do método "fetch"
+    - eliminar o método "then"
+    - no retorno, inlcuir o termo "await" antes da resposta
+
+    Função original "atualizaCliente"
+
+      const atualizaCliente = (id, nome, email) => {
+        return fetch(`http://localhost:3000/profile/${id}`, {
+          method: 'PUT',
+          headers: {'Content-Type' : 'application/json'},
+          body: JSON.stringify({
+            nome: nome,
+            email: email
+          })
+        })
+        .then( resposta => {
+          return resposta.json()
+        })
+      }
+
+    Função refatorada "atualizaCliente"
+
+      const atualizaCliente = async (id, nome, email) => {
+        const resposta = await fetch(`http://localhost:3000/profile/${id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            nome: nome,
+            email: email
+          })
+        });
+        return await resposta.json();
+      }
+
+
+## Parte 5-2 - Lidar com erros
+
+Tratar os erros e realizar validações
+
+  - No arquivo "cliente-service.js"
+    - tratar a resposta
+    - verificação se requisição está retornando tudo certo
+
+  Criar verificação na função "listaCliente" (if)
+    - antes do retorno
+    - criar estrutura de verificação (if)
+    - recebe a resposta como parâmetro
+      - se estiver OK
+        - retorna json da resposta
+      - caso contrário
+        - lança erro como retorno (throw)
+        - com mensagem personalizada ('Não foi possível listar "clientes"!')
+
+    const listaClientes = async () => {
+      const resposta = await fetch(`http://localhost:3000/profile`);
+      if (resposta.ok){
+        return await resposta.json();
+      }
+      throw new Error('Não foi possível listar cliente.');
+    }
+
+    - verificar erro no navegador
+      - alterar a URL do método fetch para causar erro
+      - visuzalizar a página no navegador
+        - não carregou a lista de clientes na página
+        - apareceu mensagem de erro no console
+
+  Criar verificação nas outras funções do "cliente-service.js"
+
+    - incluir a estrutura "if-throw" nas funções
+
+      - criaCliente
+        - "if" retorna "resposta.body"
+        - "throw" exibe mensagem personalizada ("não criou cliente")
+
+      const criaCliente = async (nome, email) => {
+        const resposta = await fetch(`http://localhost:3000/profile`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            nome: nome,
+            email: email
+          })
+        });
+        if (resposta.ok){
+          return resposta.body;
+        }
+        throw new Error('Não foi possível criar um cliente.');
+      }
+        
+      - removeCliente
+        - "if" não for "resposta.ok" (!)
+        - "throw" exibe mensagem personalizada ("não removeu cliente")
+
+        - estrutura com ".then"
+          const removeCliente = (id) => {
+            return fetch(`http://localhost:3000/profile/${id}`, {
+              method: 'DELETE',
+            }).then( resposta => {
+              if(!resposta.ok){
+                throw new Error('Não foi possível remover cliente.');
+              }
+            })
+          }
+
+        - estrutura assíncorna (async/await)
+          const removeCliente = async (id) => {
+            const resposta = await fetch(`http://localhost:3000/profile/${id}`, {
+              method: 'DELETE',
+            });
+            if (!resposta.ok) {
+              throw new Error('Não foi possível remover cliente.');
+            }
+          }
+
+      - editaCliente
+        - "if" não for "resposta.ok"
+        - "throw" exibe mensagem personalizada ("não editou cliente")
+
+      const editaCliente = async (id) => {
+        const resposta = await fetch(`http://localhost:3000/profile/${id}`);
+        if (resposta.ok) {
+          return await resposta.json();
+        }
+        throw new Error('Não foi possível editar cliente.');
+      }
+
+          
+      - atualizaCliente
+        - "if" retorna "resposta.jason"
+        - "throw" exibe mensagem personalizada ("não atualizou cliente")
+
+      const atualizaCliente = async (id, nome, email) => {
+        const resposta = await fetch(`http://localhost:3000/profile/${id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            nome: nome,
+            email: email
+          })
+        })
+        if(resposta.ok){
+          return await resposta.json();
+        }
+        throw new Error('Não foi possível atualizar cliente.')
+      }
+
+Exibir página de erro com as mensagens personalizadas
+
+  - Trabalhar com funções assíncronas (async/await)
+  - permite incluir ações de tentativa e erro (try/catch)
+    - caso não consiga executar tal trecho de código
+    - então executar outra ação
+
+  Incluir "try/catch" em "listaCLiente-controller.js"
+
+    - na função que detecta clique do botão "excluir"
+    - no início da estrutura de verificação (if)
+    - incluir "try"
+      - que irá tentar executar a remoção do cliente
+    - caso não consiga, realizará o "catch"
+      - exibe o "erro"
+        - redirecionando para a página "erro.html"
+
+    tabela.addEventListener('click', async (evento) => {
+      let botaoExcluir = evento.target.className === 'botao-simples botao-simples--excluir';
+      if (botaoExcluir) {
+        try {
+          const linhaCliente = evento.target.closest('[data-id]');
+          let id = linhaCliente.dataset.id;
+          await clienteService.removeCliente(id);
+          linhaCliente.remove();
+        } catch (error) {
+          console.log(error);
+          window.location.href = '../telas/erro.html';
+        }
+      }
+    });
+
+    - ainda no arquivo "listaCliente-controller.js"
+    - na função "render"
+    - incluir "try/catch" no início da função
+    - "try" para tentar executar o render
+    - "catch" para redirecionar para página de erro
+
+    const render = async () => {
+      try {
+        const listaClientes = await clienteService.listaClientes();
+    
+        listaClientes.forEach(elemento => {
+          tabela.appendChild(criaNovaLinha(
+            elemento.nome, 
+            elemento.email,
+            elemento.id
+            ));
+        });
+      } catch (error) {
+        console.log(error);
+        window.location.href = '../telas/erro.html';
+      }
+    }
+
+  Verificar erro no navegador
+
+    - no arquivo "cliente-service.js"
+    - na função "listaCliente"
+    - causar erro alterando URL
+    - navegador irá redirecionar para página de erro
+    - OK, redirecionou automaticamente
+
+    - retirando erro causado na URL
+    - redirecionamento fica inativo
+
+  Incluir "try/catch" em "editaCLiente-controller.js"
+
+    - mesmo procedimento feito em "listaCliente.js"
+    - antes da espera dos dados (dados = await)
+    - declarar o "try"
+    - para executar a espera dos dados com os valores dos campos "nome" e "email"
+    - caso dê erro (catch)
+    - exibir erro
+    - redirecionar para página de erro
+
+    try {
+      const dados = await clienteService.editaCliente(id);
+      inputNome.value = dados.nome;
+      inputEmail.value = dados.email;
+    } catch (error) {
+      console.log (error);
+      window.location.href = '../telas/erro.html';
+    }
+
+    - declarar também "try/catch" na função do clique do botão
+    - antes da espera pela atualização dos dados do cliente
+
+    formulario.addEventListener('submit', async (evento) => {
+      evento.preventDefault();
+      try {
+        await clienteService.atualizaCliente(id, inputNome.value, inputEmail.value)
+        window.location.href = '../telas/edicao_concluida.html'
+      } catch (error) {
+        console.log(error);
+        window.location.href = '../telas/erro.html';
+      }
+    });
+
+
+Refatorar "cadastraCliente-controller.js"
+
+  - transformar em função assíncrona (asunc/awiat)
+  - incluir verificação de erro (try/catch)
+
+
+  Refatorar para "async/await"
+
+    - código com ".then"
+
+    formulario.addEventListener('submit', evento => {
+      evento.preventDefault();
+      const nome = evento.target.querySelector('[data-nome]').value;
+      const email = evento.target.querySelector('[data-email]').value;
+    
+      clienteService.criaCliente(nome, email)
+      .then(() => {
+        window.location.href = '../telas/cadastro_concluido.html'
+      })
+    });
+
+    - código refatorado com "async/await"
+
+    formulario.addEventListener('submit', async (evento) => {
+      evento.preventDefault();
+      const nome = evento.target.querySelector('[data-nome]').value;
+      const email = evento.target.querySelector('[data-email]').value;
+    
+      await clienteService.criaCliente(nome, email)
+        window.location.href = '../telas/cadastro_concluido.html'
+    });
+
+  Refatorar incluindo "try/catch"
+
+    - código com "try/catch"
+
+    formulario.addEventListener('submit', async (evento) => {
+      evento.preventDefault();
+      try {
+        const nome = evento.target.querySelector('[data-nome]').value;
+        const email = evento.target.querySelector('[data-email]').value;
+    
+        await clienteService.criaCliente(nome, email)
+        window.location.href = '../telas/cadastro_concluido.html'
+      } catch (error) {
+        console.log(error);
+        window.location.href = '../telas/erro.html';
+      }
+    });
+
+
+## Parte 5-3 - Conclusão
+
+Revisão do conteúdo
+
+  - XMLHttpRequest
+  - Promise
+  - Fetch e métodos HTTP para requisições
+  - Manipulação de DOM
+  - Criação de template HTML
+  - Captura de eventos
+  - Funções assíncronas
+  - Try/catch para lidar com erros
+
+
+

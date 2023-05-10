@@ -1,0 +1,267 @@
+Curso JS - interfaces e heranças em Orientação a Objetos
+
+
+Aula 5 -   Interfaces e Duck Type
+=================================
+
+
+PARTE 1 - PROJETO DA AULA ANTERIOR
+==================================
+
+https://cursos.alura.com.br/course/javascript-polimorfismo/task/75378
+
+
+Aqui você pode baixar o projeto do curso no ponto em que paramos na aula anterior.
+
+Baixe o zip ou visualize os arquivos no Github!
+
+Projeto.zip
+https://github.com/alura-cursos/js-heranca-polimorfismo/archive/aula4.zip
+
+Repositório
+https://github.com/alura-cursos/js-heranca-polimorfismo/tree/aula4
+
+
+PARTE 2 - VERIFICANDO PROPRIEDADES E TIPOS
+==========================================
+
+Transcrição
+
+[00:00] Da maneira que temos agora nosso sistema de autenticação, vamos tomar erros quando não passarmos alguém que for autenticável para esse sistema.
+
+[00:06] Já que quando tentamos executar uma função ou um método que não existe dentro de um objeto, da maneira que estamos fazendo aqui, quando recebermos o nosso cliente que não tenha o método autenticar lá dentro.
+
+[00:16] Então na nossa index nós tentamos passar um cliente para um sistema de autenticação, esse cliente não tem o método autenticar, porque ele não deriva de nenhuma classe que tenha esse método e ele mesmo não tem esse método, vamos tomar esse erro de “TypeError”. Ele fala, autenticavel.autenticar não é uma função, eu estou querendo executar alguma coisa que não existe.
+
+[00:35] E dessa maneira nós vamos sempre tomar um erro quando receber aqui um objeto que não seja autenticável, ou seja, que não tenha uma interface que esperamos.
+
+[00:43] Como falamos, podemos tratar diferentes objetos de uma maneira similar, usando polimorfismo, então todo diretor, gerente, todo funcionário e cliente podem ser tratados da mesma maneira, desde que eles tenham uma interface padrão, uma maneira de comunicarmos e manuseá-los, que seja comum entre todos eles.
+
+[01:00] No nosso caso, para o nosso sistema de autenticação, tem que ser esse método autenticar para essa nossa interface padrão e todos esses objetos, todos eles têm que ter essa interface para que consigamos usá-los.
+
+[01:15] E como verificamos se um deles não tem? Ou se quando recebemos, alguém que seja autenticável tenha ou não esse método que nós esperamos? Vamos ter que criar um novo método aqui no SistemaAutenticacao, uma nova camada de proteção, e faremos isso com o if.
+
+[01:29] Eu vou vir aqui, fazer um if, eu vou falar que se no meu SistemaAutenticacao tiver um método ehAutenticavel, e esse método vai receber o nosso objeto autenticavel, que estamos supondo que é, e ele vai me retornar verdadeiro ou falso.
+
+[01:47] E se ele for autenticável eu vou entrar no if, então eu vou tentar chamar o método autenticar, porque eu sei que esse método existe, eu já fiz uma camada de verificação aqui. Se ele não entrar nesse if quer dizer que ele não é, se ele não é autenticável, ele não vai logar no meu sistema, então eu vou, por padrão, retornar false.
+
+export class SistemaAutenticacao{
+    static login(autenticavel, senha){
+        if(SistemaAutenticacao.ehAutenticavel(autenticavel)){
+            return autenticavel.autenticar(senha);
+        }
+        return false;
+    }
+}
+
+[02:05] Eu vou tirar aqui meu console e esse ehAutenticavel vai ser um método que eu vou criar e vai ser um método estático também, porque ele é um método que eu não preciso de uma instância para chamá-lo, eu posso chamá-lo diretamente.
+
+[02:16] Da mesma maneira que eu estou fazendo com meu SistemaAutenticacao com o método login, eu não precisei criar uma instância para chamar esse método, eu só falo que ele pertence ao sistema de autenticação e o chamo direto, porque ele é um método estático.
+
+[02:27] Método static ehAutenticavel, ele vai receber alguém que seja autenticavel, e o que eu quero saber é se existe o método autenticar() dentro desse objeto. Como faremos isso?
+
+[02:40] Eu preciso saber um pouco, para fazer isso, como o JavaScript guarda os valores de objetos quando os criamos, porque até agora trabalhamos com classes, então definimos aqui os moldes que queremos que um objeto tenha.
+
+[02:54] E nós falamos que para um funcionário, por exemplo, eu tenho que ter um nome, um salário, um CPF, uma bonificação, eu tenho que ter uma senha, eu tenho o método autenticar, eu vou ter que cadastrar senha, eu tenho uma série de propriedades e métodos que vão estar aqui dentro.
+
+[03:06] Mas como o JavaScript guarda isso na memória do computador e como eu consigo verificar se esses métodos existem ou não? Já que como vimos, aqui no JavaScript tudo é muito dinâmico, eu posso ter um funcionário que eu adicionei dinamicamente lá dentro, em tempo de execução, e eu fui lá e criei uma propriedade nova para ele.
+
+[03:21] Ou eu estou pegando um cliente e um funcionário e eu quero tratá-los da mesma maneira, então eu preciso verificar se eles têm esse método em comum.
+
+[03:29] Para fazer isso precisamos saber como o JavaScript guarda os valores. E quando criamos um novo objeto o JavaScript reserva um espaço de memória onde ele vai guardar todos os atributos e propriedades daquele objeto.
+
+[03:45] E ele faz isso através de um sistema de chave e valor. Para cada propriedade que colocamos aqui na classe Funcionário, por exemplo, _nome, _salario, _cpf, ele vai guardar isso como sendo uma chave para um endereço de memória, onde ele vai ter o nosso CPF, o nosso salário, o nosso nome, onde vamos realmente ter a informação.
+
+[04:04] E quando ele vai acessar uma classe, quando o JavaScript vem aqui e nós pedimos para ele: chama o método autenticar(), ele vai pegar esse método autenticar() e reconhecer como uma chave.
+
+[04:14] Ele vai pegar o objeto autenticavel, vai na memória do computador e fala: autenticar está me apontando para esse endereço de memória, então eu vou ter que pegar o que está nesse endereço de memória e executar. E ele trabalha nesse sistema de chave e valor.
+
+[04:31] Como ele está guardando as chaves dentro da memória do computador, podemos verificar se uma chave existe dentro desse objeto que estamos trabalhando. E para fazer isso, no SistemaAutenticacao, eu procuro pelo nome da chave,“autenticar”, que é o nome do nosso método, se essa chave existe dentro do objeto, então in autenticavel.
+
+[04:58] Essa palavra-chave ou operador in vai verificar se essa chave autenticar existe dentro desse objeto autenticavel. Se isso for verdade, ele vai me retornar verdadeiro, então eu posso dar um return. Vou retornar o que esse ”autenticar” in autenticavel me retornar.
+
+    static ehAutenticavel(autenticavel){
+       return "autenticar" in autenticavel
+    }
+
+[05:13] Dessa forma, se tentarmos executar agora o nosso código, vamos limpar o nosso console e executar de novo, podemos ver que ele retornou falso, ou seja, eu não tive aquele erro.
+
+[05:21] Ele pulou esse if da classe SistemaAutenticacao, ele falou: não existe essa chave autenticar dentro do objeto cliente que eu estou recebendo aqui, então eu vou retornar falso, porque ele não pode logar no meu sistema.
+
+[05:34] Mas se eu estou procurando só com uma chave e não estou verificando se é uma função, se eu tiver uma chave .autenticar no meu Cliente.js, então this.autenticar e eu falar que essa chave é igual a 1, ele vai ter a chave. O que será que vai acontecer agora?
+
+[05:50] Se eu vier aqui no terminal, limpar e executar de novo, podemos ver que ele também deu um erro, continua dando aquele “TypeError” de autenticar não é uma função, porque a chave agora existe no cliente, eu criei uma chave autenticar e dei o valor de 1 para ela.
+
+[06:03] Só que quando meu sistema de autenticação procura a chave autenticar, ele está procurando uma função, porque ele está executando essa função, e para executar essa função elas têm que ser do tipo de uma função.
+
+[06:13] Aqui no SistemaAutenticacao eu tenho que fazer uma segunda verificação, eu tenho que verificar se o autenticar existe dentro do meu autenticavel, e vou pôr o meu operador &&, e se o meu autenticavel.autenticar é do tipo de uma função, se ele é uma instância de uma função, ele é um instanceof de função.
+
+[06:36] Vou só pular uma linha, para ficar mais fácil de ler. O autenticavel.autenticar, essa chave que eu estou procurando tem que estar dentro do objeto e ela tem que ter uma instância de uma função.
+
+    static ehAutenticavel(autenticavel){
+       return "autenticar" in autenticavel &&
+        autenticavel.autenticar instanceof Function
+    }
+
+[06:45] Então um método, quando está dentro de um objeto, também é um objeto, é um objeto dentro do outro, por isso que nós colocamos uma função que é um construtor de função, é uma maneira de chamarmos os nossos métodos.
+
+[06:58] Todo método dentro de um objeto, todo método que temos, autenticar(), cadastrarSenha(), sacar(), depositar(), que nós criamos, são instâncias de uma função. E temos só essa maneira sintática de criá-los, de uma maneira fácil, sem ficar dando new toda hora que criarmos uma função dentro de um objeto.
+
+[07:15] E se eu limpar meu console e executar, de novo, ele não vai conseguir logar, porque existe a chave autenticar, mas ela não é uma função, ela não é um método que eu posso chamar.
+
+[07:26] E se eu tiver no meu Cliente.js, ao invés dessa chave dessa maneira this.autenticar, uma função, de fato, vamos criar o nosso autenticar(), e ele vai ser uma função, eu vou retorná-lo como true, aí sim eu vou ter o meu login sendo feito com sucesso, então eu consigo autenticar, porque agora eu sei que meu sistema de autenticação recebeu alguém que é autenticável de verdade.
+
+[07:52] Essa é uma maneira que conseguimos precaver alguns tipos de erros que podem acontecer no nosso sistema, em tempo de execução. Quando repassamos o selo de autenticação alguma coisa que não é o que ele espera, ele já trata isso de uma maneira fácil, de não estourar um erro na tela do computador.
+
+[08:09] E nós sabemos agora como verificar se uma chave existe dentro de um objeto e como verifica se um objeto é uma instância de outro. Se é uma propriedade, é uma instância de um objeto.
+
+[08:18] Aqui no SistemaAutenticacao eu poderia pôr um instanceof de Cliente ou de qualquer outro objeto que eu tenha definido. Estaremos sempre usando função para esse caso específico, porque eu quero chamar de verdade uma função, eu quero executar essa função.
+
+
+
+PARTE 3 - N OBJETOS E UM COMPORTAMENTO
+======================================
+
+Ao criarmos o Sistema de Autenticação do bytebank, precisamos autenticar diversas classes com esse sistema. Como isso é possível?
+
+Isso é possível porque o JS não é uma linguagem fortemente tipada e por isso não depende apenas dos tipos pré-definidos mas sim se eles possuem ou não as propriedades que queremos utilizar.
+  Exatamente, assim não estamos limitados aos tipos e sim as interfaces que as classes expões.
+
+
+Através do polimorfismo o JS consegue tratar diferentes objetos de maneiras semelhantes e por isso conseguimos autenticar diferentes tipos de objetos em nosso sistema
+  Sim! O Polimorfismo é uma ferramenta muito importante dentro das linguagens de programação, por isso é importante que você saiba como utilizá-lo
+
+
+PARTE 4 - DUCK TYPE
+===================
+
+
+Transcrição
+
+[00:00] Até agora nós vimos as propriedades e o quão poderoso é o polimorfismo, que é aquela propriedade de tratarmos objetos diferentes de maneiras similares.
+
+[00:09] Fizemos aqui com o nosso sistema de autenticação, passamos um gerente, um diretor e um cliente para esse sistema de autenticação, e com uma única função, um único método dentro do nosso sistema de autenticação, que é esse login, o nosso método para a pessoa logar dentro do nosso sistema.
+
+[00:22] Conseguimos verificar vários tipos de objetos diferentes, conseguimos fazer a autenticação de um diretor, de um gerente, de um cliente, tanto de classes que estão dentro de uma árvore de herança, onde todas elas têm o método autenticar, quanto de um objeto que não tem herança nenhuma, que é um objeto solto, que também tem o método autenticar().
+
+[00:41] Dessa maneira conseguimos ver quão poderoso é o polimorfismo, e é uma das coisas fundamentais de orientação a objetos. Orientação a objetos tem dois pilares muito importantes, polimorfismo, que é essa habilidade de tratarmos objetos diferentes de maneiras semelhantes, isso vai economizar muito código e economizar muitos if's nosso código.
+
+[00:59] Porque pense que no nosso SistemaAutenticacao, se eu tivesse que ficar verificando todos os tipos, se o autenticável for uma instância – já que já vimos o instanceof – de Cliente, eu teria que chamá-lo de um jeito. Se ele fosse uma instância de diretor, eu teria que chamá-lo de outro. Se ele fosse uma instância de Gerente, eu teria que chamá-lo de outro.
+
+[01:29] Para evitar esse monte de if's possíveis de fazer, no caso nós teríamos três if's. Eu não preciso de tudo isso porque eu estou falando: autenticavel, esse parâmetro que eu estou recebendo, não me interessa se ele é um instância de Cliente, de Gerente, de Diretor, se ele é uma instância de qualquer outra coisa.
+
+[01:48] Me interessa é que ele tem o comportamento e as propriedades específicas que eu estou utilizando, me interessa que ele tenha o método autenticar(). É isso que me interessa e é isso que vou verificar aqui. Essa é a única verificação que estamos fazendo e nós não nos importamos tanto com o tipo daquele objeto.
+
+[02:05] Inclusive, essa maneira de trabalhar tem um nome e chama duck typing, é o tipo do pato. O duck typing é muito comum em linguagens que são fracamente tipadas.
+
+[02:17] Em linguagens fortemente tipadas, onde dentro do login eu teria que definir qual é o tipo dele, eu teria que definir se ele é um diretor ou se ele é um funcionário e assim por diante, colocando aqui um tipo na frente do meu parâmetro de login, eu não teria esse problema, porque o próprio compilador estaria verificando isso para mim.
+
+[02:37] Mas em linguagens que são interpretados e fracamente tipadas, como o JavaScript, o duck typing tem essa característica muito presente.
+
+[02:45] Porque se formos ver formalmente, vim aqui no verbete da Wikipedia para duck typing, acessível neste link, em programação é a aplicação do teste do pato, como eles estão falando aqui. Se ele anda como um pato, se ele faz "quack" como um pato, ele deve ser um pato, no sentido de que não me interessa se ele é de verdade um pato, me interessa que ele anda como um pato e que ele faz "quack" como um pato. Se ele é um pato de verdade ou não, tanto faz.
+
+[03:10] Traduzindo isso para programação, não me interessa o tipo dele, me interessa o que aquele objeto consegue fazer. Se ele tem a presença de ter determinados métodos e propriedades. Dessa maneira que nós trabalhamos com o JavaScript, usando duck typing.
+
+[03:24] Não me interessa se ele é do tipo Cliente, do tipo Funcionario, do tipo ContaCorrente, me interessa se ele tem o método e a propriedade que eu quero utilizar, se ele tem aquilo, eu vou utilizar independentemente do tipo. Por isso nós falamos que é o duck typing, ele passa o teste do pato. Se ele tem a propriedade que eu quero usar, então eu vou usá-lo dessa maneira.
+
+[03:41] E o polimorfismo é essa ferramenta superimportante para orientação a objetos, para o nosso sistema, para conseguirmos tratar objetos diferentes economizando e reutilizando código de uma maneira bem legal.
+
+[03:54] Outro pilar muito importante da orientação a objetos é o encapsulamento, que vimos bastante no curso anterior, onde queremos proteger o máximo possível as propriedades e os atributos que são sensíveis à nossa classe. Vimos muito isso na nossa conta, no geral.
+
+[04:11] Numa conta eu quero proteger o cliente, eu quero proteger o saldo e eu tenho maneiras de fazer isso. Eu terei os meus assessores, como o get e o set, eu vou ter um método que está na linguagem do negócio e que faz o manuseio dessas propriedades internas no meu objeto, sem precisarmos expor isso para outras classes. Então encapsular o comportamento é outra coisa superimportante da orientação a objetos.
+
+[04:35] Só queria deixar bem claro esses dois pontos, orientação a objetos tem herança, tem propriedades, tem métodos, tem uma série de coisas, mas duas coisas superimportantes são polimorfismo e encapsulamento. Se você sair desse curso com essas duas coisas na cabeça, eu já estou feliz.
+
+
+Links:
+
+  Duck typing (Wikipedia)
+  https://pt.wikipedia.org/wiki/Duck_typing
+
+
+
+PARTE 5 - FAÇA COMO NA AULA
+===========================
+
+
+Praticar ajuda bastante no aprendizado de um novo conceito. Assim, é muito importante que você implemente o que foi apresentado nesta aula.
+
+Opinião do instrutor
+  Não deixe de sanar suas dúvidas antes de dar continuidade ao curso. Estaremos te esperando no fórum da Alura caso alguma dúvida surja.
+
+
+
+PARTE 6 - RESUMO DA AULA
+========================
+
+O que aprendemos nessa aula:
+
+    operador in
+
+    operador instanceof
+
+    Como proteger nossos sistemas
+
+    interfaces padronizadas
+
+    Ducky Type
+
+
+
+PARTE 7 - PROJETO FINAL DO CURSO
+================================
+
+Aqui você pode baixar o projeto final do curso.
+
+Baixe o zip ou visualize os arquivos no Github!
+
+Links
+
+Projeto-final.zip
+https://github.com/alura-cursos/js-heranca-polimorfismo/archive/aula5.zip
+
+Respositório
+https://github.com/alura-cursos/js-heranca-polimorfismo/tree/aula5
+
+
+
+PARTE 8 - CONCLUSÃO
+===================
+
+
+Transcrição
+
+[00:00] Parabéns por ter chegado no final desse curso. Terminamos nosso curso de orientação a objetos, a segunda parte dele aqui na Alura, e quanta coisa que nós vimos.
+
+[00:08] Nós exploramos muito mais esse mundo da orientação a objetos e de como trabalhar de maneira segura, de maneira confiável, reutilizando código e compartilhando comportamentos dentro dos objetos.
+
+[00:18] Nós terminamos de fazer nosso sistema de tratamento de contas para o ByteBank, então temos uma classe mãe Conta, onde conseguimos ter todo o comportamento que é compartilhado entre todas as contas. Vimos que faz sentido essa classe ser abstrata, porque eu não quero que ninguém a instancie diretamente, então vimos classes abstratas.
+
+[00:37] Vimos métodos abstratos, porque vimos que cada tipo de conta vai ter uma ligeira diferença no método sacar(), então eu quero garantir que todo mundo implemente, pergunte se não souber, como isso tem que ser implementado para o nosso cliente, para o ByteBank ter que especificar isso para nós.
+
+[00:52] O método abstrato serve para definirmos uma interface padrão, que todo mundo vai ter esse método, mas temos que definir como cada um vai realmente executá-lo.
+
+[01:01] Vimos métodos privados para conseguirmos chamá-los e reaproveitar mais código. Vimos herança, como temos a nossa classe Conta base, conseguimos herdar dela e só mudar o que precisávamos. Sobrescrever métodos, vimos também sobrescritas de métodos.
+
+[01:17] Criamos nossa ContaSalario, nossa ContaCorrente, nossa ContaPoupanca, de uma maneira fácil de trabalharmos, sem precisarmos criar outro tipo de conta ou criar algum comportamento específico para cada tipo de conta, nós conseguimos.
+
+[01:28] Se quisermos um comportamento geral que vai ser compartilhado, nós conseguimos trazer para a Conta também. Vimos várias formas de trabalhar com conta, encapsulamento, métodos abstratos e classes abstratas.
+
+[01:40] Além de vermos agora no final polimorfismo, que é a propriedade superimportante de orientação a objetos, onde tratamos objetos diferentes de uma maneira similar. Temos nosso Diretor, nosso Gerente, nosso Cliente, todos sendo tratados da mesma maneira pelo nosso sistema de autenticação, já que é um único sistema de autenticação e eu quero reutilizar código o máximo possível.
+
+[02:00] Lógico que sempre pensando nas boas práticas de programação e mantendo a legibilidade e a comunicação no nosso código de uma maneira eficiente.
+
+[02:08] Não adianta eu só reutilizar código loucamente se não estou comunicando direito, se aquele código não fala com a pessoa que o está desenvolvendo ou com um cliente de uma maneira legal.
+
+[02:18] Uma coisa que falamos muito no primeiro curso e continuamos falando aqui é da importância de termos métodos, interfaces e maneiras de comunicar no código a nossa intenção.
+
+[02:28] Código é muito sobre intenção, vamos receber o pedido de um cliente e queremos interagir, colocar isso em código, colocar isso na linguagem que estamos trabalhando dentro do sistema.
+
+[02:37] Porque estamos trabalhando com uma intenção e essa intenção tem que estar clara para todo mundo que depois vai olhar aquele código e falar: "Eu consigo ler isso aqui como se ele fosse português", por exemplo. "Eu não preciso entender de código especificamente para entender o que isso daqui está querendo fazer", pelo menos num nível mais alto de abstração, como falamos.
+
+[02:54] Lógico que em algum momento você vai ter os pormenores ali e o detalhe da linguagem, assim como temos aqui no ehAutenticavel, eu tenho que conhecer o operador in, o operador instanceof, mas no geral, esse método, se eu não souber de nada disso, eu estou perguntando, ele é autenticável? Se ele não é, eu não quero fazer mais nada.
+
+[03:11] Então temos essa comunicação dentro do nosso código muito legal, que deixa o nosso código muito fácil de entender e mais fácil ser trabalhado por todo o resto da equipe.
+
+[03:20] Foi um curso de orientação a objetos, vimos vários conceitos, mas tem muitas outras coisas de boas práticas que vimos também aqui no meio. E acabamos fazendo um sistema bem grande, então terminamos nosso sistema de contas, fizemos o sistema básico de funcionários, fizemos o sistema de autenticação, várias coisas que aprendemos nesse curso.
+

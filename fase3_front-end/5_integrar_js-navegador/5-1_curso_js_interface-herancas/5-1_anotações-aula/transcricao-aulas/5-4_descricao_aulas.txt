@@ -1,0 +1,374 @@
+Curso JS - interfaces e heranças em Orientação a Objetos
+
+
+Aula 4 - Sistema interno 
+=================================
+
+
+PARTE 1 - PROJETO DA AULA ANTERIOR
+==================================
+
+https://cursos.alura.com.br/course/javascript-polimorfismo/task/75377
+
+
+Aqui você pode baixar o projeto da aula anterior.
+
+Baixe o zip ou visualize os arquivos no Github!
+
+
+Projeto.zip
+https://github.com/alura-cursos/js-heranca-polimorfismo/archive/aula3.zip
+
+Respositório
+https://github.com/alura-cursos/js-heranca-polimorfismo/tree/aula3
+
+
+PARTE 2 - CRIANDO FUNCIONÁRIOS
+==============================
+
+Transcrição
+
+[00:00] Com o que fizemos até agora, temos um sistema fácil para trabalhar, quando quisermos criar novos tipos de conta. Se o ByteBank por acaso quiser uma conta empresarial, criaríamos um novo arquivo para uma nova classe chamada ContaEmpresarial, já que queremos sempre trabalhar na linguagem do cliente, para ficar fácil de entender onde estão as coisas dentro do nosso código, o que o cliente espera daquele código quando falamos com ele.
+
+[00:21] E criamos essa conta, estendemos a nossa classe base Conta, que é uma classe abstrata, como criamos nas últimas aulas. E agora temos todas as funcionalidades aqui dentro, de como uma conta deve funcionar. Então estamos reutilizando código, estamos reutilizando as propriedades saldo, cliente, agência; reutilizando os assessores que já vimos, todo o encapsulamento já está feito para nós.
+
+[00:42] A única coisa que precisamos nos preocupar quando criamos um novo tipo de conta, por enquanto, é sobrescrever o método sacar(), já que ele é um método abstrato, e como o banco falou, todo tipo de conta vai ter uma taxa diferente, então temos que aplicar essa taxa na hora de sacar dinheiro, e vamos adicionar no máximo aqueles comportamentos específicos daquele tipo de conta, então o código normalmente fica muito menor.
+
+[01:04] Só que agora o ByteBank veio para nós e falou: "Eu tenho vários funcionários dentro do meu banco e eu queria um sistema para esses funcionários utilizarem. Vocês podem criar para nós um sistema para os meus gerentes e diretores?", então vamos criar esse sistema para os gerentes e diretores.
+
+[01:17] Eu vou fechar toda essa parte de conta que estamos usando, porque vamos mudar e vamos trabalhar com outro sistema agora. Abri minha pasta do projeto e antes de continuar eu vou organizar esse projeto, já que agora as coisas vão começar a se misturar.
+
+[01:29] Eu não tenho só contas no meu sistema, eu vou ter contas, funcionários e a minha classe Cliente. Uma boa prática é sempre mantermos o nosso projeto organizado, então eu vou abrir uma nova pasta, vou chamá-la de "Conta", e eu vou trazer todos os meus arquivos do tipo conta para dentro daquela pasta.
+
+[01:46] Ele vai me perguntar se eu quero mover, vamos movê-las de uma vez. A nossa Conta continua igual, a nossa ContaCorrente continua igual, o import ainda está dentro da mesma pasta, mas se formos na index.js, esses imports da ContaCorrente, ContaPoupanca e ContaSalario têm que estar agora referenciados para os arquivos que estão dentro dessa pasta "Conta".
+
+[02:04] Então eu vou vir aqui e digitar Conta/ em todos esses imports, "./Conta/ContaCorrente.js", "./Conta/ContaPoupanca.js" e "./Conta/ContaSalario.js", então vamos copiar e colar esse import, para não termos um problema de referência de arquivo.
+
+[02:15] Fazendo isso, já temos o nosso import certo, o Cliente ainda está na pasta raiz. Vamos fechar minha conta, porque não estou mais trabalhando com ela e agora vamos trabalhar na nossa classe de funcionários.
+
+[02:25] E para os funcionários, o banco falou que precisamos do nome deles, do CPF deles e vamos precisar também do salário, já que todo funcionário recebe salário.
+
+[02:32] Vamos fechar essa conta, vamos abrir uma nova pasta, já vamos começar com uma pasta criada para funcionários, chamada “Funcionario”. Ele criou a pasta dentro da pasta “Conta”, eu quero fora, então vamos clicar, arrastar e mover a pasta “Funcionario” para fora da pasta “Conta”.
+
+[02:48] E dentro dela eu vou criar primeiro o nosso gerente. Vamos criar um novo arquivo, Gerente.js, que é um módulo, então eu quero exportar a classe que eu estou criando aqui dentro. Vamos fechar a minha aba lateral para termos mais espaço, eu vou exportar a minha classe Gerente, export class Gerente.
+
+[03:06] E se todo funcionário do banco vai ter que ter um salário, um nome e um CPF, eu vou pôr isso dentro do constructor(), são as propriedades que vamos precisar. Então vamos ter o this.nome, o this.salario e o this.cpf, que vão ser coisas que eu vou receber por parâmetro. E como ele falou, o nosso gerente e o nosso diretor terão essas três propriedades.
+
+export class Gerente{
+    constructor(){
+        this.nome;
+        this.salario;
+        this.cpf;
+    }
+ }
+
+[03:34] E se olharmos aqui, temos algumas coisas. Se o gerente e o diretor terão essas mesmas propriedades, quer dizer que eu vou ter código duplicado. Significa que eu teria esse mesmo código para o meu gerente.
+
+[03:44] Então vamos na pasta “Funcionario” criar um novo arquivo e criar o arquivo Diretor.js, copiar o código de Gerente e colar no Diretor.js. E se mudarmos aqui para export class Diretor, teríamos teoricamente a mesma funcionalidade que o banco quer.
+
+[03:56] Se eu tenho o diretor e se eu tenho o gerente, podemos ver que tem código duplicado e já vimos como trabalhar com isso. E como trabalhamos com isso? Fazendo uma herança. E dessa vez faremos uma herança para outra classe que tenha essas três propriedades.
+
+[04:09] Eu vou fazer uma herança para a minha classe Funcionario, já que tanto o meu diretor quanto o meu gerente são funcionários. Dentro da pasta “Funcionario” eu vou criar um novo arquivo e vou chamá-lo de Funcionario.js, e essa será minha classe base.
+
+[04:24] E essa minha classe base, eu vou exportá-la também, porque eu vou querer que todas as outras classes que sejam funcionários herdem dela. Então, export class Funcionario. Esse funcionário vai ter aquelas propriedades, então ele vai ter aquele construtor que vimos. Todo funcionário vai ter um nome, um salário e um CPF.
+
+[04:42] E a outra boa prática que não estamos fazendo aqui é começar tudo como se fosse privado, eu não quero expor as minhas propriedades, então eu vou inicializá-las sempre como sendo privadas. Só essa classe tem direito de mexer nela, essa e as classes filhas, então quem herda dela tem direito de mexer nessas propriedades. E as propriedades nome, salário e cpf vão vir pelo construtor.
+
+[05:01] Então constructor(nome, salario, cpf). E vamos atribuir aqui no construtor, então nome vai ser igual a nome, o salário vai ser igual a salário e meu CPF vai ser igual ao CPF que eu recebi. Temos essas três propriedades aqui.
+
+export class Funcionario{
+    constructor(nome, salario, cpf){
+        this._nome = nome;
+        this._salario = salario;
+        this._cpf = cpf;
+    }
+}
+
+[05:15] E se eu tenho três propriedades, eu tenho uma classe e eu quero que seja herdada lá no meu Diretor, eu vou ter um construtor por enquanto vazio, já veremos como vamos ficar nele, meu Diretor também vai ser um construtor vazio, logo veremos como vamos mudá-lo. Só que tanto o meu Diretor quanto o meu Diretor vão estender, então eles vão herdar, extends Funcionario.
+
+[05:35] Eles vão estender a minha classe Funcionario para conseguirmos fazê-los funcionarem da maneira que o nosso cliente quer. A mesma coisa para o diretor, eles vão estender, então extends Funcionario. E eu tenho que pôr a extensão .js na minha importação do arquivo, porque senão o módulo do JavaScript não funciona.
+
+[05:54] E tanto o nosso diretor quanto o nosso gerente terão que receber, (nome, salario, cpf), e passar isso para a minha instância superior, para o meu funcionário. Eu vou ter que chamar aqui o meu construtor super com (nome, salario, cpf). Os dois construtores dessa classe são iguais.
+
+[06:18] E você deve estar se perguntando: “Já que eles são iguais” - inclusive eu estou copiando e colando o meu construtor, eu só vou indentar tudo com o comando de indentação, “Alt + Shift + F”, ele indenta tudo para mim. - “Mas se eles são construtores iguais, qual vai ser a diferença entre Diretor e Gerente?”.
+
+[06:35] Aqui, no caso, o ByteBank nos falou que a diferença entre um diretor e um gerente é que o diretor e o gerente têm bonificações diferentes. Então na minha classe Funcionario, além do nome, do CPF e do salário, eu vou ter uma bonificação, eu vou ter um this._bonificacao. E essa bonificação, vamos falar que ela inicialmente vai ser igual a 1, se estivermos trabalhando em porcentagem, ela é igual a 100%, minha bonificação vai dobrar o meu salário.
+
+export class Funcionario{
+    constructor(nome, salario, cpf){
+        this._nome = nome;
+        this._salario = salario;
+        this._cpf = cpf;
+
+        this._bonificacao = 1;
+    }
+ }
+
+[07:06] Só que o meu gerente e o meu diretor têm bonificações diferentes, então teremos que passar essa bonificação de forma diferente, tanto para o meu gerente quanto para o meu diretor.
+
+[07:14] E para o gerente teremos uma bonificação, this._bonificacao = 1.1, então o gerente tem uma bonificação de 1.1, ele vai ter o salário dele mais 10%. Enquanto que o diretor vai ter uma bonificação de duas vezes o salário dele, this._bonificacao = 2. Essas são as diferenças entre o diretor e o gerente.
+
+[07:35] Além do que, um diretor tem um nível de acesso no sistema que vamos criar mais pra frente, maior, e um gerente vai ter um nível de acesso menor no sistema que estamos criando, eles terão acesso a dados diferentes, por isso é importante já termos aqui as classes separadas, porque o banco já nos falou: "Eu preciso de um gerente, eu preciso de um diretor e eles vão trabalhar de maneiras diferentes".
+
+[07:56] Agora já temos o nosso diretor e o nosso gerente criados, já temos a nossa classe Funcionario inicialmente criada só com as propriedades, e vamos explorar um pouco mais de como esse sistema tem que funcionar daqui a pouco.
+
+
+
+PARTE 3 - POLIMORFISMO
+======================
+
+Transcrição
+
+[00:00] Como vimos, temos agora dois funcionários, um gerente e um diretor, e precisamos criar nosso sistema de autenticação, já que para eles usarem o sistema que o ByteBank pediu para criarmos, aquele sistema interno do banco, vamos precisar autenticar esses funcionários e para autenticar esses funcionários vamos precisar saber a senha deles. Eles vão ter que ter uma senha para conseguirem se autenticar.
+
+[00:20] Lá na minha classe Funcionario, já que eu vou ter meu diretor e meu gerente podendo usar esse sistema de autenticação, eu vou vir aqui na classe Funcionario e vou colocar uma senha, então this._senha, vamos ter uma senha aqui no nosso funcionário.
+
+[00:37] E essa senha será cadastrada depois, já que primeiro eu vou criar um funcionário e depois eu vou pegar essa senha, então eu vou ter aqui um método chamado "cadastrar senha", onde configuramos essa senha para a pessoa usar.
+
+[00:51] Eu vou chamar o método cadastrarSenha, e ele vai receber uma (senha) e ele vai atribuir inicialmente ao this._senha para a senha que foi pedida. Vamos agora ter esse cadastro de senha tanto no Diretor quanto no Gerente, porque os dois vão utilizar aquele sistema interno que estamos criando.
+
+[01:16] Vamos lá no nosso index.js, eu vou apagar o que temos aqui, porque não estamos usando mais as contas, eu só vou querer agora deixar o meu Cliente, porque vamos usá-lo mais para frente. Eu vou deixar aqui, vamos importar a minha classe Gerente e vamos instanciá-la, então: import {Gerente} from "./Funcionario/Gerente.js".
+
+[01:43] E eu vou pegar essa mesma linha, vamos copiá-la logo abaixo, só mudando que eu não quero o gerente, eu quero que seja a classe Diretor, então vou dar dois cliques, "Ctrl + D", ele acha a próxima referência aqui no VS Code e eu consigo mudar ao mesmo tempo, adicionar dois cursores, porque ele achou duas referências.
+
+[02:00] Então dois cliques, “Ctrl + D”, ele pega a próxima referência da palavra. Se ficar dando “Ctrl + D” direto, ele vai achar a próxima e a próxima. Se eu pegar o import, “Ctrl + D” duas vezes, ele acha as duas próximas referências. Assim conseguimos editar o nosso código um pouco mais rápido.
+
+[02:14] E agora eu vou instanciar um novo diretor, então const diretor = new Diretor, esse diretor vai ter que ter um nome, vamos pôr aqui "Rodrigo", um salário de um diretor, vamos falar que ele ganha 10000 e o CPF dele é 12345678900.
+
+[02:39] E eu vou ter agora também um gerente, const gerente = new Gerente, e o nome dele vai ser “Ricardo”, o salário, vamos pôr que um gerente ganha metade de um diretor, então vai ser 5000 e o CPF 12378945601, o CPF um pouco diferente.
+
+import {Cliente} from "./Cliente.js";
+import {Gerente} from "./Funcionario/Gerente.js"
+import {Diretor} from "./Funcionario/Diretor.js"
+
+const diretor =  new Diretor("Rodrigo", 10000, 12345678900);
+const gerente =  new Gerente("Ricardo",  5000, 12378945601);
+
+[03:11] Agora tenho o meu diretor e o meu gerente, só que queremos ter um sistema de autenticação, eu quero conseguir fazer com que ele se logue nesse sistema. O que eu quero fazer é ter um SistemaAutenticacao.login, eu quero que eles entrem nesse sistema. Para fazer o login, eu vou passar que é o diretor que está querendo se logar e vou passar uma senha para ele, "123456789", essa é a senha do meu diretor.
+
+[03:37] E eu tenho que criar um sistema de autenticação e dar um login nele. Você pode ver que a sintaxe que eu usei aqui é um pouco diferente, ela parece muito aquela sintaxe que tínhamos quando estávamos usando o estático, quando tínhamos nossa classe, por exemplo, da ContaCorrente, o nosso número de contas, o ContaCorrente.numeroDeContas me dava acesso a uma propriedade estática do meu código.
+
+[03:59] E aqui eu quero que o meu sistema de autenticação tenha um método estático chamado "login", então essa palavra-chave static serve tanto para propriedades quanto para métodos. Então eu vou criar o nosso sistema de autenticação, vamos copiar esse nome aqui, "SistemaAutenticacao".
+
+[04:14] Vamos sair da minha da minha pasta, criar um novo arquivo, SistemaAutenticacao.js e eu quero que essa classe, então eu quero usar uma classe, export class SistemaAutenticacao, ela vai ter um método estático, eu vou pôr aqui static login.
+
+[04:32] E esse método estático login() vai receber o funcionário, quem está se logando, e vai receber uma senha. Eu quero que esse método login() retorne verdadeiro quando a senha do meu funcionário for igual a senha que foi passada pelo parâmetro senha do meu login().
+
+[04:52] Então o que eu quero fazer é funcionario.senha tem que ser igual a senha. Se isso for verdadeiro, eu vou retornar que ele está logado, então eu vou retornar só essa expressão, funcionario.senha == senha.
+
+export class SistemaAutenticacao{
+    static login(funcionario, senha){
+       return funcionario.senha == senha;
+    }
+}
+
+[05:08] Ele vai avaliar essa expressão, como ela é uma expressão de verificação de igualdade, porque eu estou fazendo a expressão booleana aqui, então funcionario.senha tem que ser igual a senha, isso vai me retornar verdadeiro ou falso e o que ele me retornar é o que eu devolvo para o meu login. Dessa maneira conseguimos fazer.
+
+[05:24] Você pode ver que eu tenho que acessar a senha do funcionário, e aí a importância de começarmos as coisas sempre com o método de propriedades privadas, porque não sabemos exatamente como teremos que acessar. Mas a senha, por exemplo, é uma informação sensível.
+
+[05:39] Lá nos meus funcionários eu vou querer vir aqui e deixar que essa senha que vai ser cadastrada tenha que ser cadastrada de maneira segura. E eu preciso expô-la para o meu sistema de autenticação funcionar, eu também quero expô-la de maneira segura, então eu vou criar aqui, no Funcionario.js, um assessor chamado get senha(), que vai retornar a nossa senha. Ele vai ser uma propriedade de somente leitura, ele vai retornar o this._senha.
+
+[06:06] Dessa maneira nós conseguimos manter o encapsulamento da nossa classe, expondo só o que precisamos. Essa propriedade senha, ninguém consegue atribuí-la, eu só consigo atribuí-la através do cadastrarSenha(), e aqui eu posso ter outras seguranças para chamar esse método cadastrarSenha(), mas o meu sistema de autenticação só se preocupa com esse assessor get.
+
+[06:24] Se testarmos isso agora, vamos lá no index.js, vamos pegar o SistemaAutenticação.login e eu quero ver se ele está logado, const estaLogado vai ser igual ao retorno que essa função me der, SistemaAutenticacao.login(diretor, “123456789”). E eu vou dar só um Console.log nesse estaLogado, porque eu quero saber se a pessoa se logou ou não.
+
+const diretor =  new Diretor("Rodrigo", 10000, 12345678900);
+const gerente =  new Gerente("Ricardo",  5000, 12378945601);
+
+const estaLogado = SistemaAutenticacao.login(diretor, "123456789");
+
+console.log(estaLogado);
+
+[06:44] Vamos abrir o meu terminal e eu vou pedir para ele executar, node index.js e ele vai executar. E ele está informando que SistemaAutenticacao não foi encontrado, porque eu não importei esse sistema, então eu tenho que pedir para ele importar.
+
+[07:03] No index.js, Se eu der um “Ctrl + Espaço”, ele não fez nada, então ele não está pegando autocomplete, vamos fazer na mão mesmo, import {SistemaAutenticacao} from "./SistemaAutenticacao.js". E dessa forma ele já vai importar para nós.
+
+[07:22] Vamos limpar esse console, vamos abri-lo um pouco e pedir para ele executar de novo. E agora sim. Você pode ver que ele não conseguiu se cadastrar, então essa senha não é a senha do meu diretor.
+
+[07:35] Isso porque o meu diretor não tem uma senha ainda, então vamos cadastrar a senha para ele. Então diretor.cadastrarSenha e vamos cadastrar a senha dele como "123456". Agora que ele tem uma senha cadastrada, vamos limpar e ele não deu ainda, porque a minha senha não está igual.
+
+[07:51] Agora vou inserir "123456" como parâmetro de SistemaAutenticacao.login, seu eu salvar esse arquivo e pedir para ele executar, agora ele deve vir como verdadeiro, então dessa vez ele conseguiu se logar. Já temos o sistema de login bem básico, não é um sistema, com certeza, que veremos em produção, mas que vemos que se a senha do meu funcionário for igual a senha que eu recebi, eu consigo logar.
+
+[08:10] E se fizermos a mesma coisa para o meu gerente, então eu vou ter aqui um sistema de autenticação no meu gerente, vamos só mudar aqui, gerente, e eu quero que a senha dele seja "123". E eu vou chamar o cadastrar senha do gerente, gerente.cadastrarSenha("123"), dessa forma também ele vai conseguir logar, porque os dois são funcionários, os dois têm a senha, os dois têm esses mesmos métodos. Aqui meu gerente também consegue se logar.
+
+const diretor =  new Diretor("Rodrigo", 10000, 12345678900);
+diretor.cadastrarSenha("123456")
+const gerente =  new Gerente("Ricardo",  5000, 12378945601);
+gerente.cadastrarSenha("123");
+
+const estaLogado = SistemaAutenticacao.login(gerente, "123");
+
+[08:39] E você pode ver que é legal que usando classes, tanto o meu diretor quanto o meu gerente são funcionários, como eles têm propriedades semelhantes, eu consigo usá-los de maneira intercambiável ou colocar meu gerente aqui no SistemaAutenticacao.login, ou meu diretor, sem precisar mudar o código da autenticação.
+
+[09:01] E essa propriedade dos objetos de tomarem várias formas ou até de recebermos aqui na autenticação um funcionário mais genérico e conseguir reutilizá-lo, independentemente de ele ser um diretor ou um gerente, é chamado de polimorfismo.
+
+[09:15] Se conseguimos passar no SistemaAutenticacao.login qualquer propriedade que derive de Funcionario, e ele vai aceitar o nosso sistema de autenticação, por enquanto aceita qualquer pessoa, qualquer objeto que tenha uma senha. Se ele tiver a propriedade senha, o nosso sistema de autenticação vai funcionar.
+
+
+PARTE 4 - INTERFACES
+====================
+
+Transcrição
+
+[00:00] Vimos essa nova palavra, o polimorfismo, como eu falei no final da última aula. Se olharmos agora, é um pouco não intuitivo esse novo conceito, vamos explorá-lo um pouco mais para ver como podemos definir e entendê-lo um pouco melhor.
+
+[00:14] No index.js, eu vou copiar a linha do const estaLogado, então eu vou ter duas variáveis estaLogado, só que eu vou alterar uma para gerenteEstaLogado e a outra para diretorEstaLogado.
+
+[00:29] E eu vou ter uma variável para cada tipo de objeto que eu tenho aqui, um diretor e um gerente. Aqui vai ser o meu diretor, e a senha do meu diretor é 123456, vamos copiar e colar aqui. E, teoricamente, essas duas variáveis têm que estar dando como verdadeiras, porque eu estou passando a classe e a senha correspondente, a instância daquela classe, o objeto, e a senha daquele objeto correspondente.
+
+const diretor =  new Diretor("Rodrigo", 10000, 12345678900);
+diretor.cadastrarSenha("123456")
+const gerente =  new Gerente("Ricardo",  5000, 12378945601);
+gerente.cadastrarSenha("123");
+
+const gerenteEstaLogado = SistemaAutenticacao.login(gerente, "123");
+const diretorEstaLogado = SistemaAutenticacao.login(diretor, "123456");
+
+console.log(gerenteEstaLogado, diretorEstaLogado);
+
+[00:55] Vamos abrir o terminal do VS Code e pedir para ele executar o código. Vamos limpar e executar, temos aqui duas vezes verdadeiro. Isso quer dizer que eu posso passar para o meu sistema de autenticação tanto um gerente quanto um diretor, ou seja, ele não espera uma classe específica.
+
+[01:10] Na verdade, o que esse sistema de autenticação se importa, se eu vier e navegar até ele, apertar “F12” para navegar até esse método estático chamado login() na classe SistemaAutenticacao, ele recebe um funcionário, ou seja, ele recebe um objeto que estamos esperando, que seja um funcionário, por isso que colocamos o nome de funcionário aqui.
+
+[01:26] E vai verificar, esse funcionário tem uma senha? Se essa senha for igual à senha que foi passada, então eu estou aceitando e eu vou retornar verdadeiro, porque eu vou deixá-lo logar.
+
+[01:36] Mas, na verdade, o polimorfismo quer dizer que podemos ter diferentes objetos, diferentes classes sendo tratadas da mesma forma. É um objeto tratado de várias formas ou que se transforma em várias formas, por isso polimorfismo.
+
+[01:52] E nesse caso, temos o diretor e o gerente herdando da classe Funcionario, que tem a nossa senha e tem a propriedade senha.
+
+[02:01] Só que agora o ByteBank virou para nós e falou: “Eu tenho meu diretor e meu gerente, os dois estão conseguindo logar no meu sistema, mas eu quero que o meu cliente também logue nesse sistema”. Nosso trabalho agora é fazer com que o cliente também fique logado, com que ele também consiga ser autenticado pelo nosso sistema de autenticação.
+
+[02:19] E como podemos fazer isso? Meu cliente vai ter que ter uma senha para isso, então vamos para o meu construtor da classe Cliente, e vamos fazer uma senha para ele. Então this._senha e vamos fazê-lo receber a senha do construtor dele, fazer um pouco diferente dessa vez. Então this._senha vai ser igual à senha que ele vai receber aqui no construtor. O meu cliente agora já tem uma senha.
+
+[02:39] E se eu tenho uma senha, eu posso vir aqui no index.js e já posso pegar um cliente e passar para o meu sistema de autenticação. Vamos ver? Vamos criar um novo cliente, então const cliente = new Cliente, nossa cliente vai ser a Lais, ela vai ter o CPF de "78945612379" e a senha dela vai ser "456". Ela vai ter uma senha bem simples, só para testarmos.
+
+[03:08] Se eu passar meu cliente no meu sistema de autenticação, o que será que acontece agora? Vamos copiar a linha const diretorEstaLogado = SistemaAutenticacao.login(diretor, “123456”), vamos dar um “Ctrl + X”, “Ctrl + V”, e agora vou passar meu cliente, passando a Lais, e a senha vai ser "456".
+
+[03:26] Eu quero que ela esteja autenticada, estou passando o cliente e estou passando a senha correta. Eu não vou chamar de diretor, vou chamar de clienteEstaLogado. Então a nossa cliente vai estar aqui, eu vou só olhar para ela, eu não vou usar essas outras duas variáveis, gerenteEstaLogado, diretorEstaLogado, vamos apagá-las e vamos rodar de novo o nosso terminal.
+
+[03:45] Vamos limpar, vamos executar e podemos ver que o terminal retornou "falso". Mas você esperava que ele desse falso? Ou você esperava que ele desse um erro nesse caso? Porque a nossa cliente tem a propriedade senha, está aqui na classe Cliente, a propriedade _senha que criamos. Mas o meu sistema de autenticação não está vindo _senha como tínhamos antes, não está vindo essa propriedade, porque se estivesse vindo essa propriedade, ela estaria logada, porque ela tem essa propriedade.
+
+[04:11] Então eu não quero importar, eu quero abrir o terminal, “Ctrl + J”, vamos limpar, e se ela estivesse vendo aquela propriedade _senha, ele conseguiria ver que ele vai estar autenticado, porque está a propriedade certa. Ele estava procurando a senha sem o underline (_), o sistema de autenticação estava procurando o assessor de senha, e o cliente, por padrão, não tem.
+
+[04:33] Só que quando ele não tem, o que o JavaScript faz? Na hora em que ele fizer essa comparação do static login, ele vai adicionar dinamicamente essa senha no meu cliente, então ele vai falar: "você é um cliente e você não tem essa propriedade senha, mas eu vou adicioná-la aqui, porque você está precisando usar".
+
+[04:48] E como ela é uma propriedade, estamos fazendo a comparação, isso aqui vai vir undefined por padrão, como já vimos várias vezes, e undefined igual a um texto vai ser sempre falso, a comparação vai ser sempre falsa.
+
+[05:00] Mas dado esse comportamento do JavaScript, podemos ver algumas coisas. O que esse método login() do meu SistemaAutenticacao recebe não precisa ser um funcionario, ele quer que alguém seja autenticável. E esse autenticavel não necessariamente pode ser um funcionário, porque o meu cliente tem a propriedade senha, mas ele não herda da classe Funcionario.
+
+[05:25] A herança não é a única maneira de compartilharmos código e comportamento. Muita gente fala que nem é a melhor, ela serve para muita coisa, mas tem uma discussão grande se ela é ou não a melhor forma e em que caso usar a herança.
+
+[05:41] Mas o que podemos ver aqui é que no JavaScript ele só se interessa se eu tenho as propriedades certas e os métodos certos para executar a tarefa que eu tenho.
+
+[05:51] No meu Cliente, no meu Diretor, no meu Gerente, no meu Funcionario, em qualquer classe que eu queira passar para esse sistema de autenticação, ele tem que ser autenticável. E o que significa ser autenticável?
+
+[06:02] Vamos abrir os comentários aqui no topo de SistemaAutenticacao.js, vamos abrir um comentário um pouco diferente, de múltiplas linhas. Então /* abre um comentário de várias linhas, tudo o que eu escrever aqui dentro é um comentário, e vou escrever: "Ser autenticável significa ter a propriedade senha". Se eu tenho a propriedade senha, eu sou autenticável.
+
+[06:29] Mas pensando um pouco em encapsulamento e nas coisas que queremos fazer, a senha é um atributo muito particular e não queremos que isso vaze para o meu sistema. Se eu tenho alguma coisa que é autenticável, não seria melhor eu ter uma propriedade chamada "autenticar"? E o próprio objeto verificar se a senha que eu passei pra esse método interno dele é igual à senha que ele tem guardada lá dentro? Porque eu não preciso expor essa senha em primeiro lugar.
+
+[06:54] Ninguém, por acaso, vai pegar esse assessor get senha e vai expor em alguma mensagem de erro, em algum e-mail, em algum lugar do meu sistema. Seria muito mais seguro, ao invés de ter uma propriedade senha, eu ter um método autenticar() que recebe uma senha. E ele vai me retornar se aquela senha é igual à que ele tem internamente ou não.
+
+[07:17] Dessa maneira vamos melhorar nosso encapsulamento e vamos deixar nosso vocabulário um pouco melhor, porque cada uma das classes autenticáveis que tivermos no sistema podem querer autenticar de uma maneira diferente. Algumas podem querer fazer isso via senha, outras podem querer fazer isso via tokens ou via outra maneira.
+
+[07:37] Algumas simplesmente falam: "eu estou sempre autenticado em tudo, porque eu sou o administrador" e assim por diante. Ao invés de ter a propriedade senha exposta aqui, eu vou chamar o método autenticar() e esse método vai receber uma senha, que é a senha que estamos passando por parâmetro.
+
+[07:54] Se esse método existir na minha classe autenticavel, que pode ser qualquer classe que tenha esse método, autenticar, eu vou retornar verdadeiro ou falso.
+
+/*
+Ser autenticavel significa ter a propriedade "senha"
+*/
+
+export class SistemaAutenticacao{
+    static login(autenticavel, senha){
+       return autenticavel.autenticar(senha);
+    }
+}
+
+[08:03] Então no meu Funcionario, todo funcionário vai ser autenticável. Ao invés de ter o get senha() , eu vou ter o autenticar().
+
+[08:11] É um método que eu vou ter aqui dentro, ele vai receber uma senha e dessa senha eu vou dar um return verificando se essa senha é igual à senha que ele tem internamente. Dessa forma eu não preciso expor essa propriedade _senha e ainda consigo tratar todo mundo como se tivesse esse polimorfismo, como se estivesse sendo autenticável.
+
+    autenticar(senha){
+        return senha == this._senha;
+    }
+
+[08:36] Vamos sair de Funcionario, ir para minha index e vamos ver o estaLogado, vamos ver se esse gerente está logado e ver se ele continua funcionando normalmente. E vamos aproveitar e ver o diretor também, então vamos aqui no final, vamos pegar o diretorEstalogado e vamos executar esse código.
+
+[08:55] Vamos limpar o terminal e executar, já vimos que deu um erro. Mas olha o erro que ele deu. Deu duas vezes verdadeiro, então esse console.log do gerente e do diretor deu certo, porque criamos o autenticar na nossa classe Funcionario, que os dois herdam. Só que ele deu um erro aqui embaixo que indica que autenticavel.autenticar, não é uma função.
+
+[09:17] Olha que diferente, quando passamos para o JavaScript um cliente, que nessa linha ele deu erro, podemos ver que ele deu erro na linha 7 do SistemaAutenticacao, mas ele foi chamado na linha 16 da index.js, que é essa linha do meu cliente, const clienteEstaLogado = SistemaAutenticacao.login(cliente,”456”).
+
+[09:37] Quando eu passei o cliente para esse SistemaAutenticacao, ele vai no SistemaAutenticacao e fala: eu recebi alguém que é autenticável, então eu vou chamar o método – já que ele é um autenticável – vamos mudar o nosso comentário ppois mudamos a definição agora: "Ser autenticável significa ter o método autenticar".
+
+[10:00] E se ele não tiver esse método, ele vai dar um erro, porque quando abrimos e fechamos parênteses aqui, ele está tentando executar esse método. E um método não vai vir undefined, ele não vai colocar isso por padrão lá no objeto do JavaScript, então ele vai dar um erro, ele vai falar: “Você está querendo executar uma função que não existe”, e nós tomamos um erro.
+
+[10:21] Quando estamos falando de funções, vamos tomar um erro, quando estamos falando de propriedades, ele vai vir para o padrão undefined. Comportamentos dentro do JavaScript aos quais temos que estar atentos.
+
+[10:31] O nosso sistema de autenticação se preocupa com todo mundo que tem o método chamado autenticar. Se meu cliente tiver um método chamado autenticar() que sempre retorna verdadeiro, ele vai conseguir ser autenticável.
+
+[10:41] Se eu tiver um autenticar() aqui no Cliente.js e ele sempre retornar verdadeiro, veremos que o nosso código vai voltar a funcionar, só que dessa vez eu estou autenticando o meu cliente e ele está sempre autenticado, o meu cliente está sempre ali, possível para ser usado.
+
+[11:02] Se eu descer agora esse console.log(gerenteEstaLogado, diretorEstaLogado) e imprimir o do cliente também, clienteEstaLogado, se eu executar de novo vamos ver três verdadeiros, e seu eu colocar o meu cliente para ser falso, return false ele vai vir falso na hora que for executar esse código.
+
+[11:17] Ele veio dois verdadeiros do meu sistema de Diretor e meu Gerente, mas veio falso para o meu Cliente, porque o Cliente está sempre retornando falso, ou seja, ele nunca é autenticável.
+
+[11:26] E dessa forma conseguimos ver que o nosso sistema de autenticação se preocupa muito mais com a interface que os objetos expõem, com o que podemos manusear e manipular deles, métodos e propriedades, do que com qual o tipo deles de fato.
+
+[11:39] Não interessa para esse sistema de autenticação se eu sou um cliente, se eu sou um diretor, se eu sou um gerente, se eu sou um funcionário, se eu sou uma conta. Se eu tiver o método autenticar(), quer dizer que eu sou autenticável, então eu posso executar aqui.
+
+[11:51] Só que se eu não for, se eu não tiver, como não tínhamos no Cliente, vamos tomar um erro e temos que nos proteger disso também, porque eu não quero ficar tomando erro porque eu passei uma interface, uma classe errada para um sistema onde ela não é compatível. Vamos ver como arrumar esse erro daqui a pouco.
+
+
+PARTE 5 - COMPORTAMENTO INDEFINIDO
+==================================
+
+André está criando um sistema de Contas para o banco ByteBank e está tendo alguns comportamentos inesperados quando executa o seguinte código:
+
+class Conta {
+  constructor(titular, numero) {
+    this.titular = titular;
+    this.numero = numero;
+    this._saldo = 0;
+  }
+}
+
+class ContaCorrente extends Conta {
+  constructor(titular, numero) {
+    super(titular, numero);
+  }
+}
+
+const conta = new ContaCorrente("Andre", 1245);
+console.log(conta.saldo)
+
+Acontece que, na hora que ele executa o código, o que aparece no console é o texto "undefined". Por que isso acontece?
+
+
+Isso acontece pois a propriedade saldo não está definida dentro do objeto conta e por isso retorna undefined
+  Correto, por padrão o JS adiciona como undefined no objeto uma propriedade que tentamos acessar caso ela não exista.
+
+
+PARTE 6 - FAÇA COMO NA AULA
+===========================
+
+Praticar ajuda bastante no aprendizado de um novo conceito. Assim, é muito importante que você implemente o que foi apresentado nesta aula.
+
+Opinião do instrutor
+  Não deixe de sanar suas dúvidas antes de dar continuidade ao curso. Estaremos te esperando no fórum da Alura caso alguma dúvida surja.
+
+
+
+PARTE 7 - RESUMO DA AULA
+========================
+
+O que aprendemos nessa aula:
+
+    Revisão de herança,boas práticas de código e encapsulamento
+
+    Polimorfismo
+
+    Métodos estáticos
+
+    Maneiras de tratar objetos de diferentes tipos de maneira parecida
+
+

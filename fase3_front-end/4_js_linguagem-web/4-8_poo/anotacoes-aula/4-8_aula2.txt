@@ -1,0 +1,609 @@
+t4f3 - 4-8 Curso: JavaScript: programando a Orientação a Objetos
+
+https://cursos.alura.com.br/course/javascritpt-orientacao-objetos
+
+
+Evernote - estudo
+
+
+Aula 2- Adicionando comportamentos
+
+
+Parte 1 - Projeto da Aula anterior
+
+Aqui você pode baixar o projeto do curso no ponto em que paramos na aula anterior.
+
+Baixe o projeto:
+https://github.com/alura-cursos/js-orientacao-objetos/archive/aula1.zip ou visualize os arquivoshttps://github.com/alura-cursos/js-orientacao-objetos/tree/aula1
+
+
+
+Parte 2 - Comportamentos de classes
+
+Transcrição
+
+Tendo criado a estrutura da classe Cliente, uma boa prática que nos permite, dentre outras facilidades, fazer alterações em um único ponto e tê-las refletidas em todas as instâncias daquela entidade, vamos praticar um pouco mais a criação de classes criando também a estrutura de uma conta-corrente, algo que também faz parte do sistema que o Bytebank nos contratou para desenvolver.
+
+  Termos como "atributo", "instância", "objeto" e assim por diante fazem parte do vocabulário da orientação a objetos, e é importante se familiarizar com eles. Caso tenha dúvidas, pode retornar às explicações nos vídeos anteriores ou buscar auxílio em nosso fórum!
+
+Ainda no arquivo index.js, criaremos a classe ContaCorrente que usaremos para representar uma conta-corrente. É importante frisarmos o uso da palavra representa, já que a classe não é, em si, uma conta-corrente, mas sim a estrutura que desejamos que as contas-correntes tenham.
+
+Alguns atributos que podem ser associados a uma conta-corrente são "agência" e "saldo". Entretanto, nós utilizamos esses campos no Cliente, o que agora parece ser bastante inadequado - afinal, um cliente possui uma conta-corrente, e esta, por sua vez, é quem possui uma agência e um saldo. Esse tipo de lógica é comum na estruturação de um sistema, sempre pensando em como podemos melhorar e readaptar o nosso código.
+
+Feita essa reflexão, criaremos os atributos agencia e saldo na classe ContaCorrente e, como não queremos tê-los duplicados, os removeremos da classe Cliente.
+
+class Cliente {
+      nome;
+      cpf;
+
+  }
+
+  class ContaCorrente {
+      agencia;
+      saldo;
+  }
+
+À medida em que desenvolvemos o código, estamos abstraindo as informações e as estruturas de acordo com nosso raciocínio acerca do problema que estamos tentando resolver.
+
+Antes de continuarmos, vamos reorganizar o nosso código removendo as atribuições de valores às propriedades agencia e saldo de objetos da classe Cliente, movendo a criação do objeto cliente2 para deixá-lo mais próximo das atribuições dos seus valores, removendo todo o código referente a cliente3 e separando a chamada de console.log() em duas, uma para cada cliente.
+
+  class Cliente {
+      nome;
+      cpf;
+
+  }
+
+  class ContaCorrente {
+      agencia;
+      saldo;
+  }
+
+
+  const cliente1 = new Cliente();
+
+  cliente1.nome = "Ricardo";
+  cliente1.cpf = 11122233309;
+
+  const cliente2 = new Cliente();
+
+  cliente2.nome = "Alice";
+  cliente2.cpf = 88822233309;
+
+  console.log(cliente1);
+  console.log(cliente2);
+
+Passaremos então para a instanciação de uma nova ContaCorrente, que atribuiremos a uma variável contaCorrenteRicardo. Em seguida, usaremos contaCorrenteRicardo.saldo e contaCorrenteRicardo.agencia para definirmos os valores 0 e 1001 a esses atributos, respectivamente.
+
+  Lembre-se que o nome das variáveis é importante para identificar com o que estamos trabalhando. Por exemplo, contaCorrenteRicardo nos informa, especificamente, que essa é uma instância de ContaCorrente pertencente ao cliente1.
+
+  class Cliente {
+      nome;
+      cpf;
+
+  }
+
+  class ContaCorrente {
+      agencia;
+      saldo;
+  }
+
+  //...código omitido
+
+  const contaCorrenteRicardo = new ContaCorrente();
+
+  contaCorrenteRicardo.saldo = 0
+  contaCorrenteRicardo.agencia = 1001;
+
+
+  console.log(cliente1);
+  console.log(cliente2);
+
+Sabemos que existem algumas operações comuns que são realizadas em contas-correntes, como saques, depósitos e transferências. Já temos uma conta-corrente com um saldo e agora queremos fazer um depósito. Começaremos esse processo fazendo um console.log() somente do saldo de contaCorrenteRicardo, de modo a verificarmos se ele realmente é 0.
+
+  const contaCorrenteRicardo = new ContaCorrente();
+
+  contaCorrenteRicardo.saldo = 0
+  contaCorrenteRicardo.agencia = 1001;
+  console.log(contaCorrenteRicardo.saldo);
+
+  Em seguida, faremos uma nova atribuição em contaCorrenteRicardo.saldo, dessa vez no valor 100, representando o depósito dessa quantia. Por fim, repetiremos o console.log(contaCorrenteRicardo.saldo).
+
+  const contaCorrenteRicardo = new ContaCorrente();
+
+  contaCorrenteRicardo.saldo = 0
+  contaCorrenteRicardo.agencia = 1001;
+  console.log(contaCorrenteRicardo.saldo);
+  contaCorrenteRicardo.saldo = 100;
+  console.log(contaCorrenteRicardo.saldo);
+
+Ao executarmos nosso arquivo no terminal com node ./index.js, teremos:
+
+  0 100 Cliente { nome: 'Ricardo', cpf: 11122233309 } Cliente { nome: 'Alice', cpf: 88822233309 }
+
+Como verificado, antes tínhamos um saldo zerado e, após o depósito, o valor na contaCorrenteRicardo passou a ser 100. Além disso, nossos clientes passaram a ter somente os atributos nome e cpf.
+
+Entretanto, essa operação não parece correta. Imagine, por exemplo, que queremos fazer um saque. Para isso, criaremos uma variável valorSacado com o valor 200 e subtrairemos esse valor de contaCorrenteRicardo. Em seguida, faremos outro console.log() para obtermos o novo valor.
+
+  const contaCorrenteRicardo = new ContaCorrente();
+
+  contaCorrenteRicardo.saldo = 0
+  contaCorrenteRicardo.agencia = 1001;
+  console.log(contaCorrenteRicardo.saldo);
+  contaCorrenteRicardo.saldo = 100;
+  console.log(contaCorrenteRicardo.saldo);
+
+  let valorSacado = 200;
+  contaCorrenteRicardo.saldo -= valorSacado;
+  console.log(contaCorrenteRicardo.saldo);
+
+Dessa vez nosso retorno será:
+
+  0 100 -100 Cliente { nome: 'Ricardo', cpf: 11122233309 } Cliente { nome: 'Alice', cpf: 88822233309 }
+
+Note que agora temos um problema: o saldo resultante é negativo, algo que não faz sentido segundo a regra de negócios do Bytebank, que não quer fornecer crédito para um cliente que acabou de abrir uma conta no banco. Uma maneira de resolvermos tal situação é incluirmos uma condicional (if) verificando se contaCorrenteRicardo.saldo é maior do que valorSacado. Em caso positivo - ou seja, se existir saldo suficiente para o saque -, faremos a operação normalmente; do contrário, nada acontecerá.
+
+  let valorSacado = 200;
+  if (contaCorrenteRicardo.saldo >= valorSacado) {
+      contaCorrenteRicardo.saldo -= valorSacado;
+  } 
+  console.log(contaCorrenteRicardo.saldo);
+
+Ao executarmos, teremos:
+
+  0 100 100
+
+O que significa que a operação de saque não foi realizada, assim como desejávamos. Entretanto, se fizermos todas as operações de saque dessa maneira, teremos que repetir código toda vez que uma nova operação for realizada.
+
+Além disso, precisamos analisar todo um trecho de código para entendermos o que está acontecendo, sem que exista uma palavra específica que resuma a operação a ser realizada - nesse caso, um saque. Será possível tornar nosso código mais legível?
+
+As classes em JavaScript não servem somente como pacotes que contém os dados de uma entidade, como uma conta-corrente ou cliente, e também podem possuir comportamentos. Para isso, podemos incluir nelas uma nova estrutura: as funções (ou métodos, nome comum em orientação a objetos).
+
+Nesse caso, queremos criar um comportamento chamado "sacar". Como esse comportamento deverá ser executando passando alguns valores, será necessário que a palavra seja sucedida por parênteses, resultando em sacar(). Os parênteses denotam que estamos trabalhando com uma operação executável, e não com uma variável, e é dentro deles que podemos passar valores. O método sacar(), por exemplo, receberá um valor.
+
+Queremos que o método sacar() tenha um comportamento semelhante à operação que estávamos fazendo anteriormente. Pensando nisso, moveremos aquele trecho de código para cima de modo a analisá-lo. Para definirmos os comportamentos de um método, usamos as chaves ({}) para delimitar o que chamamos de "escopo do método".
+
+  class ContaCorrente {
+    agencia;
+    saldo;
+
+    sacar(valor) {
+
+    }
+  }
+
+
+  let valorSacado = 200;
+  if (contaCorrenteRicardo.saldo >= valorSacado) {
+    contaCorrenteRicardo.saldo -= valorSacado;
+  } 
+  console.log(contaCorrenteRicardo.saldo);
+
+Podemos então criar uma condicional que verifica se contaCorrenteRicardo.saldo é maior ou igual ao valor recebido por parâmetro. Em caso positivo, a operação será feita normalmente.
+
+  class ContaCorrente {
+    agencia;
+    saldo;
+
+    sacar(valor) {
+      if (contaCorrenteRicardo.saldo >= valor) {
+        contaCorrenteRicardo.saldo -= valor;
+      }
+    }
+  }
+
+Entretanto, sabemos que a classe ContaCorrente é somente um molde utilizado para criação de qualquer conta, seja ela do Ricardo, da Alice e assim por diante. Ou seja, não faz sentido utilizarmos contaCorrenteRicardo, já que estamos acessando um objeto que, nesse ponto, nem mesmo existe no sistema.
+
+Queremos, na verdade, acessar o saldo da própria conta-corrente a partir da qual chamamos o método, ou seja, "esta" conta. Para isso, usamos a palavra reservada this ("este(a)" em inglês).
+
+  class ContaCorrente {
+      agencia;
+      saldo;
+
+      sacar(valor) {
+          if (this.saldo >= valor) {
+              this.saldo -= valor;
+          }
+      }
+  }
+
+Assim, verificaremos e o saldo da conta-corrente é maior que o valor passado e, em caso positivo, subtrairemos esse valor do saldo desta mesma conta-corrente. A essa lógica atribuímos o nome de sacar().
+
+Para testarmos, manteremos a operação de depósito no valor de 100 em contaCorrenteRicardo. Em seguida, chamaremos contaCorrenteRicardo.sacar() passando 50 como parâmetro e faremos um console.log() do novo saldo da conta.
+
+  const contaCorrenteRicardo = new ContaCorrente();
+
+  contaCorrenteRicardo.saldo = 0
+  contaCorrenteRicardo.agencia = 1001;
+  console.log(contaCorrenteRicardo.saldo);
+  contaCorrenteRicardo.saldo = 100;
+  console.log(contaCorrenteRicardo.saldo);
+  contaCorrenteRicardo.sacar(50);
+
+  console.log(contaCorrenteRicardo.saldo);
+
+Ao executarmos, teremos:
+
+  0 100 50
+
+Com isso temos uma regra de negócios da operação de saque encapsulada dentro de um método/função, ao qual atribuímos o nome sacar(), algo que melhora muito a legibilidade do nosso sistema.
+
+
+
+
+Parte 3 - Atributos Privados
+
+Transcrição
+
+Agora que já temos o comportamento do método sacar() para a classe ContaCorrente, vamos refletir a respeito do saldo.
+
+Definimos anteriormente, de forma manual, que ao criarmos uma nova conta-corrente ela deve ter saldo igual a 0. Para a operação de depósito, definimos que contaCorrenteRicardo.saldo deve ser igual a 100, na verdade devemos usar o sinal de mais (+), pois o valor deve ser adicionado à conta e não substituir o valor anterior. Então, precisamos inserir o sinal de mais (+) acompanhado do sinal de igual (=) antes do valor que queremos depositar. Seguiremos esse padrão para todos os depósitos a serem feitos, vamos atribuir à contaCorrenteRicardo.saldo o valor de 100, depois 200 e, por fim, -1, para testar o que acontece se, por acaso, inserirmos um número negativo para depósito.
+
+  console.log(contaCorrenteRicardo,saldo);
+  contaCorrenteRicardo.saldo += 100;
+  contaCorrenteRicardo.saldo += 200;
+  contaCorrenteRicardo.saldo += -1;
+  console.log(contaCorrenteRicardo.saldo);
+  contaCorrenteRicardo.sacar(50);
+
+Ao executarmos nosso arquivo no terminal com node ./index.js, teremos:
+
+  0 299 249 Cliente { nome: 'Ricardo', cpf: 11122233309 } Cliente { nome: 'Alice', cpf: 88822233309 }
+
+Entretanto, houve uma subtração no saldo, o que não deveria acontecer na operação de depósito que deve somente adicionar dinheiro ao saldo da conta-corrente. Para não que isso não aconteça, criaremos um comportamento para melhorar e proteger o atributo saldo, pois ele é importante para a conta-corrente e o cliente não ficará feliz se o valor do saldo mudar para algum valor aleatório sem justificativa. Para isso vamos criar, logo abaixo do método sacar(), um comportamento chamado "depositar". O método depositar() receberá valor como parâmetro, que refere-se ao valor que queremos depositar.
+
+  Lembre-se que tudo o que está entre parênteses após o nome do método são os parâmetros que ele recebe. Pode ser um ou mais parâmetros, neste caso, separados por vírgula. Alguns profissionais referem-se a eles como "argumentos", mas aqui chamaremos de parâmetros.
+
+Abriremos as chaves ({}) para delimitar o escopo do método depositar() e criaremos uma condicional para verificar se valor é maior do que 0. Em caso positivo, a atualização de this.saldo será permitida. Com essa verificação a soma acontecerá somente se o valor depositado for positivo.
+
+      depositar(valor){
+          if(valor > 0){
+              this.saldo += valor;           
+      }
+  }
+
+Agora, em vez de fazer a operação de depósito manualmente com o atributo saldo, podemos chamar o método depositar(). Vamos seguir a mesma ordem de depósito dos valores que usamos anteriormente 100, 200 e -1 para ver se a regra que inserimos com a condicional no método depositar() está funcionando.
+
+  console.log(contaCorrenteRicardo.saldo);
+  contaCorrenteRicardo.depositar(100);
+  contaCorrenteRicardo.depositar(200);
+  contaCorrenteRicardo.depositar(-1);
+  console.log(contaCorrenteRicardo.saldo);
+  contaCorrenteRicardo.sacar(50);
+
+Vamos salvar o arquivo index.js e ir para a janela do terminal. Ao executarmos nosso arquivo com node ./index.js, teremos:
+
+  0 300 250 Cliente { nome: 'Ricardo', cpf: 11122233309 } Cliente { nome: 'Alice', cpf: 88822233309 }
+
+Agora nosso saldo está com 300, ou seja, o depósito do valor negativo não foi aceito. Então não será mais retirado dinheiro da conta se, por acaso, alguém tentar depositar um valor negativo.
+
+Antes de continuarmos, vamos limpar o código para melhorar sua legibilidade. Podemos apagar as chamadas de console.log para contaCorrenteRicardo.saldo, pois já vimos que está funcionando. Apagaremos também os depósitos no valor de 200 e -1, e também as chamadas de console.log para cliente1 e cliente2 pois não as usaremos agora. Deixaremos apenas uma chamada console.log para contaCorrenteRicardo:
+
+  const contaCorrenteRicardo = new ContaCorrente();
+  contaCorrenteRicardo.saldo = 0;
+  contaCorrenteRicardo.agencia = 1001;
+
+  contaCorrenteRicardo.depositar(100);
+  contaCorrenteRicardo.sacar(50);
+
+  console.log(contaCorrenteRicardo);
+
+Ao executarmos nosso arquivo no terminal com node ./index.js, teremos:
+
+  ContaCorrente { agencia 1001, saldo: 50 }
+
+Agora nosso código do arquivo index.js está mais fácil de ler. Logo abaixo da declaração de cliente1 e cliente2 está a declaração da contaCorrenteRicardo, onde podemos depositar e sacar dinheiro.
+
+Ao criarmos operações e métodos para definir o comportamento de uma classe conseguimos estabelecer barreiras e proteções dentro do código para que ele funcione sempre de acordo com as regras de negócio passadas pelo cliente.
+
+Entretanto, agora que temos o método sacar() e depositar(), ainda faz sentido conseguirmos mexer diretamente no saldo, como por exemplo, para definirmos o valor de 10000 para contaCorrenteRicardo.saldo?
+
+  const contaCorrenteRicardo = new ContaCorrente();
+  contaCorrenteRicardo.saldo = 10000;
+  contaCorrenteRicardo.agencia = 1001;
+
+  contaCorrenteRicardo.depositar(100);
+  contaCorrenteRicardo.sacar(50);
+
+console.log(contaCorrenteRicardo);
+
+Ao executarmos nosso arquivo no terminal com node ./index.js, teremos:
+
+  ContaCorrente { agencia 1001, saldo: 10050 }
+
+O problema é que, como o atributo saldo está exposto para qualquer pessoa com acesso ao código alterá-lo, podemos cair nos mesmos erros que existiam antes da criação de comportamentos do método depositar() e sacar(). Com a possibilidade de alterar o saldo sem nenhuma verificação, nosso sistema está sujeito a erros. Como fazer para proteger esse atributo e fazer com que ele seja alterado somente dentro da classe a que ele pertence?
+
+Na verdade, ainda não existe um procedimento formal para isso na linguagem JavaScript. O que existe, hoje, é apenas uma proposta de como isso poderia funcionar. Essa proposta, escrita em inglês, foi feita no GitHub e está acessível neste linkhttps://github.com/tc39/proposal-class-fields#private-fields que também será disponibilizado para você na próxima atividade Proposta de campos Privados.
+
+Essa proposta, que ainda não foi oficialmente implementada, tem como objetivo mudar a maneira como declaramos campos - os atributos - dentro das classes. Na proposta, há diversos exemplos explicando que é possível criar campos privados que só podem ser alterados dentro da classe a que pertencem, fazendo com que ninguém de fora da classe possa acessá-lo. A proposta de implementação apresentada é colocar uma cerquilha (#) à frente do atributo e assim defini-lo como campo privado.
+
+Como essa proposta começou a ser discutida em 2016 e está no estágio três, prestes a ser aprovada, algumas bibliotecas, frameworks e ferramentas relacionadas ao JavaScript já implementaram essa proposta para a comunidade testá-la. Como por exemplo, o Node que a implementou em sua versão 12. Em nosso terminal, com o comando node -v podemos verificar qual versão do Node estamos utilizando. Como eu estou com a versão 13.5.0 é possível testar essa proposta em nosso código.
+
+Lembrando que essa proposta ainda não foi oficializada, mas já conseguimos testar essa possibilidade. Talvez não valha a pena usá-la se colocarmos em produção, mas depois veremos como fazer isso nas convenções atuais aceitas pela comunidade como padrão da linguagem JavaScript. Colocaremos uma cerquilha (#) à frente do atributo saldo em todas as vez em que citamos esse atributo. Agora o nome da variável mudou para #saldo. Então this.#saldo significa que esse saldo é privado, mas como sacar() e depositar() estão dentro da classe ContaCorrente, é possível fazer alterações do saldo com esses métodos.
+
+Como a máquina que eu estou usando tem o TypeScript instalado, o Visual Studio Code vai indicar que a cerquilha é um caractere inválido, mas podemos desconsiderar isso porque essa sintaxe não é de TypeScript.
+
+Vamos para a janela do terminal. Limparemos a tela com o comando clear e, em seguida, ao executarmos nosso arquivo com node ./index.js, teremos:
+
+  ContaCorrente { agencia 1001, saldo: 10000 }
+
+Mas eu falei que ninguém poderia alterar o saldo, então, teoricamente, o que fizemos na linha de código contaCorrenteRicardo.saldo = 10000; não deveria ser válido, mas acontece que o JavaScript é dinamicamente tipado. Então, na verdade, o que não podemos é chamar a propriedade #saldo para contaCorrenteRicardo. Vamos fazer isso para ver o que acontece:
+
+  const contaCorrenteRicardo = new ContaCorrente();
+  contaCorrenteRicardo.#saldo = 10000;
+  contaCorrenteRicardo.agencia = 1001;
+
+  contaCorrenteRicardo.depositar(100);
+  contaCorrenteRicardo.sacar(50);
+
+  console.log(contaCorrenteRicardo);
+
+No terminal, daremos um clear e, em seguida, executaremos nosso arquivo com node ./index.js. O sistema vai retornar um erro informando que a propriedade chamada é um campo privado e não podemos alterá-lo:
+
+  SyntaxError: Private Field '#saldo' must be declared in an enclosing class
+
+Entretanto, ao chamarmos apenas saldo para contaCorrenteRicardo, o sistema adiciona um atributo chamado "saldo". Em vez de "saldo" poderíamos chamar, por exemplo, um atributo nomeado de "qualquerCoisa":
+
+  contaCorrenteRicardo.qualquerCoisa = 10000;
+
+Ao executarmos nosso arquivo no terminal com node ./index.js, teremos:
+
+  ContaCorrente { agencia 1001, qualquerCoisa: 10000 }
+
+Precisamos tomar muito cuidado com isso em JavaScript, pois a estrutura que estamos criando é o mínimo do que precisamos. Se durante a execução do programa alguém chamar um objeto e atribuir algo a esse objeto, esse atributo será criado dinamicamente ficando preso a essa instância única e não à classe como um todo. Por isso, precisamos ter cuidado para não cometer erros de digitação. Então, vamos corrigir e deixar contaCorrenteRicardo.#saldo.
+
+Como não podemos acessar #saldo diretamente fora da classe, ao executarmos nosso arquivo no terminal com node ./index.js, ele retornará novamente um erro.
+
+  SyntaxError: Private Field '#saldo' must be declared in an enclosing class
+
+Se não podemos acessar #saldo diretamente, vamos apagar a linha em que chamamos #saldo para contaCorrenteRicardo.
+
+Apesar de estar declarado na classe ContaCorrente nosso saldo não está definido em nenhum lugar. Precisamos informar na classe ContaCorrente que no início o valor de #saldo deve ser 0.
+
+  class ContaCorrente{
+      agencia;
+      #saldo = 0;
+
+  //...
+
+  }
+
+Ao executarmos nosso arquivo no terminal com node ./index.js, teremos:
+
+  ContaCorrente { agencia 1001 }
+
+Ele continuará retornando que não temos saldo. Mas se inserirmos a chamada de console.log() para this.#saldo dentro da classe ContaCorrente, ao executarmos nosso arquivo no terminal com node ./index.js, teremos:
+
+  100 ContaCorrente { agencia 1001 }
+
+Como #saldo é um campo privado, não aparece ao executarmos o console.log() da classe. Só é possível acessá-lo realmente dentro da classe. Ele está sendo alterado, mas só veremos isso dentro da classe. Se chamarmos o console.log() em qualquer outro lugar do código, o #saldo não aparecerá.
+
+Para testar, podemos fazer a operação de depósito várias vezes, depositando três valores de 100:
+
+const contaCorrenteRicardo = new ContaCorrente();
+contaCorrenteRicardo.agencia = 1001;
+
+  contaCorrenteRicardo.depositar(100);
+  contaCorrenteRicardo.depositar(100);
+  contaCorrenteRicardo.depositar(100);
+  contaCorrenteRicardo.sacar(50);
+
+  console.log(contaCorrenteRicardo);
+
+Ao executarmos nosso arquivo no terminal com node ./index.js, teremos:
+
+  100 200 300 ContaCorrente { agencia 1001 }
+
+O saldo está sendo alterado, mas não fica exposto para outras pessoas mexerem.
+
+Mas como explicamos, isso é uma proposta ainda não implementada na linguagem. Então não podemos fazer campos privados e não é recomendado usar esse tipo de sintaxe no seu programa em produção.
+
+A convenção da comunidade é de que se colocamos um underline (_) à frente de um atributo, isso significa que ele é privado. Mas não é privado de verdade, podemos verificar que ainda podemos alterá-lo em outros lugares do nosso código. Se substituirmos #saldo por _saldo.
+
+Ao executarmos nosso arquivo no terminal com node ./index.js, teremos:
+
+  ContaCorrente { agencia 100, _saldo:250 }
+
+Então ele não fica realmente privado, mas é uma convenção da comunidade que não devemos mexer em atributos antecedidos pelo underline (_), ele não deve ser acessado de fora da classe. Apenas os métodos e comportamentos dentro do escopo da classe podem acessá-lo. Embora seja possível acessá-lo fora da classe, não é uma boa prática fazer isso.
+
+Então, enquanto a proposta de campos privados não é oficialmente implementada, a convenção é usar o underline (_). Deixaremos o link de acesso para a proposta de campos privado no JavaScript como comentário no código, para você ler se tiver interesse.
+
+
+
+Parte 4 - Proposta de campos Privados
+
+Aqui você pode encontrar a proposta que está sendo feita para uma sintaxe de campos privados dentro do JS.
+https://github.com/tc39/proposal-class-fields#private-fields
+
+
+
+
+Parte 5 - Sobre métodos
+
+
+O que aprendemos sobre métodos/funções?
+
+"...que nós ajudam a criar um..."
+
+Alternativas corretas:
+
+Função e método são termos sinônimos e que nós ajudam a criar um vocabulário mais rico dentro do nosso sistema
+  Correta! Usamos métodos para dar nomes aos comportamentos que nossa classe possui e isso facilita a comunicação dentro da equipe
+
+Um método pode receber qualquer quantidade de parâmetros.
+  Correto, um método pode ter nenhum, um ou mais parâmetros. Essa é a maneira de passarmos informações para podermos reutilizar métodos em diferentes cenários
+
+Um método define o comportamento ou a maneira de fazer algo.
+  Correto, esse é o objetivo de métodos, definir o que um objeto saber fazer. O comportamento é implementado dentro do método.
+
+
+Alternativas incorretas:
+
+Um método nunca consegue acessar atributos da classe que ele pertence.
+  Errado. Um método pode e deve acessar atributos de sua classe e para isso usamos a palavra-chave this
+
+Nunca devemos chamar métodos diretamente de dentro de uma classe
+  Não, a própria classe pode chamar seus próprios métodos.
+
+
+Parabéns, você acertou!
+
+
+
+Parte 6 - Encapsulamento
+
+Criamos métodos para proteger atributos e informações sensíveis de nossas classes. Porém, se não fizermos nada, essas informações ainda estão expostas e podem ser alteradas manualmente.
+
+Sobre a proteção de atributos, marque as alternativas corretas:
+
+Alternativas corretas
+
+Por padrão no JS utilizamos o "_" para indicar que um atributo é privado e não deveria ser alterado.
+  Isso mesmo! Apesar de ainda ser possível alterar essa propriedade isso é considerado uma má prática e estamos quebrando o encapsulamento da classe.
+
+Atualmente no Js nenhum atributo ou método é realmente privado
+  Sim, o JS é uma linguagem de escopo aberto e por isso é possível visualizar qualquer atributo ou propriedade de nossa classe.
+
+
+Alternativa incorreta:
+
+Não precisamos nos preocupar com proteção de atributos se tivermos os métodos necessários para alterar aquele atributo.
+  Não, mesmo tendo os métodos necessários precisamos deixar claro para outros programadores quais são os atributos que eles podem ou não manipular.
+
+
+
+
+Parte 7 - Métodos com retorno
+
+Transcrição
+
+Agora temos a indicação de campos privados em nossa classe ContaCorrente, mostrando aos outros programadores que eles não devem ser acessados diretamente fora do escopo da própria classe, e imaginamos que a implementação definitiva desse tipo de atributo na linguagem será ainda mais benéfica para o desenvolvimento.
+
+Passaremos então a refletir sobre o resto do nosso sistema. Já temos os métodos sacar() e depositar(), mas queremos expandir a lógica das nossas operações de modo que fiquem mais semelhantes às da vida real. Por exemplo, quando sacamos um valor, ele não simplesmente deixa de existir, mas sim passa a pertencer ao cliente que efetuou esse saque. No nosso código, simularemos isso atribuindo a chamada de contaCorrenteRicardo.sacar(50) a uma variável valorSacado e faremos o console.log() do seu valor.
+
+  const contaCorrenteRicardo = new ContaCorrente();
+
+  contaCorrenteRicardo.agencia = 1001;
+
+  contaCorrenteRicardo.depositar(100);
+  contaCorrenteRicardo.depositar(100);
+  contaCorrenteRicardo.depositar(100);
+  const valorSacado = contaCorrenteRicardo.sacar(50);
+
+  console.log(valorSacado);
+  console.log(contaCorrenteRicardo)
+
+Nesse ponto, removeremos a linha console.log(this._saldo) na definição do método depositar().
+
+Ao executarmos, teremos como retorno:
+
+  undefined ContaCorrente { agencia: 1001, _saldo: 250 }
+
+Note que a operação de saque foi realizada, mas tivemos um undefined como retorno. Isso acontece pois estamos atribuindo o valor da operação sacar() a uma variável valorSacado, mas o método sacar() em si não devolve nada. Se queremos devolver um valor para quem chamou a função, precisamos fazer um retorno com a instrução return seguida daquilo que deve ser devolvido, nesse caso o próprio valor.
+
+  class ContaCorrente {
+      agencia;
+      _saldo = 0;
+
+      sacar(valor) {
+          if (this._saldo >= valor) {
+              this._saldo -= valor;
+              return valor;
+
+          }
+          return
+      }
+
+      depositar(valor) {
+          if(valor > 0) {
+              this._saldo += valor;
+          }
+
+      }
+  }
+
+Feito isso, o valor 50 passará a ser exibido no console quando executarmos a aplicação.
+
+  50 ContaCorrente { agencia: 1001, _saldo: 250 }
+
+No JavaScript, se um método não possui a palavra-chave return - ou seja, se ele não devolve um valor explicitamente -, ele sempre devolve um undefined. Outra característica interessante é que toda vez que um método encontra a palavra-chave return, a sua execução é encerrada. Sendo assim, se passarmos a instrução return valor para antes da nossa condicional e executarmos nosso código, o 50 será exibido no console, mas o saque não será efetuado com sucesso.
+
+  Note que a IDE inclusive tornará mais escuro o trecho de código abaixo da instrução return valor, ressaltando que ele não será executado (unreachable code detected).
+
+  sacar(valor) {
+      return valor;
+      if (this._saldo >= valor) {
+          this._saldo -= valor;
+
+      }
+  }
+
+      50 ContaCorrente { agencia: 1001, _saldo: 300 }
+
+Portanto, devemos prestar atenção ao longo do desenvolvimento do nosso código, já que uma cláusula de retorno mal posicionada pode parar a execução do método em um momento indesejado. Feito esse teste, voltaremos a instrução return valorpara sua posição original.
+
+  sacar(valor) {
+      if (this._saldo >= valor) {
+          this._saldo -= valor;
+          return valor;
+      }
+
+  }
+
+Note que nos métodos sacar() e depositar() estamos realizando verificações antes de executarmos a operação em si - no primeiro verificamos se o saldo é maior do que o valor a ser sacado, e no segundo se o valor a ser depositado é maior do que zero. Conforme nossos comportamentos forem se tornando mais complexos, com mais cláusulas de proteção, teremos também mais códigos indentados, como no exemplo ilustrativo abaixo:
+
+  depositar(valor) {
+      if(valor > 0) {
+          if() {
+              if() {
+                  this._saldo += valor;
+              }
+          }
+      }
+  }
+
+Isso não é tão interessante, pois dificulta a leitura do código. Uma maneira de melhorarmos essa legibilidade é fazermos o chamado "early return" (ou "retorno antecipado", em tradução livre). Essa técnica consiste em verificarmos todas as situações indesejadas primeiro. Por exemplo, no método depositar() não queremos que o valor recebido seja menor ou igual a zero. Caso isso aconteça, simplesmente usaremos a instrução return para pararmos a execução do código.
+
+  depositar(valor) {
+      if(valor <= 0) {
+          return;
+      }
+      this._saldo += valor;
+  }
+
+Dessa maneira, mantemos o código onde a operação realmente é realizada no mesmo nível de indentação da condicional, e conseguimos analisar facilmente que, caso a condição seja verdadeira, sairemos da função sem executá-la. Se todas as verificações passaremos corretamente, o código será executado ao final.
+
+Se rodarmos o código no terminal, continuaremos recebendo o mesmo retorno:
+
+    50 ContaCorrente { agencia: 1001, _saldo: 300 }
+
+Já se tentarmos realizar um depósito com o valor -100, somente duas das três chamadas de depositar(100) serão realizadas com sucesso, resultando em um saldo de 150.
+
+    50 ContaCorrente { agencia: 1001, _saldo: 150 }
+
+A lógica do nosso método não foi alterada, apenas a maneira como ele é escrito. Inclusive, é bastante comum encontrar esse tipo de sintaxe:
+
+  depositar(valor) {
+      if(valor <= 0) return;
+      this._saldo += valor;
+  }
+
+Perceba que aqui não estamos utilizando as chaves para delimitar o escopo da condicional, já que ele consiste somente na instrução return. Quando temos apenas uma linha de código a ser executada, o if permite que ela seja passada sem as chaves. Isso economiza algumas linhas de código, mas, claro, não é obrigatório. Quando estamos estudando, manter as chaves pode até mesmo facilitar a visualização do que está acontecendo naquele método, e é justamente isso que faremos.
+
+  depositar(valor) {
+      if(valor <= 0) {
+          return;
+      }
+      this._saldo += valor;
+  }
+
+Recapitulando, o retorno de um método (return) pode ter duas funções: parar a execução antecipadamente ao nos depararmos com uma condição indesejada, algo que chamamos de early return; ou realmente retornar um valor para que o sistema continue trabalhando com ele de alguma forma.
+
+
+
+Parte 8 - O que aprendemos?
+
+  Criação de métodos
+  Palavra chave this
+  Encapsulamento
+  Proposta de atributos privados
+  Return e early return

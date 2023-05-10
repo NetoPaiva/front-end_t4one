@@ -1,0 +1,204 @@
+Curso JS  na web - CRUD com JS assíncrono
+
+
+Aula 5 - Async / Await 
+======================
+
+
+PARTE 1 - PROJETO DA AULA ANTERIOR
+==================================
+
+https://cursos.alura.com.br/course/javascript-crud-assincrono/task/86467
+
+
+Aqui você pode baixar o projeto da aula anterior. Baixe o zip ou visualize os arquivos no Github!
+
+Projeto.zip
+https://github.com/alura-cursos/2016-JS-na-web-crud-com-JavaScript-assincrono/archive/aula04.zip
+
+
+Repositório
+https://github.com/alura-cursos/2016-JS-na-web-crud-com-JavaScript-assincrono/tree/aula04/aula4/admin
+
+
+
+PARTE 2 - ASYNC / AWAIT
+=======================
+
+
+Transcrição
+
+[00:00] Agora já conseguimos editar os dados dos clientes na nossa aplicação, se clico em editar, ele vem preenchido nome e e-mail e vou trocar o nome para Felipe, editei. Sucesso, já conseguimos editar, isso porque se voltarmos no VSCode, em cliente-service criamos essa função de atualizar os dados.
+
+[00:25] Temos o id, que identifica o cliente, o nome e o e-mail que vamos passar no corpo da aplicação, que são os dados que vamos alterar. E utilizamos o put, que vai fazer essa substituição dos dados anteriores pelos novos dados. Lá em atualiza-controller criamos toda uma lógica, colocamos um evento de submit no formulário, prevenimos o comportamento padrão e chamamos atualizaCliente passando os dados.
+
+[00:51] Quando ele devolveu uma resposta é redirecionado para a página de edição concluída, que aparece, ele dá um aviso para o usuário que está utilizando que deu tudo certo.
+
+[01:02] Agora o que vamos fazer é o seguinte. Existe com o avanço de linguagem novas possibilidades de trabalhar com programas assíncronos, é isso que vou mostrar para vocês, uma nova sintaxe para indicar que uma função é uma função assíncrona.
+
+[01:18] Vou começar lá em listaClientes-controller, na tabela. Posso falar que evento é uma função assíncrona colocando um async. E onde temos o then na linha 29 posso colocar um await na frente de clienteService e removo o .then daqui. O que ganhamos com isso? Ganhamos legibilidade. Eu bato o olho, sei que isso é uma função assíncrona, porém com o await ela se comporta como se fosse estruturada. Olhamos de cima para baixo.
+
+[01:52] Se eu voltar no Chrome posso até pesquisar MDN função assíncrona, é sempre bom consultar regularmente a documentação para tirar dúvidas. Recomendo bastante vocês terem o hábito de irem sempre na documentação, na Mozilla tirar dúvidas.
+
+[02:11] Aqui ele fala, uma função assíncrona pode conter uma expressão await, que pausa a execução da função assíncrona e espera pela resolução da promise. Depois retorna a função assíncrona e retorna o valor resolvido. Ele substitui o .then.
+
+[02:26] Se voltarmos no VSCode, agora podemos trocar todos os then que temos no controller para utilizar async await. Hoje em dia é muito comum vermos async await nos códigos JavaScript para indicar justamente que o código é assíncrono e melhorar a legibilidade.
+
+[02:47] Nessa parte que tem o .then, na linha 33, inclusive, vou criar uma função chamada render, porque o que esse trecho de código está fazendo é renderizando, apresentando dados na tela. Faço uma arrow function. Vou copiar da linha 40 até 36, que é tudo, colei dentro da função.
+
+[03:11] Indico que ela é assíncrona, então async, e clienteService.listaClientes, posso até colocar dentro de uma constante, posso chamar de clienteService. Recebe a execução, coloco um await, e tiro o .data. Apago. Ao invés do .data é clienteService, ele retorna promise e fazemos o loop.
+
+[03:44] Já que criamos aqui, o render tem que executar no final do arquivo. Fechou. No listaClientes-controller já indicamos as funções que estamos trabalhando com funções assíncronas. Agora vamos fazer a mesma coisa no atualizaCliente-controller.
+
+[04:00] Começando do formulário, na linha 18, do submit, falo que o evento é uma função async, e em clienteService vamos fazer a mesma coisa. Vamos colocar um await para clienteService e não precisamos mais do then, porque quando ele resolver a promise ele vai me redirecionar diretamente para location, que é edição concluída html.
+
+[04:25] Onde mais estamos trabalhando aqui? No clienteService, detalhaCliente. O que vou fazer? Essa função inteira posso transformar numa função autoexecutável. Quando ela carregar no html, ela já vai se auto executar.
+
+[04:42] Ela tem um parênteses, dentro abro parênteses, uma função que vai ser executada. Aqui para o lado de fora executo ela. Podemos colocar o async para indicar que é uma função assíncrona. E copio da linha 6 até a 27, colo lá dentro. Agora estamos indicando que toda ela é uma função assíncrona, escopamos todo nosso código.
+
+[05:12] Em clienteService podemos fazer também const dados, falar que vamos esperar clienteService. Na linha 12, que tem o .then, tiramos o .then e o parênteses e deixamos só o dados. Esse dados quando for resolvido, tiramos também a linha 12.
+
+[05:38] Deixamos o input nome e input e-mail. Quando for resolvida a promise, o nome que pegarmos da API vai ser preenchido nos campos. Vamos ver se nada quebrou na nossa aplicação. Vamos voltar no Chrome, lá no Doguito, vou criar um novo cliente Lucas. Quebrou. Vamos ver o que aconteceu.
+
+[06:05] Ele está falando que não consegue inicializar clienteService, isso porque se voltarmos já tínhamos declarado clienteService no import, vamos ter que usar outro nome, vou chamar de listaClientes. Copiei aqui, o nome dessa função é listaClientes, "Ctrl + S".
+
+[06:25] Trocamos o nome que antes estava clienteService para const listaClientes, e listaClientes também no forEach. Se voltarmos no Chrome, vamos atualizar a página. O nome que colocamos, Lucas, está funcionando, vamos editar para Lúcio. Sucesso. Vamos excluir. Tudo funcionando do jeito que queríamos.
+
+[06:50] Agora indicamos que estamos trabalhando com códigos assíncronos sem utilizar o then. Isso também resolve uma situação que é encadear vários .then para executar o código. Recebe o código assíncrono, fazemos o then, depois podemos fazer vários outros then.
+
+[07:11] Outra coisa que vamos fazer aqui é o seguinte. Lembra quando estávamos trabalhando com XMLHttpRequest? Fizemos uma verificação para ver se estava tudo ok com o servidor. Hoje não temos essa função no nosso código, se viermos em clienteService, vou lá em listaClientes, vou tirar o f do profile, e quando ele for tentar acessar proile não existe, vai dar um erro.
+
+[07:40] Sumiu a tabela, já era esperado. Eu sei o aconteceu, o erro está no servidor, porém a pessoa que está utilizando a aplicação não vai saber. E agora o que ela tem que fazer? Temos que tratar esses erros e é isso que vamos ver.
+
+
+
+PARTE 3 - LIDANDO COM ERROS
+===========================
+
+
+Transcrição
+
+[00:00] Vamos tratar esses erros agora, vamos voltar no VSCode e a primeira coisa que vou fazer é voltar o profile no listaClientes. Vamos voltar no Chrome, atualizei, voltou aqui Felipe e felipe@alura.com.
+
+[00:15] Vamos trabalhar no VSCode. Em cliente-service vamos tratar a resposta do erro. Vou fazer uma verificação para ver se está tudo ok com a requisição. Para isso coloco um if e falo que se a resposta.ok, ou seja, se der tudo bem, retorno o resposta.json.
+
+[00:38] Caso contrário, vou lançar um erro, então throw new error, instanciei um objeto de erro porque vou passar uma mensagem aqui dentro que é uma mensagem personalizada. Vou falar que não foi possível listar os clientes. Salvei. Vou tirar o i de novo do profile. "Ctrl + S", vamos voltar no Chrome. Atualizei. Deu erro.
+
+[01:07] Vamos abrir F12, abrir o console, ele falou 404, deu erro do servidor, e o erro que criamos, não foi possível listar os clientes. Já estamos dando uma pista para quem for olhar depois no console o que aconteceu um possível erro.
+
+[01:22] Vamos fechar o console, voltar no VisualStudio code, e agora vamos fazer isso para as outras funções também. Vou voltar o profile normal, salvei, vou copiar o throw new error porque vamos utilizar ele em todas as outras funções.
+
+[01:36] Em criaCliente vamos fazer a mesma coisa. Se resposta.ok der tudo certo, vamos devolver resposta.body. Vou colocar o throw new error antes, copiei o resposta.body, coloquei no if, e caso contrário ele vai disparar um erro, que é o criaCliente não foi possível criar um cliente.
+
+[02:05] Do removeCliente vamos fazer o seguinte. Se a requisição deu certo, quer dizer que ele vai remover toda a tr. Fizemos a lógica para isso. Então, com a resposta vou fazer um pouco diferente. Vou fazer que then( resposta => if(!resposta.ok), se não deu certo, vou lançar o erro, throw new error no 35, dentro do removeCliente. Não foi possível remover um cliente.
+
+[02:48] A mesma coisa no detalhaCliente. Se resposta.ok, ele retorna o JSON, caso contrário entrou no error, não foi possível detalhar o cliente. E atualizaCliente também, a mesma coisa. Se resposta.ok for ok, ele vai fazer o return resposta.json. E colamos o throw new error. Não foi possível atualizar um cliente.
+
+[03:32] Deixamos todos os erros personalizados. Agora, vamos voltar no VSCode, no Chrome, vou atualizar, voltou o Felipe. O que aconteceu? Se voltarmos no VisualStudio code, lá em cima, vamos tirar um i do profile de novo, voltar no Chrome, atualizei, sumiu.
+
+[03:52] Já sabemos que no console ele vai mostrar, mas para quem está mexendo aqui de repente a pessoa não sabe que tem que abrir o console para dar uma olhada nos possíveis erros que podem ter acontecido. Quero colocar aqui uma página falando que deu alguma coisa errada, tente mais tarde, ou tente daqui cinco minutos novamente.
+
+[04:11] Para isso, vamos voltar no VisualStudio code, lá em listaClientes-controller, vamos fazer o seguinte. Sempre que trabalhamos com async await temos a possibilidade de usar também o try catch, ou seja, vou tentar executar esse código, caso não consiga vou executar o catch.
+
+[04:32] No const linhaCliente, depois do botão deleta, vou fazer um try, ele vai tentar executar todo esse código normalmente. Caso ele não consiga fazemos o catch. Quem vamos passar aqui? É o erro, e faço um console.log do erro, e faço que window.location.href, porque vou direcionar a pessoa para uma página, que é a página de erro, que é ../telas/erro.html.
+
+[05:12] Colocamos o try catch na tabela, e agora vamos colocar o try catch na função do render. Try em cima, copiamos tudo do const até esse último parênteses do elemento. Ele vai tentar, caso não consiga catch, mesma coisa, passamos o erro. Abre e fecha chaves, vou subir um pouco o console, coloco console.log do erro e falo para ele ir lá para o window.location.href = ‘../telas/erro.html’.
+
+[05:58] Antes de fazermos isso no atualizaCliente, vamos voltar no cliente-service.js, vou colocar o i de volta em “profile”, vou voltar no Chrome e atualizar a página, apareceu nosso nome. Apareceu Felipe, vamos voltar no VisualStudio code, vou tirar o i de novo, "Ctrl + S", ele vai bater, vai dar um erro. Vai bater no endereço do servidor, vai dar um erro.
+
+[06:20] Vamos voltar no Chrome, vou atualizar a tela. Quem estiver mexendo no sistema vai tomar um erro, algo de errado aconteceu, você pode tentar novamente em alguns minutos, e clicando para voltar na página inicial.
+
+[06:35] Nesse caso ela não vai voltar porque tiramos o profile justamente da página inicial, que é de listagem. Vamos voltar no VisualStudio code profile. Salvei. Se voltarmos no Chrome, atualizar, cliquei em voltar e ele voltou, tudo normal. Já dá um aviso para quem está mexendo no nosso programa.
+
+[06:55] Vamos no atualizaCliente-controller e vamos fazer a mesma coisa. Viemos no atualiza controller, e antes do dados vamos fazer try, pegamos dados, input nome e input e-mail, lá dentro do try, e fazemos o catch. Tem o erro. Abre e fecha chaves. Fazemos o console.log do erro, e window.location.href = ‘../telas/erro.html’.
+
+[07:28] Salvei. Vou até copiar esse catch porque vamos utilizar embaixo, antes do await cliente-service, vamos fazer o try e depois do try temos o catch. Copio o await até window.location, edição concluída, "Ctrl + X", colei dentro do try e agora já estamos garantindo que estamos resolvendo, indicando para a pessoa que deu um erro na hora de atualizar.
+
+[07:55] Faltou o quê? Se viermos no cadastra cliente, reparem que não coloquei o async await e nem coloquei o try catch. Vou deixar para vocês como desafio colocar o async await nesse arquivo e o try catch para tratar os dados, igual fiz no atualizaCliente e no listaClientes.
+
+[08:17] Agora já conseguimos listar, conseguimos deletar, conseguimos criar e conseguimos editar os clientes. O projeto final com async await e try catch aqui no cadastra cliente vai ficar no fim da aula.
+
+
+PARTE 4 - REFATORAÇÃO
+=====================
+
+Maria tem um código na sua aplicação que exibe o nome de todas as pessoas cadastradas no sistema da startup que trabalha.
+
+const render = () => { 
+    clienteService.listaClientes()
+        .then(data => {
+            data.forEach(elemento => {
+            tabela.appendChild(criaNovaLinha(elemento.nome, elemento.email, elemento.id))
+        })
+    })
+}
+
+Ela agora quer adicionar uma nova funcionalidade em sua aplicação, mas antes de começar a tarefa ela percebe uma chance de refatorar esse código.
+
+Qual a opção de refatoração com uso de async/await e de try/catch?
+
+  const render = async () =>  {
+    try {
+      const listaClientes = await clienteService.listaClientes()
+      listaClientes.forEach(elemento => {
+          tabela.appendChild(criaNovaLinha(elemento.nome,elemento.email, elemento.id))
+      })
+    }
+    catch(erro){
+      console.log(erro)
+      window.location.href="../telas/erro.html"
+    }
+  }
+
+  Perfeito! Utilizando async/await temos uma função assíncrona que conseguimos ler de forma estrutural, trazendo benefícios de manutenção e legibilidade para nosso código. Bem como o uso do try/catch ajuda a lidar com erros.
+
+
+
+PARTE 5 - FAÇA COMO NA AULA
+===========================
+
+Praticar ajuda bastante no aprendizado de um novo conceito. Assim, é muito importante que você implemente o que foi apresentado nesta aula.
+
+Opinião do instrutor
+  Continue com os seus estudos, e se houver dúvidas, não hesite em recorrer ao nosso fórum!
+
+
+
+PARTE 6 - PROJETO FINAL
+=======================
+
+Aqui você pode baixar o projeto final do curso. Baixe o zip ou visualize os arquivos no Github!
+
+
+Projeto-final.zip
+https://github.com/alura-cursos/2016-JS-na-web-crud-com-JavaScript-assincrono/archive/projeto_final.zip
+
+
+Repositório
+https://github.com/alura-cursos/2016-JS-na-web-crud-com-JavaScript-assincrono/tree/projeto_final/projeto_final/admin
+
+
+PARTE 7 - RESUMO DA AULA
+========================
+
+Nesta aula, aprendemos:
+
+    Utilizar async/await para indicar funções assíncronas.
+    
+    Tratar erros com try/catch
+
+
+PARTE 8 - CONCLUSÃO
+===================
+
+
+Transcrição
+
+[00:00] Se você chegou até aqui, parabéns por ter concluído mais um curso na Alura. Neste curso passamos por muita coisa. Passamos por XMLHttpRequest, passamos por promise, por fetch para fazer as requisições.
+
+[00:12] Se voltarmos no VSCode, lá em clienteService utilizamos os verbos http para moldar a aplicação do jeito que queríamos. Utilizamos o post para criar um cliente, get para buscar a lista de clientes que estão na API. Lá em lista controller fizemos bastante manipulação de DOM, criamos um template para exibir linhas da tabela com os dados dos clientes que pegamos da API.
+
+[00:35] Trabalhamos também, colocamos eventListener na linha 23, em tabela. Trabalhamos com eventos, trabalhamos com formulários, depois passamos o nosso código indicando que era um código assíncrono, então utilizamos async e await. Depois utilizamos try catch para lidar com erros.
+
+[00:55] Passamos por bastante coisa durante o curso. Espero que você tenha gostado bastante do conteúdo, e nos vemos em um próximo curso.
+

@@ -1,0 +1,148 @@
+# aula 3 - modularizar código
+
+## 3-1 - módulos js
+
+// - separar cada classe em um arquivo
+// -- criar arquivos para classes
+// --- Cliente.js
+// --- ContaCorrente.js
+
+// -- retirar a classe Cliente do arquivo "index.js"
+// -- colocar no arquivo "Cliente.js"
+// -- o mesmo para "ContaCorrente"
+// -- exportar as classes
+
+      export class Cliente { ... } 
+
+// -- código da "index" só com a execução
+// -- precisa importar módulos das classes na "index"
+
+    import { Cliente } from "./Cliente.js";
+    import { ContaCorrente } from "./ContaCorrente.js";
+
+// - informar o uso de módulo para o Node
+// -- criar configuração "package.json"
+
+// -- criar pelo terminal com o comando:
+      npm init
+// -- vai pedir para declarar o nome do pacote a ser criado
+      bytebank
+// -- vai pedir descrição
+      Projeto do bytebank para seus clientes
+// -- já preenche o "entry point" com o "index.js"
+// -- vai pedir o comando teste, não precisa declarar
+// -- pede o repositório Git, não precisa declarar
+// -- pede palavras-chave, não precisa declarar
+// -- pede autor, pode declarar
+// -- pede licença (ISC), deixar a padrão "ISC"
+// -- pede confirmação se está tudo OK, sim
+// -- gerou o arquivo
+
+// -- abrir o arquivo "package.json"
+// -- inlcuir vírgula após declaração da licença
+// -- na linha de baixo, incluir declaração do módulo
+      "type": "module"
+
+// - pronto, programa roda tudo OK, trabalhando com módulos
+
+// - código completo do "package.json"
+
+    {
+      "name": "bytebank",
+      "version": "1.0.0",
+      "description": "Projeto do bytebank para seus clientes",
+      "main": "index.js",
+      "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+      },
+      "author": "Neto Paiva",
+      "license": "ISC",
+      "type": "module"
+    }
+
+
+## 3-2 - compor classes
+
+// - associar cliente à classe ContaCorrente
+// -- adicionar atributo "cliente"
+
+      export class ContaCorrente {
+        agencia;
+        cliente;
+        
+        _saldo = 0;
+        ...
+      }
+
+// - declarar na "index.js" a chamada do atributo cliente
+
+      contaCorrenteRicardo.cliente = cliente1;
+
+// - ao exibir "contaCorrenteRicardo"
+aparecerá os valores dos atributos:
+// -- agencia
+// -- cliente (uma instância do objeto Cliente, resultado da composição de classes)
+// -- _saldo
+
+      ContaCorrente {
+        agencia: 1001,
+        cliente: Cliente { nome: 'Ricardo', cpf: 11122233345, rg: 123456789 },
+        _saldo: 250
+      }
+
+
+// - criar nova conta na "index"
+// -- conta2
+// -- cliente2
+// -- agencia 102
+
+      const conta2 = new ContaCorrente();
+      conta2.cliente = cliente2;
+      conta2.agencia = 102;
+
+// exibir no console
+
+      ContaCorrente {
+        agencia: 102,
+        cliente: Cliente { nome: 'Alice', cpf: 66622233345, rg: undefined },
+        _saldo: 0
+      }
+
+// - criar método "transferência" na classe "ContaCorrente"
+// -- recebe como parâmetros
+// --- valor
+// --- conta recebedora
+// -- executa a instrução
+// --- sacar valor desta conta (valorSacado)
+// --- depositar valor na conta
+
+      transferir(valor, conta){
+        const valorSacado = this.sacar(valor);
+        conta.depositar(valor);
+      }
+
+// - declarar movimentação na "index"
+
+      contaCorrenteRicardo.transferir(200, conta2);
+
+// - exibir no console
+
+      ContaCorrente {
+        agencia: 1001,
+        cliente: Cliente { nome: 'Ricardo', cpf: 11122233345, rg: 123456789 },
+        _saldo: 50
+      }
+      ContaCorrente {
+        agencia: 102,
+        cliente: Cliente { nome: 'Alice', cpf: 66622233345, rg: undefined },
+        _saldo: 200
+      }
+
+
+## 3-3 - tipos de valor e de referência
+
+// - cuidado:
+// -- JS permite alterar objeto através de declarações nos métodos
+// -- evitar este tipo de prática
+
+// - objeto como parâmentro de um método ou função é passado uma referência do objeto criado na memória

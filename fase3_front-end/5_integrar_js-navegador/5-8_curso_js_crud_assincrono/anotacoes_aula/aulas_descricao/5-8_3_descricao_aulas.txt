@@ -1,0 +1,194 @@
+Curso JS  na web - CRUD com JS assíncrono
+
+
+Aula 3 - Criar e remover clientes
+=================================
+
+
+PARTE 1 - PROJETO DA AULA ANTERIOR
+==================================
+
+Aqui você pode baixar o projeto da aula anterior. Baixe o zip ou visualize os arquivos no Github!
+
+Projeto.zip
+https://github.com/alura-cursos/2016-JS-na-web-crud-com-JavaScript-assincrono/archive/aula02.zip
+
+Respositório
+https://github.com/alura-cursos/2016-JS-na-web-crud-com-JavaScript-assincrono/tree/aula02/aula2/admin
+
+
+PARTE 2 - CRIANDO CLIENTE
+=========================
+
+
+Transcrição
+
+[00:00] Passamos por todo o ambiente de execução do JavaScript, vimos que nosso código no navegador é separado entre JavaScript linguagem e web API, executando primeiro o que é linguagem e depois executando o que é web API. Quem fica observando se as tarefas da web API já estão prontas é o eventloop.
+
+[00:22] As tarefas ficam prontas, elas descem para uma fila, se não tiver mais nada na pilha de execução o eventloop pega essa tarefa e joga na pilha para ela ser executada, e assim o JavaScript, que foi projetado para ser uma linguagem de fazer uma coisa só por vez, uma linguagem single thread, consegue fazer várias coisas.
+
+[00:40] Enquanto estudávamos sobre ambiente de execução chegou uma nova tarefa, essa tarefa de criar um cliente novo, então se chegar alguém no nosso petshop o cliente quer que ele consiga cadastrar essa pessoa para depois entrar em contato.
+
+[00:55] Hoje se eu clicar no botão novo cliente, no cabeçalho da minha tabela, ele me redireciona para uma página que tem um formulário, nome e e-mail, e um botão de cadastrar. Então, o que temos que fazer? Fazer essa parte do formulário ficar funcional, ou seja, vamos ter que conversar com o formulário novamente e dizer para ele que estou enviando informações.
+
+[01:20] Ou seja, vamos utilizar outro método http. Vamos lá no VSCode e vamos botar a mão na massa. Em clienteService.js, vou criar uma nova função, porque aqui na lista estamos utilizando o get. Vamos utilizar um novo verbo. Vou chamar de criaCliente, vai ser uma arrow function. Vou até copiar o return fetch do listaClientes.
+
+[01:51] Depois, no final do acento grave vou fazer uma vírgula e vou abrir chaves, porque aqui vou passar esse método que quero. Cada método http indica uma intenção de solicitação. Então aqui no fetch ele tem o get automático, o get que é pegar alguma coisa. O que quero é postar esses dados, ou seja, vou enviar os dados que escrevi no formulário.
+
+[02:15] Para isso vou utilizar o método post, que vem de postar, parecido com o que fazemos em rede social. Escrevemos alguma coisa e depois clicamos no botão enviar esse texto. Ele vai para um servidor e depois ele é listado na linha do tempo das pessoas e todo mundo pode ver o que você escreveu.
+
+[02:38] Além do método, preciso passar mais informações. Outra informação que preciso passar é no cabeçalho qual tipo de informação estou enviando, então no headers vou passar que estou enviando um ‘'Content-Type' : 'application/JSON’’. Outra coisa que tenho que enviar também é o nome e o e-mail, que são os dados que vou preencher no formulário.
+
+[03:12] No corpo do formulário vou preencher esses dados, a mesma coisa no corpo da minha requisição, vou falar que é body: {nome, e-mail, ele reclamou porque esqueci da vírgula. Lembrando que comunicação cliente servidor é feita em texto. Fizemos aquela transformação com JSON.parse para pegar o texto e fazer virar um JavaScript válido.
+
+[03:45] O JSON também tem outro método, que é o stringify, que faz virar texto. Vamos colocar antes dessas chaves, vou falar que body: JSON.stringify( nome, email, falta passar os parâmetros para minha função cria cliente, que é o nome e e-mail.
+
+[04:15] Vou falar que dentro do meu stringify esse nome que vier como parâmetro vai ser o nome que vou enviar no corpo da minha requisição, e o e-mail a mesma coisa. Agora, com a requisição feita, fazemos alguma coisa, então .then( resposta => { return resposta.body.
+
+[04:45] Mais uma coisa, criaCliente temos que exportar porque vou utilizar ele em outro lugar. Vou copiar e colocar dentro do objeto clienteService. Dentro do objeto clienteService agora temos lista e criaCliente. Lembra que o meio termo que tem relação com visualização e com a API vou colocar lá no arquivo de controller.
+
+[05:18] No controller vou criar um novo arquivo chamado cadastraClientes-controller.js. Se formos no Chrome, vamos ver que estamos em outra página, então vamos ter que percorrer o dom dessa página e chegar no formulário. Se viermos no VSCode, em telas tenho um arquivo chamado cadastra_cliente.html.
+
+[05:50] Se formos descendo o arquivo, na linha 31 tenho o formulário e tenho um data attributes que é o data-form. Esse data attributes vamos selecionar para pegar todo o formulário. Voltando no cadastraClientes-controller, vou colar o data-form e vamos percorrer o dom. Já sabemos como faz, que é com document.querySelector(‘[data-form]’).
+
+[06:20] Vou reutilizar essa expressão, então vou falar que é um const, que é o formulário, recebe essa expressão toda. E agora vou colocar um evento de escuta no formulário. Ou seja, quando eu clicar no botão de cadastrar, quero que aconteça algo. Como vamos fazer isso? Vamos utilizar o método addEventListener. Passo o evento que quero escutar, que é o evento de submit, e depois passo outro parâmetro, que é uma função que vai executar algo assim que ele ouvir o submit.
+
+[06:58] De onde que ele vai ouvir o submit? Do formulário. Então, formulario.addEventListener('submit', ()=>{. A primeira coisa que quero fazer aqui é percorrer dentro do formulário para pegar os campos de nome e e-mail. Se voltarmos no Chrome, tenho dois campos nome e e-mail. Vamos voltar no visual studio code.
+
+[07:25] Aqui dentro para fazer isso geralmente faríamos document.querySelector e buscaríamos os data attributes relacionados ao campo, porém estou dentro do escopo do formulário, e quando estamos lidando com eventos, o navegador disponibiliza um objeto para nós para termos mais informações sobre aquele evento.
+
+[07:45] Posso passar esse objeto como parâmetro dessa função e posso utilizar ele para fazer a busca no lugar do document. Ao invés de procurar no document inteiro, procuro exatamente onde está acontecendo o evento. Posso falar que é evento.target.querySelector(‘[data-nome]’), vou copiar e trocar para data-email.
+
+[08:38] Vou colocar o nome const nome, vai receber toda essa expressão, e const e-mail, vai receber também toda essa expressão. Estou buscando os campos, mas quero o valor que eu digitar lá dentro, e para isso utilizo o .value nas duas expressões.
+
+[09:05] Dentro do nome percorro o formulário e pego data-nome, que é o campo do input do nome, e o valor, e e-mail, e o valor. Mesma coisa. E agora para onde vamos enviar esses dados que pegamos? Para a função que acabamos de criar no clienteService, que é o cliente. Então, “Ctrl + C”, voltamos em cadastroCliente-controller, dentro de formulário vou falar que quero clienteService.criaCliente(nome, email).
+
+[09:48] Temos que lembrar de importar clienteService. Na primeira linha vou fazer o import { clienteService } from ‘../service/cliente-service.js. Já sabemos de onde vem. Outra coisa que temos que fazer aqui é lembrar que sempre o formulário, o comportamento padrão dele é enviar as informações, mas o que queremos fazer aqui é que antes que ele envie a informação quero buscar os nomes e fazer o clienteService.
+
+[10:25] Para prevenir o comportamento de envio do formulário vou fazer um evento.preventDefault. Com o evento preventDefault eu previno o comportamento padrão do formulário, que é enviar, mesmo sem checar o que tem aqui dentro.
+
+[10:44] Agora depois que clienteService me devolver uma resposta vou usar o .then e vou fazer o seguinte, depois que esse cliente for cadastrado vou redirecionar a pessoa que está cadastrando o cliente para outra página, para isso vou utilizar window, que quer dizer minha tela inteira, location, que é onde estou, href, que é para onde vou enviar, vai ser igual a ../telas/cadastro_concluido.html.
+
+[11:34] Ele vai me enviar para esse cadastro concluído html. Uma outra coisa que temos que lembrar de fazer em cadastraClientes, logo depois do body, tenho que criar um script, um src, e passar ../controller/cadastraClientes-controller.js, que é de onde ele vai carregar. E lembrar que estamos trabalhando com módulos, então tenho que passar um type.
+
+[12:05] Lá em cadastraClientes estamos enviando para esse depois que for concluído com sucesso. Vamos no Chrome, vou voltar na página de clientes, vou clicar em novo cliente, colocar um nome, Lúcio, e vou colocar lucio@email.com. Vou clicar em cadastrar, cliente cadastrado com sucesso, vou voltar para clientes. Lúcio e lucio@email.com.
+
+[12:32] Aprendemos como funciona um formulário e realizar outra operação utilizando o verbo http post. E como realizamos uma tarefa já chegou uma próxima. Listamos clientes, criamos novos clientes, mas não temos como excluir esse cliente. É isso que vamos fazer.
+
+
+
+PARTE 3 - DELETANDO UM CLIENTE
+==============================
+
+
+Transcrição
+
+[00:00] Conseguimos cadastrar um cliente com sucesso. Lá no VSCode o que fizemos? Em clienteService criamos uma nova comunicação. Dessa vez fizemos um método post e também vimos que foi preciso passar outras informações para essa requisição ser completada com sucesso, por exemplo, cabeçalho, que indico o tipo de conteúdo, e o corpo, que são as informações que vou passar para o servidor.
+
+[00:25] Depois criamos um arquivo novo chamado cadastraClientesController e percorremos o formulário, percorremos a árvore do dom, chegamos no formulário, e dentro do formulário pegamos o valor digitado do input do nome e do e-mail e passamos para o criaCliente.
+
+[00:45] Assim, quando a requisição for feita, ele vai escrever os dados lá no servidor. Ele redireciona usando window.location.href, para uma página de cadastro concluído com sucesso. Quando cliquei no botão voltei para a página, e quando carrego a página listaClientes ele faz o fetch e busca os clientes cadastrados.
+
+[01:10] O cliente que cadastramos, que é o Lúcio, apareceu para nós. Nossa funcionalidade de cadastro foi concluída com sucesso. Se vocês repararem no canto direito tenho um botão de excluir, e essa é nossa próxima tarefa. Quero ser capaz de remover um cliente do sistema.
+
+[01:28] Se voltarmos no VSCode, é isso que vamos fazer. Vou fechar os arquivos de cadastraClientes e de listaClientes, e o html, e vou ficar em clienteService, porque novamente vamos conversar direto com o servidor. Temos lista, cria, e vou criar uma nova constante removeCliente.
+
+[01:50] É uma função arrow function e vou copiar o return fetch, porque é assim que vamos abrir essa conexão. Lembra que temos que passar outras informações, porque por padrão o fetch faz um get. Vou passar uma vírgula, depois do endereço, abrir e fechar chaves, e vou passar o método que vou utilizar. O método que quero utilizar é o delete. Quero deletar um cliente.
+
+[02:22] Mas não quero deletar todos os clientes. Se eu voltar na minha aplicação, no Chrome, reparem que cada linha tem um botão de excluir. Como eu identifico cada um desses clientes? Se voltarmos no VisualStudio code, vamos lá embaixo, no db.json, na nossa árvore de projeto, reparem que o próprio JSON service disponibiliza para nós um id.
+
+[02:44] Cada um desses id é o jeito que ele identifica o cliente. Com certeza você já pensou aí, vamos passar um id então lá no clienteService, no delete, e é isso que vamos fazer. Vamos voltar no clienteService. E aqui, como parâmetro do removeCliente vou passar um id.
+
+[03:08] No endereço, onde eu for bater para fazer a requisição, além do profile, vou fazer uma barra e vou passar entre chaves o id. Quer dizer, esse id tem relação com esse endereço, então esse endereço é de um cliente específico. Porém do jeito que está aqui ele não reconhece que o id é um JavaScript válido, ele vai entender isso como um texto, apesar de estar em template literals, aqui, que é o acento grave.
+
+[03:42] Para ele entender que é um JavaScript válido tenho que colocar o cifrão. Agora conseguimos já fazer uma requisição de deletar, passando o id. Ele vem direto no endereço, estamos utilizando já template literals, ele reconhece isso como um JavaScript válido.
+
+[04:02] O que temos que fazer agora? Exatamente o que você pensou, que é passar removeCliente no objeto de clienteService para podermos utilizar ele em outro lugar. É isso que vamos fazer, criaCliente, removeCliente.
+
+[04:20] Ele já está pronto para ser utilizado. Como só vou deletar, só precisei passar essa informação para minha função. Onde vamos deletar o cliente? Se voltarmos em listaClientes-controller, vamos lá para cima, temos criaNovaLinha, é onde estamos gerando o template onde tem esse botão de excluir. É aqui que vamos utilizar a função que acabamos de criar para deletar um cliente.
+
+
+
+PARTE 4 - CONECTANDO API COM BOTÃO
+==================================
+
+
+Transcrição
+
+[00:00] Agora que já criamos a função para fazer a deleção de um cliente, em clienteService criamos a função removeCliente, passamos para ela o método que queremos utilizar, então quero deletar um cliente, o método é o delete, e passamos um endereço onde ele vai fazer o fetch, que é o 3000/profile, e passamos o id que vai identificar o cliente.
+
+[00:18] Passamos o removeCliente dentro do objeto para acessarmos com a notação de ponto. E onde vamos utilizar o removeCliente? Lá em listaClientes.controller. Aqui a primeira coisa que temos que saber é quando cliquei no botão. Para fazer isso vou utilizar uma estratégia similar que fizemos no cadastraClientes. Vou colocar um evento de escuta na tabela.
+
+[00:42] Vou fazer tabela. addEventListener(‘click, ()=> ), quero saber se cliquei no botão de excluir, então evento de click. E quando eu clicar vou executar alguma coisa. Lembra que temos aquele objeto que o navegador oferece para nós para trabalharmos com maiores informações sobre o evento, então já passo ele aqui como parâmetro, que vai ser o evento, e vou utilizar ele aqui dentro da função, vou fazer evento.target, ou seja, quero saber o alvo do evento.
+
+[01:15] Quem é o alvo do meu evento? O botão de excluir. Como identificamos isso? Reparem que ele tem uma classe, botao-simples vai até excluir. Vou copiar essa classe toda e vou identificar ele. Vou falar que se o alvo do evento tiver essa classe, colei e coloquei aspas, é o botão de excluir.
+
+[01:35] Só que para ele identificar a classe CSS tenho que colocar antes className. Se o nome da classe for botão simples, botão simples excluir, ele é meu botão de deletar. Vou colocar toda essa expressão dentro de uma variável, então let ehBotaoDeletar, e agora vou fazer uma verificação, ou seja, se esse botão for o botão de deletar, se ele me retornar verdadeiro, vou fazer alguma coisa.
+
+[02:05] Aqui vamos fazer o seguinte. Quero deletar o cliente e isso já fizemos em clienteService. Podemos passar aqui clienteService.removeCliente, e ele recebe um id. Aqui estamos deletando o cliente da API. Porém temos que deletar também o elemento html.
+
+[02:26] Para fazer isso primeiro vamos ter que identificar cada um dos elementos. Vamos subir o arquivo. Em criaNovaLinha vamos passar o id, porque a API devolve para nós o nome, o e-mail e o id que identifica cada um dos clientes. E vou colocar esse id nas trs, em cada uma das trs criadas.
+
+[02:46] Para isso vou criar um data attributes. Vou fazer aqui, linhaNovoCliente.dataset.id = id. Então, como isso funciona? Criei um data attributes chamado dataid e passei o id do cliente como propriedade, então esse data-td pode receber uma propriedade igual aspas três, para identificar esse data-td.
+
+[03:15] Na prática, se eu fizer um console.log e passar o linhaNovoCliente, voltarmos no Chrome, atualizar o servidor, apertar F12, reparem que deu undefined, isso porque lá embaixo, onde estamos na linha 31 gerando a visualização, passamos o nome, e-mail e temos que passar também elemento.id, para ele gerar junto com nome e e-mail um identificador.
+
+[03:58] Vamos voltar no Chrome, atualizar a página. Reparem que agora cada uma das trs tem um e dois. Eles estão identificados. Vamos fechar o console e voltar para o VisualStudio code. Já passamos o id para o template, conseguimos identificar cada uma das trs, quero agora deletar a linha e deletar o cliente.
+
+[04:22] Para isso vou encontrar o elemento pai mais próximo da minha td, que é a td que tem o botão. O elemento pai mais próximo da td é a linha que criamos, a tr. Posso falar que const linhaCliente = evento.target.closest(‘[data-id]’), do data attributes dataid, que é o data attributes da tr.
+
+[04:55] Além disso, passamos o id, vou falar que let id = linhaCliente.dataset.id, passamos o id e agora o id do linhaCliente passamos no removeCliente. Se voltarmos no Chrome, vou atualizar a aplicação, vou clicar em excluir, atualizar a página. Sumiu o Lúcio.
+
+[05:22] Repare que quando atualizamos a página ele renderizou só os que tinha na API, mas o que quero é que ele remova no momento em que eu delete da API. Para isso voltamos no VisualStudio code, como resposta da promise removeCliente posso fazer um .then, e executo imediatamente, falo que ‘linhaCliente.remove’, ou seja, vou remover a tr inteira.
+
+[05:58] Vou voltar no Chrome, vou criar um novo cliente, vai ser o Lúcio mesmo, o e-mail dele já está aqui. Cadastrei. Vou excluir o Lúcio agora. Ele excluiu da nossa tabela. Agora já conseguimos excluir um cliente, porém quero ter também na minha aplicação a possibilidade de editar, não quero excluir e criar um cliente novo caso eu tenha algum erro de digitação no e-mail ou no nome, por exemplo. É isso que vamos fazer.
+
+
+
+PARTE 5 - DELETANDO UM CLIENTE
+==============================
+
+Em sua startup Maria lida com vários dados de diferentes clientes. Atualmente, para deletar algum cliente de sua lista ela precisa acessar o servidor.
+
+Qual das funções abaixo possibilita a comunicação com o servidor, para que posteriormente possamos deletar um cliente diretamente pelo site?
+
+export const deletaCliente = (id) => {
+    return fetch(`http://localhost:3000/profile/${id}`, {
+        method: "DELETE",
+    })
+}
+
+  Alternativa correta! Isso mesmo, além de indicar a ação passando o verbo http DELETE, também precisamos passar um id que vai ser usado para identificar cada um dos clientes.
+
+
+
+PARTE 6 - PARA SABER MAIS - COMUNICAÇÃO CLIENTE-SERVIDOR
+========================================================
+
+Falamos bastante sobre comunicação cliente servidor, neste artigo alura+ você vai conhecer mais a fundo a sobre o assunto.
+
+Link (sem acesso):
+https://cursos.alura.com.br/o-que-e-rest--c119
+
+
+
+PARTE 7 - FAÇA COMO NA AULA
+===========================
+
+Praticar ajuda bastante no aprendizado de um novo conceito. Assim, é muito importante que você implemente o que foi apresentado nesta aula.
+
+Opinião do instrutor
+  Continue com os seus estudos, e se houver dúvidas, não hesite em recorrer ao nosso fórum!
+
+
+
+PARTE 8 - RESUMO DA AULA
+========================
+
+Nesta aula, aprendemos:
+
+    Usar a método closest para encontrar o elemento do DOM mais próximo ao que queremos remover
+    Criar um cliente utilizando o verbo http POST.
+    Remover um elemento do dom com método remove()
+    Deletar um cliente utilizando o verbo http DELETE
+

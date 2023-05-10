@@ -1,0 +1,340 @@
+Curso JS - interfaces e heranças em Orientação a Objetos
+
+
+Aula 3 - Classes abstratas
+==========================
+
+
+PARTE 1 - PROJETO DA AULA ANTERIOR
+==================================
+
+https://cursos.alura.com.br/course/javascript-polimorfismo/task/75376
+
+
+Aqui você pode baixar o projeto da aula anterior.
+
+Baixe o zip ou visualize os arquivos no Github!
+
+Links:
+
+  Projeto.zip
+  https://github.com/alura-cursos/js-heranca-polimorfismo/archive/aula2.zip
+
+  Repositório
+  https://github.com/alura-cursos/js-heranca-polimorfismo/tree/aula2
+
+
+
+PARTE 2 - PROPRIEDADE "CONSTRUCTOR"
+===================================
+
+Transcrição
+
+[00:00] Como vimos, nós conseguimos sobrescrever o comportamento, conseguimos reutilizar comportamento e temos agora nossas propriedades privadas e protegidas.
+
+[00:08] Já começamos a dar uma cara um pouco mais legal para o nosso sistema, temos código compartilhado, temos código especializado e vimos para que serve herança, como podemos usá-la a nosso favor.
+
+[00:19] A nossa classe ContaPoupanca ainda está muito parecida com a nossa classe ContaCorrente, já vamos ver por que o ByteBank pediu algumas coisas específicas para ela. Mas se pensarmos um pouco, agora temos três tipos de contas de verdade, temos a classe ContaPoupanca, temos a classe ContaCorrente e temos a classe Conta.
+
+[00:35] Só que faz sentido, dentro do nosso sistema, alguém usar a classe Conta diretamente? Porque a classe Conta tem todos os comportamentos que precisamos por enquanto, mas ela não me diz muita coisa, ela não fala comigo da maneira que o ByteBank fala.
+
+[00:52] Porque o ByteBank sempre fala de conta-corrente, conta poupança, conta salário, fala do tipo de conta, o ByteBank fala dessas especializações que estamos criando quando herdamos de alguma outra classe. Então essa classe Conta serve para conseguirmos estendê-la e ter as propriedades e comportamentos que são compartilhados entre as várias outras especializações de conta que temos.
+
+[01:12] Mas eu não gostaria que ninguém viesse e instanciasse, por exemplo, uma nova conta direto aqui no index.js. Eu não quero que alguém venha e fale que eu tenho um const conta = new Conta(), porque para mim isso não faz sentido, meu saldo inicial pode ser o que eu quiser, pode ser outra coisa, meu cliente vai ser o cliente1 ainda e eu tenho minha agência 1001, não tem problema.
+
+[01:34] Mas eu não quero que alguém consiga fazer isso, porque Conta é uma classe que não faz sentido ser instanciada, não faz sentido ela ter objeto, eu a criei para ela ser somente herdada, para eu ter a especialização dela. Ela mantém código, ela é importante para o nosso sistema, mas não quero que ninguém a use dessa maneira.
+
+[01:50] Porque se tivermos um comportamento que estiver faltando ou que quisermos especializar, como faremos isso através de Conta? Se eu tenho um monte de gente usando essa classe base aqui no meu sistema e eu precisar fazer alguma especialização que eu precise criar uma nova classe, que seja ContaSalario, por exemplo, eu vou ter que mudar muitas partes do meu sistema. Então eu já quero prevenir agora de alguém instanciá-la.
+
+[02:11] Por enquanto o sistema deixa, se eu vier aqui e der um console.log na (conta), ele vai deixar. Vou abrir meu terminal, pedir para ele executar, eu entrei no node, vamos sair do meu REPL, vamos limpar isso aqui e vou pedir para ele executar meu index.js.
+
+Conta{
+ _saldo: 0,
+ _cliente: Cliente { nome: 'Ricardo', _cpf:11122233309 },
+ _agencia: 1001
+}
+
+[02:27] Ele deixou, eu tenho uma conta, essa conta tem um saldo, tem um cliente e tem uma agência, está tudo funcionando certo, mas ela é do tipo Conta, como podemos ler aqui. E eu não quero que isso aconteça. Toda vez que alguém tentar dar um new Conta eu quero bloquear, eu não quero fazer isso acontecer. Ou pelo menos, inicialmente, eu quero dar um aviso.
+
+[02:44] O que eu vou fazer? Vou vir no Conta.js e vou falar, if(this.constructor == Conta), se o meu construtor for do tipo Conta, eu vou dar um console.log e falar "Você não deveria instanciar um objeto do tipo conta". Eu não quero, eu quero toda vez dar esse aviso.
+
+[03:18] E aqui eu estou falando this.constructor porque ele salva quem foi o construtor inicialmente chamado. Vamos fazer um teste, vamos vir aqui na minha index.js, eu vou tirar esse método de sacar e depositar que nós temos.
+
+[03:31] Temos três tipos de contas sendo criadas aqui, vamos limpá-lo um pouco, vamos colocar ponto e vírgula. Eu tenho três new sendo chamados, ContaCorrente, ContaPoupanca e o Conta. Ele só vai disparar aqui o Conta, esse console.log, quando o construtor for exatamente igual a Conta.
+
+[03:48] Se eu pedir aqui, vamos salvar e vamos abrir nosso terminal para executar nosso código, você pode ver que ele retorna: "Você não deveria instanciar um objeto do tipo conta". Mas ele não disparou isso várias vezes, ele só imprimiu uma vez.
+
+[04:03] Se eu vier na Conta e tirar esse if(this.constructor == Conta) daqui, falar que sempre que ele for chamado ele vai disparar, ao executá-lo novamente no terminal, ele vem aqui, três vezes foi disparado. Quando eu ponho aquele if, ele fala que o construtor que foi inicialmente chamado é o Conta, então ele só vai ser chamado nessa última instância. E dessa maneira eu aviso, se eu tirá-lo daqui e executar agora, vamos ver que ele não vai chamar.
+
+[04:31] Eu não salvei aqui, vamos dar um clear, vamos executar, o Conta não foi definido, porque eu comentei aquela linha do const conta = new Conta(0, cliente1, 1001), então vamos comentar essa linha do console.log(conta) também, salvar e agora sim, limpar o nosso terminal, e pedir para ele executar.
+
+[04:47] Você pode ver que ele não imprimiu nada, ele só imprimiu falando que o módulo é experimental, mas ele não imprimiu mais nada. Porque ele está falando, quem foi chamado aqui foi o new Conta, então essa propriedade construtor vai estar como new Conta.
+
+[05:02] Se eu imprimi-la, der um console.log(this.constructor), podemos ver que o construtor, quando é chamado através de uma classe filha, vai vir com o nome dessa classe filha, então ele é uma função construtora chamada ContaCorrente, que tem, inclusive, um numeroDeContas: 0, porque essa é uma propriedade estática, ele já traz para mim.
+
+[05:24] E o outro é uma função do tipo ContaPoupanca, então esse construtor não vai ser uma conta, por isso que eu posso perguntar se ele é igual a uma conta específica. Na hora em que eu vier aqui no index.js, descomentar essa linha do const conta = new Conta(0, cliente1, 1001) e executar de novo, vou dar um clear, vem uma Function: Conta.
+
+[05:42] E eu estou perguntando: quem foi chamado foi exatamente essa conta? Foi chamada diretamente uma instanciação desse objeto Conta? Então eu vou imprimir aqui que ele não deveria fazer isso e eu aviso: “Você não deveria instanciar”.
+
+[05:55] Inclusive, eu vou imprimir aqui e avisar para o desenvolvedor que ele não deveria estar fazendo isso, dessa maneira nós conseguimos pelo menos avisá-lo que não queremos que ele faça uma instância do tipo objeto Conta.
+
+
+
+PARTE 3 - CLASSES ABSTRATAS
+===========================
+
+Transcrição
+
+[00:00] Da maneira que fizemos agora nossa classe Conta, nós damos um aviso para o desenvolvedor quando estivermos com esse erro de alguém tentar instanciar diretamente a classe Conta.
+
+[00:09] Na hora que dermos esse new, const conta = new Conta(0, cliente1, 1001), como vimos, ele vai dar um console.log na classe Conta e falar: “Você não deveria instanciar um objeto do tipo conta”.
+
+        if(this.constructor == Conta){
+            console.log("Você não deveria instanciar um objeto do tipo conta");
+        }
+
+[00:17] E isso funciona para darmos um aviso para o desenvolvedor, mas nada impede, ainda é possível desse desenvolvedor instanciar diretamente essa conta. E o que pode acontecer é que o desenvolvedor vai simplesmente ignorar esse aviso e vai continuar instanciando aquela conta, que é justamente o que não queremos.
+
+[00:32] Porque, como eu falei, se em vários lugares onde a pessoa está usando a classe Conta padrão, essa classe base, e quisermos depois especializar para uma conta salário, para uma conta de CNPJ, de empresa, vamos ter que mudar muitos lugares no nosso código. Eu já quero evitar o máximo possível de outros desenvolvedores construírem um objeto do tipo Conta, e só esse aviso de console.log não é a melhor coisa a fazermos.
+
+[01:01] Como vocês devem ter reparado, console também é uma classe, então a variável console vem da classe Console e ela tem outros métodos, além do log. Se dermos um "Ctrl + Espaço", ele abre o nosso autocomplete e são exibidos os outros métodos da classe Console.
+
+[01:20] E eu poderia lançar aqui um erro a partir de console. Falar, “se você tentar instanciar, eu vou lançar um erro para você”, então console.error e falar para ele que ele tem um erro. Vamos instanciar aqui e podemos ver que ele deu uma mensagem basicamente igual. Apesar de ser um erro agora, não vimos muita diferença.
+
+[01:37] Só que nós já trabalhamos com erro antes, já tivemos muitos erros, inclusive. Como eu posso criar um erro ou fazer estourar um erro na minha tela da maneira que temos, quando temos alguma coisa errada? Por exemplo, se eu não importar mais o Conta aqui no index.js, apagando o import { Conta } from “./Conta.js” e tentar executar esse código, vamos dar um clear no terminal e vamos executar, eu tenho realmente um erro.
+
+[01:58] Inclusive, um erro que para a execução do meu programa, ele não executa meu programa depois que encontra esse erro, porque é um erro de execução, então vai parar o meu programa e o desenvolvedor não vai conseguir continuar enquanto não corrigir esse erro. No caso, foi um erro forçado, eu tinha apagado a importação da classe Conta.
+
+[02:15] Como eu posso fazer algum erro desse tipo usando minha classe? Porque não seria legal se eu realmente jogar um erro para o desenvolvedor e parar a execução do programa dele falando: "Você não vai poder fazer isso porque o nosso design de código não foi pensado para você fazer isso"?
+
+[02:33] Para lançarmos um erro, eu vou vir aqui na Conta, vamos jogar esse if do console.error lá para cima, já que eu estou chamando meu construtor e essa barreira eu vou jogar como sendo a primeira coisa do meu objeto, assim ele não vai criar as propriedades, não vai gastar tempo fazendo isso antes de conferir se estou instanciando uma conta direta ou não.
+
+[02:50] E ao invés de dar um console.error, eu vou criar um novo erro. Aqui eu vou lançar, então vou dar um throw, nós vamos lançar um novo erro para o meu programa, eu vou lançar um novo, new Error. E nós temos uma classe chamada Error, que é a classe padrão do JavaScript para usarmos quando queremos lançar erros.
+
+[03:07] Nós veremos em outros cursos, mais para frente, como lidar com eles de uma maneira melhor e como trabalhar direito com eles, mas por enquanto, se quisermos parar a execução do nosso programa em algum ponto, podemos dar um throw em um novo objeto do tipo erro.
+
+[03:23] E a mensagem que esse erro vai mandar é: “Você não deveria instanciar um objeto do tipo conta”. Eu posso até colocar aquele “Diretamente”. Então não queremos que ele instancie esse objeto do tipo Conta diretamente.
+
+export class Conta {
+  constructor(saldoInicial, cliente, agencia) {
+      if(this.constructor == Conta){
+          throw new Error("Você não deveria instanciar um objeto do tipo Conta Diretamente");
+      }
+
+      this._saldo = saldoInicial;
+      this._cliente = cliente;
+      this._agencia = agencia;
+  }
+//código omitido
+}
+
+[03:37] Com essa nova sintaxe que nós vimos de criar um novo objeto do tipo erro e lançá-lo como um erro de execução da mesma maneira que o JavaScript faz aqui se ele acha outros tipos de erro, então erro de referência, nesse caso da Conta, que forçamos, podemos ver que ele vai realmente parar a execução do meu código.
+
+[03:55] Se eu pegar aqui na minha index.js e salvar o meu arquivo, vamos executar no terminal, agora ele deu um erro, só que ele deu um “throw new Error”, então na hora que ele lançou esse new é onde ele realmente encontrou o erro, e a mensagem de erro nós podemos olhar aqui embaixo, “Você não deveria instanciar um objeto do tipo Conta Diretamente”.
+
+[04:13] Então o erro que nós escrevemos na nossa classe, inclusive onde ele parou aqui na nossa execução, e ele dá a stack trace, se olharmos aqui embaixo ele fala, no new conta, no Conta.js, na linha 4, só que essa chamada veio da index.js linha 10. Então na index linha 10 é onde estamos fazendo a instanciação da conta que não deveríamos fazer.
+
+[04:36] Dessa maneira nós conseguimos realmente parar. Se alguém tentar instanciar diretamente uma conta, ele vai ver esse erro sendo jogado na tela para ele e vai parar a execução do programa. Dessa forma nenhum desenvolvedor, mesmo desavisado ou que queira fazer essa instanciação direta, não vai conseguir, porque estamos bloqueando isso na nossa classe Conta.
+
+[04:59] Estamos lançando esse erro para bloquear isso e não deixar, de maneira nenhuma, ninguém fazer isso, porque essa classe não foi pensada para ser instanciada diretamente.
+
+[05:08] Inclusive, esse tipo de classe que é pensada para não ser instanciada diretamente, como a nossa Conta, é normalmente chamada de classe abstrata, é uma classe que não pode ser instanciada. Então, vou escrever um comentário "//Classe abstrata" no início do código de Conta .
+
+[05:21] Ela só funciona para ser herdada, uma classe abstrata nunca pode ser construída diretamente, nunca podemos dar um new nela, nunca vai ter uma instância dessa própria classe, mas ela pode ser herdada, assim como temos nossa ContaCorrente que herda daquela classe abstrata chamada Conta.
+
+[05:40] É outro conceito novo que estamos aprendendo em orientação a objetos, classes abstratas. Então já vimos classes abstratas, já vimos sobrescrita de métodos, já vimos herança, olha quanta coisa já vimos nesse curso.
+
+
+
+PARTE 4 - DESIGN DE CÓDIGO
+==========================
+
+Júlia está criando um código para a empresa de sua mãe e ela precisa cadastrar os funcionários da empresa. Com isso ela criou o seguinte código:
+
+class Funcionario {
+  constructor(nome, cpf, salario) {
+    this.nome = nome;
+    this.cpf = cpf;
+    this._salario = salario;
+    this._bonificacao;
+  }
+}
+
+class Gerente extends Funcionario {
+  constructor(nome, cpf) {
+    super(nome, cpf, 2400);
+    this._bonificacao = 1.2;
+  }
+}
+
+class Assistente extends Funcionario {
+  constructor(nome, cpf) {
+    super(nome, cpf, 1200);
+    this._bonificacao = 0.9;
+  }
+}
+
+Com essas classes ela tem uma maneira de saber quem são os funcionários dentro da empresa dos seus pais. Porém existem alguns cargos dentro da empresa que só existe um funcionário preenchendo eles. Por isso Júlia decidiu não criar classes filhas e usar diretamente a classe Funcionário para identificar esses cargos.
+
+Qual o problema com essa decisão?
+
+Ela terá um grande trabalho no futuro quando quiser adicionar uma classe para um tipo de funcionário que atualmente está sendo representado pela classe funcionário.
+  Além da quantidade de trabalho ser grande ela corre o risco de esquecer de alterar algum lugar que atualmente usa a representação de funcionário.
+
+Um dos problemas é que ela perde a informação de qual tipo de funcionário ela tem. Como ela está usando uma classe mais genérica ao invés de criar classes especificas ela não distingue cada tipo de funcionário.
+  Exatamente! Ao desenvolvermos um sistema as classes mais abstratas e genéricas nos ajudam a delimitar os contextos de negócio que estamos trabalhando, mas as classes concretas e especificas nos dão informações mais granulares. Sempre é bom ter a quantidade certa de cada tipo de classe.
+
+
+
+PARTE 5 - MÉTODOS ABSTRATOS
+===========================
+
+Transcrição
+
+[00:00] Como vimos agora, a nossa classe Conta é uma classe abstrata, ela foi pensada para que ela não seja nunca instanciada e sim que seja sempre herdada. Ela tem comportamento padrão que vai ser depois especializado por cada tipo de conta.
+
+[00:16] Nós deixamos aqui como comentário no Conta.js que ela é uma classe abstrata, mas podemos melhorar a mensagem de erro completando-a: "Você não deveria instanciar um objeto do tipo Conta Diretamente, pois essa é uma classe abstrata". Assim temos aqui escrito, no erro mesmo, a informação de que ela é uma classe abstrata, você deveria saber que não é possível chamá-la diretamente.
+
+[00:41] Mas agora que já protegemos o nosso sistema um pouco mais, lembre-se que estamos sempre trabalhando para deixar o nosso sistema o mais seguro de manusear e de manipular as informações do banco possível. Sempre encapsulando as coisas, sempre tentando fazer especializações de comportamento, compartilhando código de uma maneira legal, para conseguirmos trabalhar de uma maneira fácil.
+
+[01:01] Agora o ByteBank viu aqui, olhou e falou: legal, já temos a ContaCorrente, nós definimos a taxa de 10% para a ContaCorrente e a conta poupança agora também vai ter uma taxa na hora de sacar, e vai ser uma taxa diferente de 1.
+
+[01:14] Na verdade, o ByteBank virou para nós e falou: "toda conta que tivermos vai ter algum tipo de taxa na hora que sacarmos". Como implementamos isso agora no nosso código?
+
+[01:25] Já vimos que na ContaCorrente já implementamos e colocamos que temos uma taxa de 1.1, chamando ali o método _sacar() diretamente na nossa conta, o sacar privado, protegido. Vamos fazer uma coisa muito parecida com a nossa ContaPoupanca.
+
+[01:40] Nossa classe ContaPoupanca vai ter também o método sacar, esse método vai receber valor como parâmetro, porque eu quero sacar um valor, e o ByteBank virou para nós e falou: "a taxa que vamos aplicar no método sacar na ContaPoupanca é só de 2%, é uma taxa menor, mas vamos aplicar uma taxa em cima dessa operação de saque".
+
+[02:01] Vamos ter um taxa de 2% só, então const taxa = 1.02 e aqui dentro eu vou chamar o this._sacar(), passando para ele valor e taxa, que estão definidas por essa operação pelo banco.
+
+[02:25] E com isso eu vou retornar para quem chamar essa operação sacar, dar um return no this._sacar(), ou seja, o que for retornado dessa função sacar(), eu estou pegando e retornando para quem chamou a minha função pública sacar() da ContaPoupanca.
+
+    sacar(valor){
+        const taxa = 1.02;
+        return this._sacar(valor, taxa);
+    }
+
+[02:42] E como falamos, o banco nos avisou que todas as contas, independente de tipo, vão ter alguma taxa na hora de sacar. Será que faz sentido criarmos uma nova conta, por exemplo, uma conta salário?
+
+[02:56] Então vamos criar um novo arquivo, vou criar uma ContaSalario.js, ela vai ser também uma classe, então vamos inserir export class ContaSalario, e essa ContaSalario vai herdar da classe Conta, extends Conta.
+
+[03:17] Como ela vai herdar da classe Conta, vamos ter que chamar também o constructor() dela, e o construtor não vai receber nada, porque é uma conta salário. Depois podemos também ter que chamar o super, com o valor inicial dele, 0, o cliente é o nosso cliente, e a agência vai ser a 100, então vamos colocar só que ele recebe um cliente como parâmetro na nossa ContaSalario.
+
+import { Conta } from "./Conta";
+
+export class ContaSalario extends Conta{
+    constructor(cliente){
+        super(0, this.cliente, 100)
+    }
+}
+
+[03:39] Ele é construído de uma maneira um pouco diferente das outras contas, porque a agência da conta salário não é tão importante para o banco.
+
+[03:45] Só que da maneira que temos aqui, essa ContaSalario vai automaticamente usar o nosso sacar() da classe Conta, e que tem ali uma taxa de 1. Ou seja, essa taxa de 1, como estamos multiplicando o valor, significa que ela não tem taxa nenhuma. E como o ByteBank nos falou, todo tipo de conta, independente de como ela seja, vai ter algum tipo de taxa em cima do saque.
+
+[04:14] Não seria mais interessante, para nunca esquecermos de perguntar, se isso não nos foi avisado, ou para nunca esquecermos de implementar isso, nós também bloquearmos esse método sacar() de ser chamado diretamente? De ser chamado aqui na classe Conta? Ou seja, eu não deveria sobrescrever em todas as minhas implementações de conta, das minhas classes filhas?
+
+[04:37] Porque eu poderia vir aqui no ContaSalario, ter o sacar(), esse sacar vai receber o valor como parâmetro, então ele tem a mesma ideia dos outros, nós sempre vamos ter essa maneira de chamá-lo, sempre passando o sacar() com o valor. Ele vai ter a nossa taxa, então const taxa e a taxa vai ser de 1.01, uma taxa muito pequena, vai ser uma taxa de 1% só. E aqui eu vou ter que fazer o que estávamos fazendo, return this._sacar().
+
+   sacar(valor){
+       const taxa= 1.01;
+       return this._sacar();
+   }
+
+[05:11] Como todas as minhas classes são especializadas e todas elas vão ter que ter alguma taxa diferente, será que faz sentido deixarmos essa conta, alguém podendo não sobrescrever esse comportamento sacar() de Conta? Não faz.
+
+[05:23] Porque se alguém esqueceu de sobrescrever, esse método aqui, let taxa = 1, return this._sacar(valor, taxa), vai fazer uma operação sacar sem a taxa, e o banco falou, todo mundo vai ter que ter taxa. Se a taxa não for definida para nós quando desenvolvermos uma classe nova, deveríamos perguntar para o nosso cliente qual é a taxa que vai ser aplicada.
+
+[05:39] Como todo mundo tem que sobrescrever, eu vou deixar esse código sacar(valor), sem nada. Eu ainda tenho o método sacar(), porque eu quero que todas as minhas contas tenham esse método, mas eu não quero que ele tenha código nenhum.
+
+[05:49] E se alguém por acaso esquecer de implementar o método sacar aqui numa especialização, o que acontece? O sacar() da nossa Conta não vai fazer sentido, ela não vai conseguir efetuar nenhum saque, porque deixamos sem um valor aqui, sem nada. Como podemos proteger o nosso sistema contra isso?
+
+[06:08] Para se alguém vier aqui e esquecer de fazer essa sobrescrita, se, por exemplo, minha ContaSalario não tivesse o método sacar() e eu viesse aqui no index.js e criasse uma conta salário, então const contaSalario = new ContaSalario, vamos fazer o auto import, e essa ContaSalario vai receber só o cliente como parâmetro, então (cliente1).
+
+[06:30] E da contaSalario eu vou depositar um valor de 100 e quero sacar 10 dela, então contaSalario.sacar(10). E aqui embaixo, no console.log, eu vou imprimir o valor da minha contaSalario, já que estamos trabalhando com ela agora.
+
+const contaCorrenteRicardo = new ContaCorrente( cliente1, 1001);
+const contaPoupanca = new ContaPoupanca(50, cliente1, 1001);
+const contaSalario = new ContaSalario(cliente1);
+contaSalario.depositar(100);
+contaSalario.sacar(10);
+
+console.log(contaSalario);
+
+[06:56] Se viermos agora, limparmos nosso console e pedir para ele executar, ele está falando algum erro aqui, ele não está achando o módulo ContaSalario, porque ela foi importada da ContaSalario e eu não exportei? Eu exportei minha ContaSalario.
+
+[07:13] Então agora no final, já que temos a ContaSalario, eu já pus ali que eu quero depositar e sacar dela, eu vou vir aqui, descomentar isso e eu vou imprimir a nossa contaSalario, vamos dar um console.log nela para ver as informações dela.
+
+[07:25] De novo, não estamos usando a Conta mais, ela não vai ser usada diretamente. Então vamos salvar esse arquivo, vamos tirar aquele import referente à Conta, abrir o nosso terminal e pedir para ele iniciar no nosso programa. E ele deu um erro, vamos ver esse erro.
+
+[07:42] Ele não está conseguindo achar o módulo nesse arquivo, “D:\Alura\Cursos\1721-jsoo2\projeto-atual\Conta”, no módulo Conta, e importado no “\ContaSalario.js”. Então no meu ContaSalario ele não está achando o módulo Conta, porque eu não coloquei a extensão do arquivo em import { Conta } from "./Conta.js". Agora sim ele deve achar, vamos limpar, pedir para executar.
+
+[08:02] O nosso erro agora foi outro, ele está falando que o super não foi chamado, então é o super(0,this.cliente, 100). Aliás, this.cliente não faz muito sentido, porque aqui é só cliente, o cliente que eu estou recebendo direto do nosso construtor. Mais um erro de sintaxe. O bom dos erros é que eles já nos ajudam.
+
+[08:18] Mas se executarmos agora, aqui deu certo, nossa execução foi concluída, vamos baixar um pouco para conseguirmos ver melhor. Temos uma ContaSalario, o saldo dela é de 100, agência 100, com o cliente Ricardo.
+
+[08:32] Mas o saldo está 100 porque eu depositei 100, então o depositar está funcionando, mas o sacar não está, e não está por quê? Porque eu não sobrescrevi o método sacar().
+
+[08:42] Na Conta, como não temos código nenhum, na hora que alguém chamar esse sacar(), ele não vai fazer nada, porque, de novo, estamos pensando o design do nosso código para que realmente a classe abstrata Conta tenha o método sacar(), que não é feito para ser chamado diretamente.
+
+[09:02] Assim como a classe não é feita para ser instanciada diretamente, o método sacar() não é feito para ser chamado diretamente, ele tem que ser sempre sobrescrito. Então ele é o que chamamos de método abstrato, é um método que não é feito para ser chamado diretamente, ele é feito para ser sempre sobrescrito, então deixarei um comentário indicando que ele é "//Método abstrato".
+
+[09:23] Porque assim nós conseguimos garantir que todas as implementações que herdam de Conta vão ter que implementar esse método sacar e elas vão ter que saber como elas têm que chamar esse método, como elas vão ter que manipulá-lo para ter uma taxa para saber das informações de como uma conta tem que fazer seu saque ou não.
+
+[09:43] A conta tem o método sacar, esse método existe, porque nós queremos definir que toda conta vai ter o método sacar, mas ele não vai ter nada. E se ele não vai ter nada, se alguém esquecer, por acaso, de chamá-lo, eu tenho que lançar um erro. Da mesma maneira que lançamos um erro quando tentamos construir diretamente uma classe abstrata, podemos lançar um erro quanto tentarmos chamar o método abstrato.
+
+[10:04] Então, na Conta, no meu método sacar() eu vou também lançar um novo erro, e a mensagem desse erro vai ser: "O método Sacar da conta é abstrato". Se ele é abstrato, alguém esqueceu de chamá-lo. Se eu fizer isso agora e pedirmos para limpar o nosso terminal e para executar de novo, vamos vir aqui no terminal, agora sim ele deu um erro, falando que ele para justamente onde lançamos o erro e ele fala: "O método Sacar da conta é abstrato".
+
+[10:40] Isso significa que a nossa ContaSalario.sacar, onde chamamos esse método, na linha 12 da index, aqui ele tem a sequência de chamadas que foram feitas, então nessa linha, onde chamamos para sacar, no arquivo index, na linha 12, a ContaSalario.sacar está chamando diretamente o sacar da minha classe Conta e ele não deve ser chamado diretamente, porque tem que sobrescrever.
+
+[11:07] Então eu vou vir aqui no ContaSalario.js e vou criar o nosso método sacar() recebendo o valor e fazer como fizemos os outros, então const taxa, a taxa dele era de 1%, então igual a 1.01 e eu vou retornar o que voltar do meu método sacar privado, this._sacar(), e esse método sacar vai receber valor e taxa.
+
+[11:33] Dessa maneira temos o método abstrato, que se alguma classe filha da classe Conta esquecer de sobrescrever esse método, na hora que for chamado ele vai receber um erro e vai saber que esqueceu de sobrescrever alguma coisa e que ele deveria arrumar isso.
+
+[11:52] Como o JavaScript não tem compilador, ele é sempre interpretado, os erros só vão aparecer quando o nosso programa está executando. Em linguagens que tenham compilador, esses erros de sobrescrita, de método abstrato, classes abstratas, que são mais formalmente definidos, aparecem em tempo de compilação, então nós nem conseguiríamos compilar o nosso programa se estivéssemos trabalhando com Java ou com C#.
+
+[12:14] No JavaScript, como ele é só interpretado, o erro só vai acontecer quando aquele pedaço de código for realmente executado pelo interpretador. Dessa maneira, se por acaso alguém esquecer e mandar rodar o programa, pelo menos ele vai tomar um erro na hora que foi chamado esse método sacar(), porque esse método é para ser abstrato.
+
+
+
+PARTE 6 - REFLETINDO SOBRE O TEMA
+=================================
+
+Aprendemos nessa aula sobre o conceito de Métodos e Classes abstratas. Selecione as afirmativas corretas sobre esses temas:
+
+Classes abstratas são pensadas de forma que elas apenas possam ser herdadas por outras.
+  Exatamente, elas nos ajudam a criar abstrações no código e a compartilhar código entre outras classes.
+
+Métodos abstratos devem ser sobrescritos pelas classes filhas.
+  Isso mesmo, dessa forma não faz sentido termos um método abstrato fora de uma classe abstrata. Tome esse cuidado quando for criar seu código.
+
+
+
+PARTE 7 - FAÇA COMO NA AULA
+===========================
+
+
+Praticar ajuda bastante no aprendizado de um novo conceito. Assim, é muito importante que você implemente o que foi apresentado nesta aula.
+
+Opinião do instrutor
+  Não deixe de sanar suas dúvidas antes de dar continuidade ao curso. Estaremos te esperando no fórum da Alura caso alguma dúvida surja.
+
+
+
+PARTE 8 - RESUMO DA AULA
+========================
+
+O que aprendemos nessa aula:
+
+    Como o JS sabe quem está sendo instanciado.
+
+    Pensando na proteção do nosso sistema
+
+    Lançando erros para o sistema
+
+    Classes abstratas
+
+    Métodos abstratos
+
+    Erros em tempo de execução
+

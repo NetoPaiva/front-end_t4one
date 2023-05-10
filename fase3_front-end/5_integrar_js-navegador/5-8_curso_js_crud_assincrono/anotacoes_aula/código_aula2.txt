@@ -1,0 +1,236 @@
+5-8 - Curso 6 - JS Web - Crud Assíncrono
+
+# Aula 2 - Fetch API
+
+
+## Parte 2-1 - Reescrever com Fetch API
+
+.then();
+  - quando a resposta estiver pronta
+  - é possível realizar ação com seu resultado
+
+
+Fetch - simplificar a complexidade do código
+
+  - substitui promise e request
+
+  Refatorar o objeto "listaClientes" com "fetch"
+
+    - Fetch é um método global da interface "fetch API"
+      - por padrão já realiza um "get" e devolve uma "promise"
+      - dispensa a instância destes métodos
+
+    - substituir todo o bloco da requisão e retorno da promise
+      - eliminar da variável "promise" até o retorno da "promise"
+
+      const promise = new Promise((resolve, reject) => {
+        const http = new XMLHttpRequest();
+        http.open('GET', 'http://localhost:3000/profile');
+        http.onload = () => {
+          if(http.status >= 400){
+            reject(JSON.parse(http.response));
+          }else{
+            resolve(JSON.parse(http.response));
+          }
+          // console.log(data);
+          // console.log('olá, mundo!');
+        }
+        http.send();
+      })
+      // console.log(promise);
+      return promise;
+
+    - trocar pela estrutura do "fecth"
+      - dentro do objeto "listaClientes"
+      - retornar "fetch" com a URL da página no servidor
+      - finalizar com o retorno da promise
+        - a resposta executando o JSON
+
+    const listaClientes = () => {
+      return fetch(`http://localhost:300/profile`);
+      .then(resposta => {
+        return resposta.json();
+      })
+    }
+
+    - verificar saída no navegador
+      - está OK
+      - lista na tela os clientes cadastrados na base de dados
+
+    - toda a estrutura de requisição e promessa
+    - foi substituída pelo "fetch"
+      - método bem mais simples para fazer requisições
+
+    - o VS Code sugere transformar esta estrutura fetch 
+      - por uma função assíncrona (async/await)
+
+      const listaClientes = async () => {
+        const resposta = await fetch(`http://localhost:3000/profile`);
+        return await resposta.json();
+      }
+
+Analisar código da aplicação
+
+  - "cliente-service.js"
+      - função "criaNovaLinha"
+        - contém toda marcação HTML do template
+      - variável "tabela"
+        - percorre DOM e seleciona elemento HTML
+      - função listaClientes
+        - faz conexão com API
+        - ao executar função
+          - percorre a lista de clientes da base de dados
+          - e chama a função para criar nova linha e exibir dado na tela
+
+  - para criar novas funcionalidades
+      - precisa separar responsabilidades
+      - melhorando a manutenção e entendimento do código
+
+
+## Parte 2-2 - Refatorar responsabilidades
+
+  - Responsabilidades diferentes no código
+    - criaNovaLinha
+      - cria com base no template
+    - tabela
+      - percorre DOM buscando o corpo da tabela
+    - listaClientes.fetch
+      - conecta com API
+    - listaClientes.then
+      - pega dados da API
+      - faz iteração
+      - exibe na tela do navegador
+
+Refatorar com base nas responsabilidades
+
+- manter no arquivo "cliente-service.js"
+  - listaClientes.fetch
+    - está relacionado às requisições
+
+  - criar pasta "controller" dentro de admim
+  - criar arquivo "listaClientes-controller.js" dentro da pasta "controller"
+  - no arquivo "listaClientes-controller.js"
+    - trazer os trechos de código sem relação com API
+      - criaNovaLinha
+      - tabela
+      - listaClientes.then
+
+Módulos JS
+
+  - Unir trechos de códigos declarados em diversos arquivos
+  - expor objetos e funções para serem acessados e utilizados por outros objetos e funções
+
+  - no arquivo "cliente-service.js"
+    - acrescentar a palavra-chave "export" antes da declaração de "listaClientes"
+      export const listaClientes = () => { ... }
+    
+    - "listaClientes" está visível para outros arquivos acessarem e usar
+
+  - no arquivo "listaClientes-controller.js"
+    - antes de todo código
+    - na primeira linha do arquivo
+    - importar "listaClientes" do arquivo "cliente-service.js"
+      - declarar
+        - { nome do objeto que será importado }
+        - ' local e nome do arquivo.js '
+        import { listaClientes } from "../service/cliente-service.js";
+
+Facilitar desenvolvimentos futuros
+
+  - criar objeto de exportação no arquivo "cliente-service.js"
+    - que irá receber todas as funcionalidades a serem exportadas
+      - por enquanto, tem apenas "listaClientes"
+      export const clienteService = {
+        listaClientes,
+      }
+
+    - remover a palavra-chave "export" da função "listaClientes"
+      - já está sendo exportada pelo objeto criado
+
+    - no arquivo que irá importar esta funcionalidade
+      - alterar a declaração de importação
+        - substituir o nome da funcionalidade entre "{}"
+        - pelo nome do objeto de exportação
+        import { clienteService } from '...'
+
+      - alterar a declaração de uso da funcionalidade
+        - incluir o nome da funcionalidade importada no início do trecho do código onde será utilizada, separados por "ponto"
+        clienteService.listaClientes().then(...)
+
+Ajustes no HTML ao trabalhar com módulos JS
+
+  - no documento HTML que utiliza o script JS
+  - alterar o nome e caminho do script
+    src="../controller/listaClientes-controller.js"
+  - indicar que este script é do tipo módulo
+    type="module"
+
+  - funcionalidades JS declaradas como módulo
+    - são bloqueadas por questões de segurança
+      - requesições em domínios diferentes (CORS)
+    - renderizam no navegador apenas subindo a aplicação pelo servidor
+      - Live-server ou browser-sync
+
+  - comando para rodar o browser-sync
+  - primeiro rodar o json-server em um terminal
+  - em outro terminal abrir página específica do projeto (lista_cliente.html)
+    browser-sync start --server --file . --host --port5000 --startPath admin/telas/lista_cliente.html
+
+
+## Parte 2-3 - Event loop
+
+Ambiente JS - como JS funciona no navegador
+
+  No início - sites web
+  - páginas eram estáticas e tinham mais textos e hiperlinks
+  - JS criado para pequenas interações em sites web
+  - JS só consegue realizar uma tarefa de cada vez (single trade)
+
+  Hoje ficou mais complexo
+  - multitarefas paralelas
+  - páginas atualizam automaticamente
+  - não podem bloquear dispositivo para realizar outras operações
+  - JS continua sem single trade
+
+  JS se tornou um ambiente de execução web
+    - aplicação roda no navegador tendo
+      - pilha de execução do JS
+      - pilha de memória para guardar os objetos JS
+      - motor JS que transforma o código escrito em código de máquina
+
+  Web API
+    - conecta o JS à funcionalidades pré-definidas
+    - API não é da linguagem do JS
+      - é um tipo de facilitador
+    - tipos de API
+      - Fetch API
+      - Armazenamento
+      - Áudio
+
+  Fluxo de códigos entre JS e API
+
+    - navegador separa o que é JS do que é API
+      - guarda o JS na pilha de execução
+        - considerando a fila de promessas (funções assíncronas / promises)
+      - guarda API na fila de funções
+    - tem um agente que observa e organiza as execuções (eventos de Loop)
+    - executa primeiro o que é JS (pilha de execução)
+      - verificando a fila de promessas
+    - depois que a pilha estiver vazia
+    - começa a executar o que for API (fila de funções)
+      - puxa API e envia para pilha de execução
+      - executa o código de cada API
+
+    - aplicação que demonstra a ordem de execução do código
+      latentflip.com/loupe
+
+      - lê o código
+      - verifica se é JS
+      - se não for, envia para fila de API
+      - se for JS, envia para pilha de execução 
+      - executa cada etapa do
+      - event loop verifica pilha de execução
+      - zerou JS, começa API
+      - executa as callbacks das APIs
+      - cada ação por vez
+      - encerra aplicação

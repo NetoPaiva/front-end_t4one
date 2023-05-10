@@ -1,0 +1,332 @@
+t4f3 - 4-8 Curso: JavaScript: programando a Orientação a Objetos
+
+https://cursos.alura.com.br/course/javascritpt-orientacao-objetos
+
+
+Evernote - estudo
+
+
+Aula 1- Repetição de código
+
+
+Parte 1 - Introdução
+
+Transcrição
+
+Boas vindas! Eu sou Ricardo Bugan e serei seu instrutor no curso JavaScript: introdução a Orientação a Objetos da Alura! Esse treinamento é uma sequência, portanto, para ter um bom aproveitamento, é interessante ter concluído o curso JavaScript: primeiros passos com a linguagem, no qual começamos a montar o ambiente no qual estamos trabalhando - incluindo, por exemplo, a instalação do Node, que estamos utilizando como interpretador para os nossos códigos.
+
+O objetivo agora é criarmos um sistema de conta-corrente e cadastro de clientes para o contratante Bytebank, de modo que seja possível manipular o saldo desses usuários e realizar operações bancárias.
+
+Trabalhando com Orientação a Objetos, conheceremos diversos novos conceitos, como a palavra new, a entidade Cliente (que nós mesmos criaremos), as chamadas de métodos depositar() e sacar(), que não são da linguagem (e inclusive estão em português) e assim por diante.
+
+Um dos conceitos principais de Orientação a Objetos que será abordado nesse curso são as classes. No caso, teremos uma classe ContaCorrente contendo atributos estáticos, atributos privados e uma nova proposição para os atributos privados da linguagem, com cerquilha (#) precedendo o atributo, ao invés da convenção atual, que é o underline (_).
+
+Trabalharemos também com os assessores get e set, como os construtores facilitam o nosso fluxo de criação de classes e objetos e como conseguimos nomear comportamentos e compartilhá-los, facilitando a leitura do código. Nisso utilizaremos toda a base de lógica do primeiro curso, usando tipos primitivos, condicionais e assim por diante.
+
+Esperamos que você tire bastante proveito desses conteúdos. Bons estudos!
+
+
+
+
+Parte 2 - Preparando o ambiente
+
+Para esse curso precisaremos usar o NodeJS a partir da versão 13.5 pois ela adiciona a capacidade de usarmos módulos JS dentro do Node.
+
+Caso você tenha uma versão mais antiga do Node em sua máquina e não possa desinstalá-la, nossa recomendação é que você instale o Node Version Manager(NVM)https://github.com/nvm-sh/nvm para que possa alterar entre versões de forma mais simples.
+
+Caso esteja usando um sistema Windows vocês podem usar o gerenciador de pacotes Chocolateyhttps://chocolatey.org/packages/nvm, que auxilia na instalação do NVM no Windows.
+
+
+
+
+Parte 3 - Entendendo o problema do cliente
+
+Transcrição
+
+Abriremos o Visual Studio Code para começarmos nosso curso de orientação a objetos. Lembrando que esse treinamento é uma continuação, e que a instalação do Node.js, que utilizamos como interpretador dos nossos códigos, é ensinada no curso anterior.
+
+Trabalharemos em um novo projeto, encomendado pelo banco Bytebank, no qual criaremos um sistema que permite o cadastro de clientes e contas-correntes, além das operações bancárias mais comuns. Em uma nova pasta, criaremos o arquivo index.js, que servirá de entrada para nosso sistema.
+
+Neste arquivo declararemos nosso primeiro cliente, uma variável do tipo const ("constante", ou seja, que não é alterada durante seu ciclo de vida) que chamaremos de cliente1Nome e cujo valor será "Ricardo".
+
+  const cliente1Nome = "Ricardo";
+
+Outra informação que gostaríamos de armazenar é o CPF de cada cliente. Sendo assim, criaremos outra variável, cliente1CPF, cujo valor será 11122233309.
+
+  const cliente1Nome = "Ricardo";
+  const cliente1CPF = "11122233309";
+
+Perceba que estamos utilizando o ponto e vírgula ao final de cada instrução, algo que não é obrigatório no JS e vai da preferência de cada programador.
+
+O Bytebank também nos pediu mais uma informação, que é o número da agência de cada cliente. Criaremos então a variável cliente1Agencia, cujo valor será 1001.
+
+  const cliente1Nome = "Ricardo";
+  const cliente1CPF = 11122233309;
+  const cleinte1Agencia = 1001;
+
+Clientes de banco possuem um saldo monetário em suas contas. Portanto, criaremos a variável cliente1Saldo com o valor 0.
+
+  const cliente1Nome = "Ricardo";
+  const cliente1CPF = 11122233309;
+  const cliente1Agencia = 1001;
+  const cliente1Saldo = 0;
+
+Passaremos então para a criação de um segundo cliente, a "Alice", que possuirá as mesmas informações que o cliente anterior, mas recebendo outros dados - cliente2CPF = 88822233309, cliente2Agencia = 1001 (a mesma agência) e cliente2Saldo = 0. Para facilitar o preenchimento dessas informações, podemos copiar e colar as instruções do primeiro cliente e somente alterar os campos necessários. A combinação de teclas "Ctrl + Alt" (CTRL+Shift no Linux) nos ajuda nesse processo, permitindo alterar diversas linhas de uma só vez (por exemplo, substituindo cliente2 por cliente1).
+
+  const cliente1Nome = "Ricardo";
+  const cliente1CPF = 11122233309;
+  const cliente1Agencia = 1001;
+  const cliente1Saldo = 0;
+
+  const cliente2Nome = "Alice";
+  const cliente2CPF = 88822233309;
+  const cliente2Agencia = 1001;
+  const cliente2Saldo = 0;
+
+Por fim, faremos um console.log() de cliente1Nome para verificarmos se nosso arquivo está executando como desejado.
+
+  const cliente1Nome = "Ricardo";
+  const cliente1CPF = 11122233309;
+  const cliente1Agencia = 1001;
+  const cliente1Saldo = 0;
+
+  const cliente2Nome = "Alice";
+  const cliente2CPF = 88822233309;
+  const cliente2Agencia = 1001;
+  const cliente2Saldo = 0;
+
+  console.log(cliente1Nome);
+
+No terminal (como o Powershell ou o Prompt de Comando), acessaremos o diretório do projeto e executaremos node ./index.js. Como retorno, teremos:
+
+  Ricardo
+
+Percebemos que o interpretador do Node consegue carregar o nosso arquivo e imprimir o nome do cliente como desejávamos. Entretanto, esse código não parece adequado, já que temos muita repetição - repetição esta que continuará ocorrendo para cada novo cliente que tentarmos criar, como um cliente3.
+
+  const cliente1Nome = "Ricardo";
+  const cliente1CPF = 11122233309;
+  const cliente1Agencia = 1001;
+  const cliente1Saldo = 0;
+
+  const cliente2Nome = "Alice";
+  const cliente2CPF = 88822233309;
+  const cliente2Agencia = 1001; 
+  const cliente2Saldo = 0;
+
+  const cliente3Nome = "Alice";
+  const cliente3CPF = 88822233309;
+  const cliente3Agencia = 1001;
+  const cliente3Saldo = 0;
+
+  console.log(cliente1Nome);
+
+Ao pensarmos que um banco tem milhares de clientes, a situação fica ainda mais preocupante. Se quisermos adicionar novas informações, como cliente3RG, também precisaremos fazê-lo para cada um dos clientes do sistema. Deve existir uma maneira melhor de pensarmos nosso sistema para evitarmos tal repetição constante de código.
+
+Sabemos que, no momento, o Bytebank precisa das informações "nome", "CPF", "agência" e "saldo" de cada cliente, e que essa estrutura se repetirá para todos os clientes do banco.
+
+Saindo um pouco do cenário bancário, sabemos que as fábricas que produzem peças o fazem em grande quantidade, repetindo sempre a mesma peça (ainda que existam alguns detalhes diferentes, como pinturas ou customizações). Nessa indústria, o problema da repetição é resolvido usando moldes, com os quais é possível fabricar novamente a mesma peça inúmeras vezes, aumentando a produtividade e a eficiência.
+
+A ideia de termos um molde com o qual podemos recriar o mesmo resultado diversas vezes, como uma peça ou objeto, é bastante interessante. Será que conseguiríamos aplicá-la ao nosso código? Sabemos as características que cliente precisa, e gostaríamos de utilizá-las em um molde, por exemplo:
+
+  { 
+  const nome;
+  const cpf;
+  const agencia;
+  const saldo;
+  }
+
+Aqui não temos nenhum valor atribuído às variáveis, e estamos somente indicando que elas existem no "molde". Esse exemplo é apenas ilustrativo, e no próximo vídeo entenderemos mais a fundo como é que utilizaremos efetivamente tais moldes em nosso código.
+
+
+
+
+Parte 4 - Nossa primeira classe
+
+Transcrição
+
+Terminamos o vídeo anterior com a ideia de criarmos um molde com o qual conseguiríamos obter uma réplica parecida ou idêntica de um conceito, e agora queremos aplicá-la ao nosso projeto em JavaScript. Em programação, esse tipo de molde é chamado de "classe". É possível declarar classes em JavaScript usando a palavra reservada class seguida do nome desejado, no caso Cliente.
+
+É importante escolhermos um nome adequado, pois estamos tratando do contexto do nosso negócio. Por exemplo, o banco Bytebank precisa de uma representação de um cliente, portanto nada mais adequado do que utilizarmos esse nome para a classe. Em seguida, para começarmos a definição da classe, abriremos e fecharemos chaves ({}).
+
+  class Cliente {
+
+  }
+
+É entre essas chaves que definiremos os atributos (também chamados de "campos" ou "propriedades") que a nossa classe irá conter, que serão nome, cpf, agencia e saldo.
+
+Em algumas linguagens, as palavras "atributos", "campos" e "propriedades" podem não ser sinônimas como são no JavaScript.
+
+  class Cliente {
+      nome;
+      cpf;
+      agencia;
+      saldo;
+  }
+
+Com esses atributos, estamos definindo que todo cliente possuirá um nome, um CPF, uma agência e um saldo, uniformizando esse contexto no sistema. Agora que temos o molde, precisamos aprender a utilizá-lo. Se queremos criar um novo cliente a partir da classe que foi definida, usamos a instrução new seguida do nome da classe e da abertura e fechamento de parênteses - ou seja, new Cliente().
+
+  class Cliente {
+      nome;
+      cpf;
+      agencia;
+      saldo;
+  }
+
+  new Cliente();
+
+Para que consigamos acessar o cliente criado, teremos que atribuí-lo a uma variável, por exemplo cliente1.
+
+  class Cliente {
+      nome;
+      cpf;
+      agencia;
+      saldo;
+  }
+
+  const cliente1 = new Cliente();
+
+Com isso, conseguimos um cliente1 que, em si, contém as informações necessárias para cada cliente, podendo ser referenciado ou alterado diretamente, e evitamos a fragmentação desses dados em contextos diferentes (como era o caso anterior).
+
+Agora, se quisermos acessar alguma propriedade da classe, podemos fazê-lo usando a sintaxe objeto.atributo, como cliente1.nome ou cliente1.cpf. Faremos isso para atribuir informações a cada um dos atributos de cliente1, usando os mesmos dados que já tínhamos disponíveis. Em seguida, faremos um console.log(cliente1) para imprimirmos todas as informações desse objeto.
+
+  class Cliente {
+      nome;
+      cpf;
+      agencia;
+      saldo;
+  }
+
+  const cliente1 = new Cliente();
+
+
+  cliente1.nome = "Ricardo";
+  cliente1.cpf = 11122233309;
+  cliente1.agencia = 1001;
+  cliente1.saldo = 0;
+
+  console.log(cliente1);
+
+Ao executarmos node ./index.js no terminal, teremos:
+
+  Cliente { nome: 'Ricardo', cpf: 11122233309, agencia: 1001, saldo: 0 }
+
+Assim, conseguimos obter o nosso cliente como um todo, sem termos que imprimir cada campo individualmente. Passaremos para a criação de cliente2 repetindo os passos anteriores.
+
+  Como temos uma classe criada, o Intellisense do Visual Studio Code (uma espécie de autocompletar) nos sugerirá os atributos dela quando estivermos fazendo o preenchimento, por exemplo de saldo ao digitarmos cliente2.s.
+
+Para imprimirmos as informações do novo cliente, não é necessário fazermos um novo console.log(), bastando passarmos cliente2 após uma vírgula.
+
+  class Cliente {
+      nome;
+      cpf;
+      agencia;
+      saldo;
+  }
+
+  const cliente1 = new Cliente();
+  const cliente2 = new Cliente();
+
+  cliente1.nome = "Ricardo";
+  cliente1.cpf = 11122233309;
+  cliente1.agencia = 1001;
+  cliente1.saldo = 0;
+
+  cliente2.nome = "Alice";
+  cliente2.cpf = 88822233309;
+  cliente2.agencia = 1001;
+  cliente2.saldo = 0;
+
+  console.log(cliente1, cliente2);
+
+Ao executarmos, conseguiremos exibir ambos os clientes, "Ricardo" e "Alice".
+
+  Cliente { nome: 'Ricardo', cpf: 11122233309, agencia: 1001, saldo: 0 } Cliente { nome: 'Alice', cpf: 88822233309, agencia: 1001, saldo: 0 }
+
+Até o momento as vantagens de estruturarmos o código dessa forma podem não parecer óbvias, já que o processo continua ligeiramente semelhante ao anterior. Entretanto, conforme avançarmos, você perceberá que a criação de classes nos traz diversas facilidades.
+
+Por exemplo, se quisermos adicionar um número de RG aos nossos clientes, podemos simplesmente criar um atributo rg em Cliente.
+
+  class Cliente {
+      nome;
+      cpf;
+      agencia;
+      saldo;
+      rg;
+  }
+
+Em seguida, poderemos atribuir um valor a esse atributo da mesma forma que fizemos com as demais informações.
+
+  cliente1.nome = "Ricardo";
+  cliente1.cpf = 11122233309;
+  cliente1.agencia = 1001;
+  cliente1.saldo = 0;
+  cliente1.rg = 123456789;
+
+Ao executarmos, o RG passará a ser exibido no objeto:
+
+  Cliente { nome: 'Ricardo', cpf: 11122233309, agencia: 1001, saldo: 0, rg: 123456789 } Cliente { nome: 'Alice', cpf: 88822233309, agencia: 1001, saldo: 0, rg: undefined }
+
+Como não fizemos essa definição em cliente2, ele é mostrado como undefined ("indefinido"), ainda que a propriedade exista. Cada dos clientes que criamos a partir da instrução new Cliente() (no caso, cliente1 e cliente2) são chamados de "objetos", e daí vem o nome "programação orientada a objetos".
+
+Em resumo, uma classe é o molde que define o resultado que queremos obter, e os objetos são criados a partir desse molde.
+
+  Quando usaremos a chamada new Cliente(), podemos afirmar que estamos criando uma "instância" dessa classe.
+
+Removendo o atributo rg e sua definição em cliente1, nosso console.log() deixará de exibir tal informação.
+
+  class Cliente {
+      nome;
+      cpf;
+      agencia;
+      saldo;
+  }
+
+  const cliente1 = new Cliente();
+  const cliente2 = new Cliente();
+
+  cliente1.nome = "Ricardo";
+  cliente1.cpf = 11122233309;
+  cliente1.agencia = 1001;
+  cliente1.saldo = 0;
+
+  //...código omitido
+
+  console.log(cliente1, cliente2);
+
+  Cliente { nome: 'Ricardo', cpf: 11122233309, agencia: 1001, saldo: 0 } Cliente { nome: 'Alice', cpf: 88822233309, agencia: 1001, saldo: 0 }
+
+Ou seja, uma alteração realizada somente na classe será repercutida por todo o nosso projeto!
+
+
+
+
+Parte 5 - Refletindo sobre classes
+
+Vimos que a criação de uma classe pode ser feita através da palavra-chave class e com isso definimos quais atributos queremos que essa classe possua.
+
+Sabendo que classes são apenas um dos recursos da linguagem Javascript, quando é que devemos criar ou não uma classe ?
+
+Correta:
+
+Classes definem uma forma de organizarmos uma série de informações repetidas no nosso código e por isso devemos usar elas quando temos código que se repete e que faz parte de um contexto coeso.
+  Exatamente. Se tivermos código que se repete porém não forma um contexto coeso, provavelmente teremos que criar duas classes, cada uma delimitando um contexto único que faça sentido.
+
+Incorretas:
+
+Devemos evitar o uso de classes, uma vez que elas tornam nosso programa mais lento e difícil de ser compreendido.
+  Não, classes nos ajudam na organização do código e por isso deixam ele menos complicado e mais fácil de ser entendido.
+
+Só podemos usar classes onde tivermos código repetido. Não devemos usar elas em mais nenhum lugar.
+  Não, Classes ajudam o desenvolvedor a nomear conceitos dentro do código e organizar a estrutura do nosso projeto. Elas ajudam sim a reduzir a duplicação de código, mas essa não é sua única função.
+
+
+
+
+
+Parte 6 - O que aprendemos?
+
+  Criando classes
+  O que são atributos
+  Instâcia/Objeto
+  Operador new
+

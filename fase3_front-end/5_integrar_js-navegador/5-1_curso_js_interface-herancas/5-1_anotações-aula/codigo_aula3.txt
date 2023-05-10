@@ -1,0 +1,261 @@
+Curso 5-1 - JS - interface e herança POO
+
+# Aula 3 - Classes abstratas
+
+## 3-1 - Proprietade construtor
+
+// - 3 classes de contas
+// -- conta geral - todos os comportamentos
+// --- não poderia ser instanciada
+// --- apenas ser extendida (herdada por outras classes)
+// -- comportamentos específicos
+// --- conta corrente 
+// --- conta poupança
+
+// -- prevenir instanciar a classe mãe
+// --- criar uma condição dentro do construtor da classe "Conta"
+// ---- verificar se o construtor for do tipo "Conta"
+// ---- emitir aviso para não instaciar um objeto do tipo "Conta"
+
+    if (this.constructor == Conta) {
+      console.log('Não instacie um objeto do tipo conta!');
+    }
+
+
+## 3-2 - Classes abstratas
+
+// - Abstrata é o tipo de classe que não deve ser instanciada
+// -- só deve ser herdada (mãe)
+
+// - impedir instaciar a classe mãe
+// -- criar um erro com a classe do JS "Error"
+// --- irá parar a execução do programa ao encontrar o erro
+
+// - refatorar o construtor da classe "Conta"
+// -- posicionar no início a verificação do tipo "Conta"
+// -- retitar da verificação o "console"
+// -- criar e chamar o erro com "throw new Error();"
+
+    constructor(saldoInicial, cliente, agencia){
+      if (this.constructor == Conta) {
+        throw new Error('Não instacie uma classe abstrata!');
+      }
+
+
+
+## 3-3 - Métodos abstratos
+
+// - proteger o sistema
+// - criar métodos genéricos que serão herdados
+// -- não poderá ser chamado diretamente
+// -- só poderá ser sobreescrito nas classes filhas
+
+// - na classe "Conta" deixar vazio o método sacar
+
+    sacar(valor){
+    }
+
+// - regra de negócio do método sacar
+// -- todas os tipos de contas terão diferentes valores de taxas
+// --- incluir o método "sacar" em todas as classes de contas
+// --- com sua regra específica de cobrança de taxa de saque
+
+// --- conta poupança (5%)
+
+    sacar(valor){
+      let taxa = 1.05;
+      return this._sacar(valor, taxa);
+    }
+
+// --- conta salário (1%)
+
+    sacar(valor){
+      let taxa = 1.01;
+      return this._sacar(valor, taxa);
+    }
+
+// --- conta corrente (10%)
+
+    sacar(valor){
+      let taxa = 1.10;
+      return this._sacar(valor, taxa);
+    }
+
+// - incluir erro no método abstrato "sacar" da classe "Conta"
+// -- para sinalizar uso indevido do método
+
+
+// INDO ALÉM - porém precisa de ajustes (não funcionou)
+
+// - transformar a sobreescrita do método "sacar" em uma função auxiliar ou objeto
+
+// - sobreescrita do método "sacar"
+
+    sacar(valor){
+      const taxa = 1.10;
+      return this._sacar(valor, taxa);
+    }
+
+
+// - transformando em função auxiliar / objeto (aperfeiçoar)
+
+    taxaSacar = percentual => {
+      sacar(valor);
+        let taxa = percentual;
+        return this._sacar(valor, taxa);
+    }
+
+
+# Códigos do projeto até aqui
+
+
+// index.js
+
+    import { Cliente } from "./Cliente.js";
+    import { ContaCorrente } from "./ContaCorrente.js";
+    import { ContaPoupanca } from "./ContaPoupanca.js";
+    import { ContaSalario } from "./ContaSalario.js";
+
+    const cliente1 = new Cliente ('Ricardo', 11122233345, 123456789);
+
+    const conta1 = new ContaCorrente(cliente1, 101);
+    const contaPoupanca1 = new ContaPoupanca(50, cliente1, 101);
+    const contaSalario1 = new ContaSalario(cliente1);
+
+    conta1.depositar(500);
+    conta1.depositar(100);
+    contaSalario1.depositar(100);
+
+    conta1.sacar(50);
+    conta1.sacar(600);
+    contaPoupanca1.sacar(10);
+    contaSalario1.sacar(10);
+
+    // console.log(conta1);
+    // console.log(contaPoupanca1);
+    console.log(contaSalario1);
+
+
+
+// Cliente.js
+
+    export class Cliente {
+      get cpf(){
+        return this._cpf;
+      }
+
+      constructor(nome, cpf, rg){
+        this.nome = nome;
+        this._cpf = cpf;
+        this.rg = rg;
+      }
+    }
+
+
+// Conta.js
+
+    export class Conta{
+      
+      constructor(saldoInicial, cliente, agencia){
+        if (this.constructor == Conta) {
+          throw new Error('Esta é uma classe abstrata, não deve ser instaciada!');
+        }
+
+        this._saldo = saldoInicial;
+        this._cliente = cliente;
+        this._agencia = agencia;
+      }
+
+      // acessores - proteger atributos
+
+      set cliente(novoValor){
+        if(novoValor instanceof Cliente){
+          this._cliente = novoValor;
+        }
+      }
+
+      get cliente(){
+        return this._cliente;
+      }
+
+      get saldo(){
+        return this._saldo;
+      }
+
+    // métodos de movimentação
+
+        sacar(){
+          throw new Error('Não instancie um método abstrato!');
+        }
+
+        _sacar(valor, taxa){
+          const valorSacado = taxa * valor;
+
+          if (this._saldo >= valorSacado) {
+            this._saldo -= valorSacado;
+            return valorSacado;
+          }
+
+          return 0;
+        }
+
+        depositar(valor){
+          if (valor <= 0) return;
+          this._saldo += valor;
+        }
+
+        transferir(valor, conta){
+          const valorSacado = this.sacar(valor);
+          conta.depositar(valor);
+        }
+    }
+
+
+// ContaCorrente.js
+
+    import { Conta } from "./Conta.js";
+
+    export class ContaCorrente extends Conta {
+      static quantidadeContas = 0;
+      constructor(cliente, agencia){
+        super(0, cliente, agencia);
+        ContaCorrente.quantidadeContas += 1;
+      }
+
+      sacar(valor){
+        let taxa = 1.1;
+        return this._sacar(valor, taxa);
+      }
+    }
+
+
+
+// ContaPoupanca.js
+
+    import { Conta } from "./Conta.js";
+
+    export class ContaPoupanca extends Conta{
+      constructor(saldoInicial, cliente, agencia){
+        super(saldoInicial, cliente, agencia);
+      }
+
+      sacar(valor){
+        let taxa = 1.05;
+        return this._sacar(valor, taxa);
+      }
+    }
+
+
+// ContaSalario.js
+
+    import { Conta } from "./Conta.js";
+
+    export class ContaSalario extends Conta {
+      constructor(cliente){
+        super(0, cliente, 101);
+      }
+      sacar(valor){
+        let taxa = 1.01;
+        return this._sacar(valor, taxa);
+      }
+    }

@@ -1,0 +1,506 @@
+t4f3 - 4-8 Curso: JavaScript: programando a Orientação a Objetos
+
+https://cursos.alura.com.br/course/javascritpt-orientacao-objetos
+
+
+Evernote - estudo
+
+
+Aula 5 - Construtores e estáticos
+
+
+Parte 1 - Projeto da Aula anterior
+
+Aqui você pode baixar o projeto do curso no ponto em que paramos na aula anterior.
+
+Baixe o zip ou visualize os arquivos no Github!
+
+https://github.com/alura-cursos/js-orientacao-objetos/archive/aula4.zip
+
+https://github.com/alura-cursos/js-orientacao-objetos/tree/aula4
+
+
+
+Parte 2 - Construtores
+
+Transcrição
+
+Agora que nossos atributos estão bem protegidos, podemos tomar um tempo para organizar o código da classe ContaCorrente, separando nossos atributos públicos e privados na parte superior, seguidos dos métodos assessores e por fim listando nossos métodos.
+
+  import { Cliente } from "./Cliente.js";
+
+  export class ContaCorrente {
+      agencia;
+      _cliente;
+
+      _saldo = 0;
+
+      set cliente(novoValor) {
+          if (novoValor instanceof Cliente) {
+              this._cliente = novoValor;
+          }
+
+      }
+
+      get cliente() {
+          return this._cliente;
+      }
+
+      get saldo() {
+          return this._saldo;
+      }
+
+
+      sacar(valor) {
+          if (this._saldo >= valor) {
+              this._saldo -= valor;
+              return valor;
+          }
+
+      }
+
+      depositar(valor) {
+          if(valor <= 0) {
+              return;
+          }
+          this._saldo += valor;
+      }
+
+      transferir (valor, conta) {
+          const valorSacado = this.sacar(valor);
+
+      }
+
+  }
+
+Ainda precisamos ajustar algumas coisas que não fazem sentido no sistema. Por exemplo, a classe Cliente possui um atributo cpf. Sabemos que cada pessoa possui um único cpf, que nunca (ou dificilmente) é alterado durante a sua vida. Sendo assim, seria interessante termos um cpf único para cada cliente e que ele não fosse alterável.
+
+Uma maneira de protegermos esse atributo é tornando-o privado, o que traria a necessidade de um assessor getter para recuperá-lo.
+
+  export class Cliente {
+      nome;
+      _cpf;
+
+      get cpf() {
+          this._cpf;
+      }
+
+  }
+
+Entretanto, só queremos que essa atribuição seja feita no momento da criação de um novo Cliente, em nenhum outro momento do ciclo de vida do nosso objeto. Para essa e outras situações existem os construtores (constructor()), uma função especial que recebe, por exemplo, os atributos que a classe precisa para criar um objeto - nesse caso, nome e cpf.
+
+  export class Cliente {
+      nome;
+      _cpf;
+
+      get cpf() {
+          this._cpf;
+      }
+
+      constructor(nome, cpf) {
+
+      }
+
+  }
+
+Queremos, então, associar o nome e o cpf recebidos por parâmetros com os próprios atributos nome e _cpf da classe Cliente, algo que faremos com o auxílio da palavra reservada this.
+
+  export class Cliente {
+      nome;
+      _cpf;
+
+      get cpf() {
+          this._cpf;
+      }
+
+      constructor(nome, cpf) {
+          this.nome =  nome;
+          this._cpf = cpf; 
+      }
+
+  }
+
+Dessa forma, no momento em que construirmos um objeto, passaremos a referência necessária de nome e cpf e dispensaremos a existência de um assessor do tipo set. Voltando ao index.js, observe o momento em que instanciamos a classe Cliente:
+
+  const cliente1 = new Cliente();
+
+Sempre que utilizamos parênteses em JavaScript, estamos chamando um método. Nesse caso, ao instanciarmos uma classe, chamamos o seu método construtor. Como ele não existia, o próprio JavaScript se encarregava de criar um espaço na memória para um construtor implícito que simplesmente inicializa a classe, sem realizar a atribuição de nenhum parâmetro. Agora que temos um construtor explícito, poderemos passar o nome ("Ricardo") e o CPF (11122233309).
+
+  const cliente1 = new Cliente("Ricardo", 11122233309);
+
+Repetiremos esse processo para cliente2, dessa vez com os dados "Alice" e 88822233309. Agora poderemos remover os pontos em que atribuíamos manualmente tais valores, além da linha conta2.saldo = 30000, que não funciona mais (já que encapsulamos nosso atributo _saldo). Por fim, faremos um console.log() de cliente2 para exibi-lo.
+
+  const cliente1 = new Cliente("Ricardo", 11122233309);
+
+  const cliente2 = new Cliente("Alice", 88822233309);
+
+  const contaCorrenteRicardo = new ContaCorrente();
+  contaCorrenteRicardo.agencia = 1001;
+  contaCorrenteRicardo.cliente = cliente1;
+  contaCorrenteRicardo.depositar(500);
+
+  const conta2 = new ContaCorrente();
+  conta2.cliente = cliente1;
+  conta2.agencia = 102;
+
+  let valor = 200;
+  contaCorrenteRicardo.transferir(valor, conta2);
+
+  console.log(cliente2);
+
+Como retorno, teremos o objeto com o nome e o CPF que definimos.
+
+    Cliente { nome: 'Alice', _cpf: 88822233309 }
+
+Se tentarmos alterar o cpf de cliente2, receberemos um erro informando que não é possível fazer tal atribuição, já que nosso atributo só possui um assessor do tipo get.
+
+  const cliente1 = new Cliente("Ricardo", 11122233309);
+
+  const cliente2 = new Cliente("Alice", 88822233309);
+
+  cliente2.cpf = -1;
+
+  //...código omitido
+
+    cliente2.cpf = -1; ^ TypeError: Cannot set property cpf of #Cliente which has only a getter
+
+Removeremos essa chamada do nosso código e prosseguiremos com nossos testes, dessa vez pedindo a impressão de cliente2.cpf.
+
+  const cliente1 = new Cliente("Ricardo", 11122233309);
+
+  const cliente2 = new Cliente("Alice", 88822233309);
+  console.log(cliente2.cpf);
+
+Como retorno, receberemos:
+
+    undefined
+
+Isso acontece pois nosso assessor do tipo get não está retornando nada, nos devolvendo um indefinido (undefined).
+
+  export class Cliente {
+      nome;
+      _cpf;
+
+      get cpf() {
+          this._cpf;
+      }
+  //...código omitido
+
+Consertaremos esse problema adicionando a instrução return ao nosso assessor.
+
+  export class Cliente {
+      nome;
+      _cpf;
+
+      get cpf() {
+          return this._cpf;
+      }
+  //...
+
+Ao executarmos novamente, receberemos o CPF correto:
+
+    88822233309
+
+Assim conseguimos com que nossa propriedade seja atribuída somente em tempo de construtor, e que não seja mais possível alterá-la enquanto tal objeto existir. Essa é mais uma forma de controlarmos os estados da nossa aplicação. Todos os atributos que temos em nossas classe são chamados também de "estado da classe", e é comum nos referirmos às suas regras de alteração como "gerenciamento de estado" - ou seja, as técnicas que utilizamos para lidar com esses atributos.
+
+Prosseguiremos criando também um constructor(). para a classe ContaCorrente. Dessa forma, removeremos diversas linhas de código do index.js, atribuindo todos os valores do objeto direto na sua instanciação. No construtor, receberemos uma agencia e um cliente com os quais faremos as devidas atribuições. Não precisaremos receber um saldo, pois nossa classe já o inicializa como 0.
+
+  constructor(cliente, agencia) {
+      this.cliente = cliente;
+      this.agencia = agencia;
+  }
+
+Repare que estamos usando o assessor cliente mesmo dentro da classe, algo que é possível no JavaScript e nos garante a verificação que definimos no set cliente() - ou seja, se o valor recebido é uma instância de Cliente, a atribuição será realizada com sucesso.
+
+Agora, na criação das nossas contas correntes, bastará passarmos um objeto do tipo Cliente (como cliente e cliente2) e uma agência.
+
+  import {Cliente} from "./Cliente.js"
+  import {ContaCorrente} from "./ContaCorrente.js"
+
+  const cliente1 = new Cliente("Ricardo", 11122233309);
+
+  const cliente2 = new Cliente("Alice", 88822233309);
+
+  const contaCorrenteRicardo = new ContaCorrente(1001, cliente1);
+  contaCorrenteRicardo.depositar(500);
+
+  const conta2 = new ContaCorrente(102, cliente2);
+
+  let valor = 200;
+  contaCorrenteRicardo.transferir(valor, conta2);
+
+Note que temos bem menos linhas de código, tornando-o mais conciso e legível. Claro, não devemos acreditar que um código menor sempre é bom, mas sim analisar as possibilidades de torná-lo mais sucinto. Existem casos nos quais manter nomes mais extensos e descritivos de variáveis ou códigos com etapas mais explícitas também pode ser vantajoso.
+
+
+
+Parte 3 - Utilizando Construtores
+
+Abaixo, temos algumas afirmações a respeito da utilização de construtores.
+
+Qual delas é verdadeira?
+
+Alternativa correta
+
+Construtores são utilizados para inicializar os atributos.
+  Correta! A inicialização de atributos é a principal responsabilidade do construtor.
+
+Alternativas incorretas:
+
+Construtores não têm utilidade real, podemos deixar os atributos públicos e defini-los manualmente.
+  Na verdade é o oposto! A inicialização de atributos é a principal responsabilidade do construtor.
+
+Construtores não podem receber parâmetros.
+  Ops, nesta aula vimos que podem receber parâmetros!
+
+
+
+Parte 4 - Atributos estáticos
+
+Transcrição
+
+Conseguimos criar os nossos construtores e reorganizar nosso código para torná-lo mais enxuto. Claro, não é sempre que um código com menos linhas ou caracteres é melhor, mas nesse caso as alterações melhoraram a legibilidade, inclusive fazendo com que nosso index.js coubesse em uma única tela.
+
+  import {Cliente} from "./Cliente.js"
+  import {ContaCorrente} from "./ContaCorrente.js"
+
+  const cliente1 = new Cliente("Ricardo", 11122233309);
+
+  const cliente2 = new Cliente("Alice", 88822233309);
+
+  const contaCorrenteRicardo = new ContaCorrente(1001, cliente1);
+  contaCorrenteRicardo.depositar(500);
+
+  const conta2 = new ContaCorrente(102, cliente2);
+
+  let valor = 200;
+  contaCorrenteRicardo.transferir(valor, conta2);
+
+Porém, se executarmos esse código, teremos um retorno inesperado:
+
+    ContaCorrente { agencia: Cliente { nome: 'Ricardo', _cpf: 11122233309 }, _cliente: undefined, _saldo: 300 } ContaCorrente { agencia: Cliente { nome: 'Alice', _cpf: 88822233309 }, _cliente: undefined, _saldo: 200 }
+
+Note que os dados de _cliente estão atribuídos à propriedade agencia, e _cliente foi devolvido como undefined. Isso acontece pois, no construtor de ContaCorrente, definimos a ordem inversa de recebimento dos parâmetros - ou sjea, primeiro o cliente e depois a agência. Vamos consertar isso.
+
+  constructor(agencia, cliente) {
+      this.cliente = cliente;
+      this.agencia = agencia;
+  }
+
+Executando novamente, receberemos os dados corretos:
+
+    ContaCorrente { agencia: 1001, _cliente: Cliente { nome: 'Ricardo', _cpf: 11122233309 }, _saldo: 300 } ContaCorrente { agencia: 102, _cliente: Cliente { nome: 'Alice', _cpf: 88822233309 }, _saldo: 200 }
+
+Finalizada essa etapa, nosso contratante Bytebank agora quer saber a quantidade de contas abertas no nosso sistema. Ou seja, queremos que cada vez que uma nova conta seja criada, uma variável contadora seja incrementada. Uma maneira de fazermos isso é criando uma variável numeroDeContas que se inicia com 0 e incrementá-la toda vez que instanciarmos um objeto do tipo ContaCorrente. Por fim, bastará imprimirmos o valor final dessa variável.
+
+  import {Cliente} from "./Cliente.js"
+  import {ContaCorrente} from "./ContaCorrente.js"
+
+  const cliente1 = new Cliente("Ricardo", 11122233309);
+  const cliente2 = new Cliente("Alice", 88822233309);
+  let numeroDeContas = 0;
+  const contaCorrenteRicardo = new ContaCorrente(1001, cliente1);
+  numeroDeContas++;
+  contaCorrenteRicardo.depositar(500);
+
+  const conta2 = new ContaCorrente(102, cliente2);
+  numeroDeContas++;
+
+  let valor = 200;
+  contaCorrenteRicardo.transferir(valor, conta2);
+
+  console.log(numeroDeContas);
+
+    2
+
+Entretanto, essa abordagem tem um problema: nosso código é frágil e suscetível a erros comuns, como simplesmente nos esquecermos de incrementar a variável ao criarmos uma nova conta. Uma maneira de solucionarmos isso é incluirmos nossa variável contadora na própria classe ContaCorrente, iniciando-a novamente como 0 e incrementando-a no construtor da classe.
+
+  export class ContaCorrente {
+      agencia;
+      numeroDeContas = 0;
+      _cliente;
+
+      _saldo = 0;
+
+      set cliente(novoValor) {
+          if (novoValor instanceof Cliente) {
+              this._cliente = novoValor;
+          }
+
+      }
+
+      get cliente() {
+          return this._cliente;
+      }
+
+      get saldo() {
+          return this._saldo;
+      }
+
+      constructor(agencia, cliente) {
+          this.cliente = cliente;
+          this.agencia = agencia;
+          this.numeroDeContas += 1;
+      }
+  //...
+
+Feito isso, poderemos remover os pontos em que criamos e incrementamos o numeroDeContas no nosso index.js. Para verificarmos se nossa lógica funcionou, imprimiremos conta2.numeroDeContas (já que queremos acessar o atributo de um objeto).
+
+  import {Cliente} from "./Cliente.js"
+  import {ContaCorrente} from "./ContaCorrente.js"
+
+  const cliente1 = new Cliente("Ricardo", 11122233309);
+  const cliente2 = new Cliente("Alice", 88822233309)
+  const contaCorrenteRicardo = new ContaCorrente(1001, cliente1);
+  contaCorrenteRicardo.depositar(500);
+
+  const conta2 = new ContaCorrente(102, cliente2);
+
+  let valor = 200;
+  contaCorrenteRicardo.transferir(valor, conta2);
+
+  console.log(conta2.numeroDeContas);
+
+Como retorno, teremos:
+
+    1
+
+Mesmo que façamos a impressão de contaCorrenteRicardo.numeroDeContas, o resultado será o mesmo. Isso significa que algo está errado, já que atualmente temos duas contas no nosso sistema. Isso acontece pois toda vez que instanciamos um objeto, os atributos da classe se tornam específicos daquele objeto. Ou seja, não importa quantas contas correntes criarmos, todas terão 1 como numeroDeContas. Isso pode ser verificado imprimindo as duas contas no console.
+
+  console.log(contaCorrenteRicardo);
+  console.log(conta2);    
+
+    ContaCorrente { agencia: 1001, numeroDeContas: 1, _cliente: Cliente { nome: 'Ricardo', _cpf: 11122233309 }, _saldo: 300 } ContaCorrente { agencia: 102, numeroDeContas: 1, _cliente: Cliente { nome: 'Alice', _cpf: 88822233309 }, _saldo: 200 }
+
+Da mesma forma, se alterarmos o numeroDeContas da contaCorrenteRicardo, não alteraremos o da conta2. No geral queremos que isso realmente aconteça, já que cada objeto é único e não deve depender dos outros - afinal, em nosso sistema estamos trabalhando com contas correntes diferentes, com titulares e saldos diferentes.
+
+Já no caso do numeroDeContas, queremos que ele seja inerente à classe como um todo, e não das instâncias individualmente. Para isso, não poderemos declará-lo da mesma forma que os outros atributos. A ideia é trabalharmos com um atributo estático, do tipo que reflete as alterações em todos os objetos daquela classe. Para isso usaremos a palavra reservada static.
+
+De modo a conseguirmos incrementá-lo no construtor, ao invés da palavra reservada this, que nos concede acesso à instância que chamou o construtor, usaremos a própria classe ContaCorrente.
+
+  import { Cliente } from "./Cliente.js";
+
+  export class ContaCorrente {
+      static numeroDeContas = 0;
+      agencia;
+      _cliente;
+
+      _saldo = 0;
+
+  //...código omitido
+
+      constructor(agencia, cliente) {
+          this.cliente = cliente;
+          this.agencia = agencia;
+          ContaCorrente.numeroDeContas += 1
+      }
+  //...
+
+Com isso, toda vez que o construtor de ContaCorrente for chamado, somaremos 1 ao atributo numeroDeContas da classe ContaCorrente como um todo, e não de um objeto específico. Inclusive, se executarmos nosso código nesse ponto, repare que não mais receberemos os valores de numeroDeContas:
+
+    ContaCorrente { agencia: 1001, _cliente: Cliente { nome: 'Ricardo', _cpf: 11122233309 }, _saldo: 300 } ContaCorrente { agencia: 102, _cliente: Cliente { nome: 'Alice', _cpf: 88822233309 }, _saldo: 200 }
+
+Para obtermos esse valor, precisaremos imprimir ContaCorrente.numeroDeContas:
+
+  console.log(ContaCorrente.numeroDeContas);  
+
+    2
+
+Com isso conseguimos obter o resultado correto. Cada vez que instanciarmos um novo cliente, a variável contadora será incrementada de acordo.
+
+  const cliente1 = new Cliente("Ricardo", 11122233309);
+  const cliente2 = new Cliente("Alice", 88822233309)
+  const contaCorrenteRicardo = new ContaCorrente(1001, cliente1);
+  contaCorrenteRicardo.depositar(500);
+
+  const conta2 = new ContaCorrente(102, cliente2);
+  new ContaCorrente(102, cliente2);
+  new ContaCorrente(102, cliente2);
+  new ContaCorrente(102, cliente2);
+  new ContaCorrente(102, cliente2);
+  new ContaCorrente(102, cliente2);
+
+  let valor = 200;
+  contaCorrenteRicardo.transferir(valor, conta2);
+
+  console.log(ContaCorrente.numeroDeContas);  
+
+    7
+
+Agora o Bytebank sabe quantas contas foram abertas, e não temos mais um código frágil.
+
+
+
+
+Parte 5 - Tipos de atributos
+
+Em seu jogo, Luan quer sempre manter o número do total de jogadores atualizado. Para isso, escreveu o código abaixo:
+
+  class Jogador{
+
+      //Código omitido
+      _totalJogadores = 0;
+
+      constructor(){
+          this._totalJogadores++;
+      }
+  }
+
+Porém, o contador sempre apresenta 1 após inserir um novo jogador.
+
+Qual dos motivos abaixo explica a razão desse acontecimento?
+
+
+Alternativa correta
+
+O _totalJogadores deveria estar como estático, assim, sempre que fosse criado um novo objeto do tipo Jogador, não seria criado um novo total, mantendo o valor correto.
+  Correta! A declaração correta deste campo é static _totalJogadores;.
+
+
+Alternativas incorretas:
+
+Luan deveria deixar o _totalJogadores como público, para que possa ser somado sem problemas.
+  Ops, o problema não está na visibilidade deste campo!
+
+Luan deveria deixar o _totalJogadores como propriedade, usando getters e settersdo JS.
+  Esta é uma boa prática, mas o problema não está na construção desta propriedade.
+
+
+
+Parte 6 - O que aprendemos?
+
+  Construtores
+  Encapsulamento
+  Atributos "readonly"
+  Atributos estáticos
+
+
+
+Parte 7 - Projeto Final do Curso
+
+Aqui você pode baixar o projeto do curso no ponto em que paramos na aula anterior.
+
+Baixe o zip ou visualize os arquivos no Github!
+
+https://github.com/alura-cursos/js-orientacao-objetos/archive/aula5.zip
+
+https://github.com/alura-cursos/js-orientacao-objetos/tree/aula5
+
+
+
+Parte 8 - Conclusão
+
+Transcrição
+
+Parabéns! Você concluiu o curso JavaScript: introdução a Orientação a Objetos! Ao longo deste treinamento nós conhecemos vários conceitos interessantes de orientação a objetos como o que são classes, o que são atributos e quais as vantagens de termos atributos privados ou estáticos, como criarmos métodos de acesso do tipo set e get (de modo a encapsularmos comportamentos dos atributos da classe), a funcionalidade dos construtores (que tornaram nosso código mais sucinto e legível) e assim por diante.
+
+Também aprendemos a criar e utilizar métodos e como utilizar a composição de classes em nosso favor, utilizando tipos de referência (as próprias classes) para fazermos as operações que desejávamos. Isso culminou em casos como o método transferir(), que utiliza a linguagem do próprio negócio em sua operação,
+
+  transferir (valor, conta) {
+      const valorSacado = this.sacar(valor);
+      conta.depositar(valorSacado);
+
+  }
+
+Aqui temos um nível de abstração mais alto, com uma lógica mais fácil de ser comunicada às outras pessoas da equipe. Ainda existem diversos outros conteúdos de orientação a objetos para aprendermos, e trabalharemos com eles nos próximos cursos.
+
+Bons estudos e até a próxima!

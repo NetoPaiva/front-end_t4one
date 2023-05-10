@@ -1,0 +1,157 @@
+Curso JS  na web - CRUD com JS assíncrono
+
+
+Aula 4 - Editar dados 
+=====================
+
+
+PARTE 1 - PROJETO DA AULA ANTERIOR
+==================================
+
+https://cursos.alura.com.br/course/javascript-crud-assincrono/task/86463
+
+
+Aqui você pode baixar o projeto da aula anterior. Baixe o zip ou visualize os arquivos no Github!
+
+Projeto.zip
+https://github.com/alura-cursos/2016-JS-na-web-crud-com-JavaScript-assincrono/archive/aula03.zip
+
+
+Repositório
+https://github.com/alura-cursos/2016-JS-na-web-crud-com-JavaScript-assincrono/tree/aula03/aula3/admin
+
+
+PARTE 2 - CONEXÃO PARA EDITAR
+=============================
+
+
+Transcrição
+
+[00:00] Agora já conseguimos excluir um cliente da nossa API. Se voltarmos no VSCode, em listaClientes.controller o que fizemos? Colocamos um evento de escuta na tabela, que é um evento que quando ele escutar o clique, vai disparar toda um lógica para nós. Ou seja, é botão deletar? Fazemos uma verificação para saber se o evento que foi clicado, se a classe CSS dele é essa de botão simples, botão simples excluir.
+
+[00:30] E aqui fazemos uma verificação. Se essa classe for a classe do botão de excluir, quer dizer que é o botão de excluir, quer dizer que cliquei nele. A partir daí usei o closest para remover a linha inteira. Ou seja, tivemos quando usamos o removeCliente, aconteceu o seguinte, clicamos, ele removeu, porém não apagou o cliente da tabela. Ele apagou somente da API.
+
+[00:55] Para isso tivemos que procurar o elemento pai mais próximo do botão, que é a linha, e aí passamos o id para o removeCliente, que é o id da linha. Depois que ele removeu, com a resposta fazemos linhaCliente.remove. Ou seja, removemos a linha toda do tr.
+
+[01:15] Manipulamos bastante DOM para fazer essa parte da deleção. Foi bem legal, porém foi pedido para ter também a opção de editar dados, e não somente de deletar. Para editar os dados vamos ter que criar uma nova estratégia.
+
+[01:35] Lá em cima, reparem que criamos um id para identificar o tr. Agora vamos identificar a página. Como vamos fazer isso? No Chrome, quando clico em editar, ele me joga para uma página que tem um form, nome e e-mail, e o endereço em cima. Como vou saber que é a página que cliquei?
+
+[01:58] Se voltarmos no VisualStudio code, lembra que para deletar utilizamos a classe CSS para identificar o botão. Para identificar a página vou fazer uma query string, ou seja, vou passar sinal de interrogação, id igual, passo chaves e coloco um id. Esqueci do cifrão para mostrar que é JavaScript.
+
+[02:25] O id que identifica cada um dos clientes vai lá para o final da página. Se eu voltar no Chrome, vou clicar em clientes para ele voltar, vou dar uma atualizada no servidor, porque às vezes ele dá uma engasgada, vou clicar em editar. Repare que quando ele voltou para a página de edição nada mudou, mas na url temos id1.
+
+[02:47] Ou seja, identificamos o cliente, o id1. O que tenho que fazer agora? Quando clicar em id1 quero que ele traga os dados para essa página do formulário. Não quero ter que preencher de novo, quero só editar os dados. Tenho que trazer nome e e-mail.
+
+[03:02] Como vamos fazer isso? Vamos lá no VSCode, aqui, lembrando que estamos separando responsabilidades, lá em controller vou criar um novo arquivo, cliquei em new file, atualizaCliente-controller.js, aqui vou fazer o seguinte. Primeiro quero pegar aquele endereço de url, se voltarmos no Chrome quero pegar esse endereço.
+
+[03:28] Como vou fazer isso? Vamos voltar no VisualStudio code, vou gerar uma constante chamada pegaUrl, que vai instanciar uma url nova para mim, então new, vou usar o objeto da url, e passo como parâmetro window.location. Se eu fizer um console.log do pegaUrl, lembrando que criamos um arquivo novo, então em editaCliente tenho que importar atualizaCliente-controller.
+
+[04:05] No final do body, fazemos um script, passamos como source o src, o endereço ‘../controller/atualizaCliente-controller.js’, e lembrando que é um módulo, então ‘type=”module”.
+
+[04:25] Vamos voltar no Chrome. Voltei para a página de clientes, vou atualizar o servidor de novo, e vou clicar em editar. Estamos na página de id1, cliente1, F12 aqui. Reparem que temos um objeto url, se eu clicar nele ele vai mostrar várias coisas, e passamos o window.location para ele, então ele está mostrando onde estou na tela.
+
+[04:45] Ele mostra no href que estou no admin/telas/edita_cliente, no cliente 1. O que vamos fazer com isso? Esse objeto tem um search params, ou seja, buscar por parâmetro. Está me dando uma dica.
+
+[04:58] Se eu clicar nele, dentro de proto ele vai mostrar vários métodos que search params possui, um deles aqui é o get. Quero pegar. Quem eu quero pegar aqui? Quero pegar o id, o id identifica o cliente. Vamos voltar no VSCode. Vou fechar o edita cliente, que não precisamos mais dele.
+
+[05:17] Ao invés de fazer um console.log vou criar uma constante chamada id e vou falar pegaURL.searchParams.get(‘id’). Se eu fizer o console.log disso, do id, vamos lá no Chrome, vou atualizar a página, já temos o id. Vamos voltar no VisualStudio code.
+
+[05:44] Já temos o id, utilizamos essa estratégia várias vezes. Se passamos para uma função o id identificamos o cliente. Vamos lá em clienteService. Vou criar uma função nova, então const detalhaCliente, vai ser uma arrow function, e aqui dentro vou copiar do listaClientes, vai ser um return fetch, ele vai me retornar a resposta em formato JSON.
+
+[06:15] Vamos fazer um get, porém é um get específico, vou passar um id, e no fetch, no endereço passamos também /${id}. Agora ao invés de baixar os dados de todos os clientes vamos baixar de um cliente específico.
+
+[06:35] Olha a pista aí. Já temos o id, estamos fazendo uma função que vai pegar os dados daquele cliente que passarmos o id. Agora temos que lembrar de detalhaCliente em clienteService, e agora em atualizaCliente temos que importar clienteService de ../service/cliente-service.js.
+
+[07:12] Agora já podemos usar detalhaCliente aqui dentro. Vou fechar, conseguimos já pegar os dados dos clientes e temos o id do cliente. O que tenho que fazer agora é percorrer o DOM para pegar os campos, se voltarmos no Chrome, vamos pegar os campos nome e e-mail, para quando entrarmos na parte de edição os nomes e e-mail já virem preenchidos.
+
+[07:38] Vamos voltar no VisualStudio code, vou chamar, criar uma constante chamada de inputNome e vamos buscar no DOM document.querySelector, pegamos a data attributes que é data-nome, e aqui fazemos a mesma coisa, const inputEmail = document.querySelector(‘[data-email]’).
+
+[08:11] Agora temos um id, temos os campos, e agora estamos com a bola na cara do gol, clienteService.detalhaCliente(id), ou seja, vamos pegar o id que formos redirecionar da página. Então vou fazer .then e vou falar que então dados vai executar para mim o inputNome.value, ou seja, o valor que formos colocar nesse campo vai ser o valor que vamos pegar da API.
+
+[08:52] Então dados.nome e inputEmail.value vai ser dados.email. Fechou? Quando chamarmos o detalhaCliente passando id ele vai preencher para mim nome e e-mail nos campos. Vamos lá no Chrome, vou voltar para clientes, vou atualizar o servidor um pouco.
+
+[09:22] Vou clicar em editar, veio nome e veio o e-mail preenchido. O que quero quando eu trocar para outro nome é que quando eu clicar em editar cliente ele atualize para mim, é isso que vamos ver.
+
+
+PARTE 3 - EXIBINDO DADOS PARA EDIÇÃO
+====================================
+
+
+Transcrição
+
+[00:00] Quando clicamos no botão de editar já aparece o nome e o e-mail nos campos. Para fazer isso, voltando no VisualStudio code instanciamos um objeto url e passamos onde estamos na página com window.location. Com o pegaUrl.searchParams.get(‘id’) pegamos o id, se voltarmos no Chrome, que fica em cima, na url.
+
+[00:22] E de onde ele veio? Se voltarmos no VisualStudio code, lembra que em listaClientes-controller fizemos uma query string, uma busca pelo id, então passamos um sinal de interrogação e falamos que id recebe id. Assim conseguimos identificar a página do cliente.
+
+[00:40] Voltando em atualizaCliente-controller, depois disso, percorremos o DOM, buscamos data.email, chamamos o detalhaCliente, que foi o que criamos para fazer essa comunicação. Em clienteService criamos ele aqui, bem parecido com o listar, só que com o id para identificar cada um dos clientes.
+
+[01:02] Voltando em atualizaCliente-controller, depois de tudo isso, com a resposta em mãos, falamos que o valor no campo nome e o valor no campo e-mail vai ser o valor do cliente que pegamos. E agora vamos ter que abrir a comunicação de novo com o servidor para editar os dados.
+
+[01:24] Para isso vamos em clienteService e vamos construir outra função const atualizaCliente. Vai ser uma arrow function. E quem ele vai receber? O id, para identificar o cliente, o nome e um e-mail, como parâmetro, porque são as coisas que queremos atualizar, os dados que queremos atualizar.
+
+[01:47] Primeiro, vai ser um return fetch, vou copiar do detalhaCliente. Retornamos a fetch, passamos o endereço, o id, e lembrando que agora vamos ter que passar também mais informações sobre o que vamos fazer. É parecido com o que fazemos em criaCliente.
+
+[02:02] Vamos voltar na linha 37. Primeiro tenho que passar qual ação quero fazer. Quero colocar outro dado no API. Vou trocar o nome do cliente, por exemplo. Para isso vou utilizar o verbo put. Ele vai ser parecido, ao invés de post vai ser put. Aqui coloco method: ‘PUT’.
+
+[02:32] Tenho que passar também no cabeçalho, indicando qual o conteúdo. Então, entre aspas ‘content-type’: ‘application/JSON’. E aqui temos que passar o corpo, que é o que vamos atualizar, são os dados. Então, body, entre chaves o nome e e-mail. Lembrando que estamos falando em comunicação cliente e servidor, então string tem que ser o que vamos passar.
+
+[03:08] Já usamos em listaClientes JSON stringfy e vamos fazer a mesma coisa em atualizaCliente. Então, JSON.stringify, abro e fecho parênteses, e copio tudo que está aqui dentro da linha 46 até a 43 e coloco dentro do stringify. Então tenho que falar o nome que eu receber vai ser igual nome, e o e-mail a mesma coisa.
+
+[03:33] Salvei. Depois de tudo isso vamos trabalhar com a resposta, .then( resposta, vou falar para ele me devolver a resposta.json, um objeto JavaScript válido, então return resposta.json.
+
+[04:00] Lembrando que atualizaCliente tem que ir no clienteService, no objeto, depois o detalhaCliente já existe e posso utilizar ele lá no atualizaCliente-controller, e é isso que vamos fazer. Vamos lá.
+
+[04:15] Agora o que vou fazer? Primeiro tenho que procurar onde está o formulário na página. Para fazer isso vou fazer um const formulário, vai ser uma constante que vou buscar o formulário. Vou buscar ele, document.querySelector, passando o data attributes dele, que é o data-form.
+
+[04:42] Já selecionamos o formulário do campo de edição. Com isso fizemos lá em cadastra cliente um evento de escuta do formulário, porque vamos enviar informações. Aqui vamos fazer a mesma coisa. Vou subir a tela, vou falar que formulario.addEventListener, vou passar o evento submit e a função que vou executar quando ele ouvir esse evento.
+
+[05:10] Vou passar primeiro o objeto de evento, porque vou trabalhar com ele, para prevenir o comportamento padrão do formulário, que é enviar dados. Vou fazer evento.preventDefault, executei.
+
+[05:25] Agora o que vou fazer? Utilizar a função que acabamos de criar no eventService, então clienteService.atualizaCliente, e quem vai dentro desse atualizaCliente? O id, o nome, então inputNome.value, que é o valor que vamos preencher, e o inputEmail.value.
+
+[05:58] Fechou, quando isso for me devolver uma resposta do que aconteceu, vou fazer o seguinte, .then, vamos executar uma função que vai mandar uma mensagem para o usuário falando que o cliente foi cadastrado com sucesso, atualizado com sucesso. Ele vai lá para owindow.location.href e vai mandar na tela, tem o nome do edição, então ./telas/edicao_concluida.html.
+
+[06:35] Repare que o evento está triste, está apagado, porque eu escrevi errado. Fechou. Vamos voltar no Chrome e vamos ver o que aconteceu. Primeiro vou clicar em clientes para voltar a página. Dou uma atualizada no servidor. Cliquei em editar. Apareceu meu nome, vou trocar Felipe para Lucas. Cliquei em editar, cliente editado com sucesso, vou clicar em voltar para clientes, trocamos o nome.
+
+[07:05] Agora já conseguimos criar um cliente novo, listar todos os clientes da nossa aplicação, editar os dados dos clientes e excluir quando necessário. Tudo isso é o acrônimo CRUD, que é o create, update, read e delete. Traduzindo, é listar, criar, editar e excluir. Tudo isso já estamos conseguindo fazer fazendo essa comunicação com cliente servidor.
+
+[07:33] Eu disse já várias vezes que o JavaScript está em constante atualização, então hoje temos um novo formato de indicar que as funções são assíncronas, e é isso que vamos ver.
+
+
+
+PARTE 4 - ACESSO AO ID
+======================
+
+Para editar um cliente específico de seu petshop, Maria precisa ter acesso ao id de cada um deles.
+
+Qual código abaixo ela vai utilizar para realizar essa tarefa?
+
+  const pegaURL = new URL( window.location )
+  const id = pegaURL.searchParams.get(‘id’)
+
+  Perfeito! Criamos um novo objeto URL que é capaz de nos dizer qual o endereço da página que estamos. Por meio da propriedade searchParams conseguimos acessar o método get e selecionar o id que vemos na url.
+
+
+
+PARTE 5 - FAÇA COMO NA AULA
+===========================
+
+Praticar ajuda bastante no aprendizado de um novo conceito. Assim, é muito importante que você implemente o que foi apresentado nesta aula.
+
+Opinião do instrutor
+  Continue com os seus estudos, e se houver dúvidas, não hesite em recorrer ao nosso fórum!
+
+
+
+PARTE 6 - RESUMO DA AULA
+========================
+
+Nesta aula, aprendemos:
+
+    Fazer uma query string utilizando a propriedade searchParams.get() para encontrar um id.
+    
+    Criar uma IIFE ou função auto executável.
+    
+    Editar os dados utilizando o verbo http PUT
+

@@ -1,0 +1,259 @@
+Curso 5-1 - JS - interface e herança POO
+
+# Aula 2 - Herança
+
+## 2-1 - Herança
+
+// - permite funcionalidades específicas para cada objeto (conta corrente / poupança)
+
+// - especializar o copmportamento
+// -- conta corrente terá taxa de 10% para saque
+// -- poupança sem taxa de saque
+
+// - levar acessores da ContaCorrente.js para Conta.js
+
+// - compartilhar código entre as classes ContaCorrente e ContaPoupanca
+// -- incluir o atributo "tipo" no construtor da Conta
+
+// - incluir a cobrança de taxa do saque na conta corrente
+// -- no método "sacar"
+// -- criar variável taxa com valor 1
+// -- criar verificação do tipo de conta 
+// -- se for corrente calcular percentual da taxa 
+// -- guardar resultado na variável valorSacado
+
+// - atualizar verificação do método sacar
+// -- substituir "valor" para "ValorSacado"
+
+// - código completo do médoto sacar
+
+    sacar(valor){
+      let taxa = 1;
+      if (this._tipo == 'corrente') {
+        taxa = 1.1;
+      }
+
+      const valorSacado = taxa * valor;
+
+      if (this._saldo >= valorSacado) {
+        this._saldo -= valorSacado;
+        return valorSacado;
+      }
+    }
+    
+// - outras regras de negócio
+// -- conta salário não pode fazer transferência
+// -- taxas de saque difirentes para tipos de contas diferentes:
+// --- conta corrente = 10%
+// --- conta poupança = 0%
+// --- conta salário = 5%
+// --- conta empresarial = 15%
+
+// - simplificar verificações das regras de negócio
+// -- boa prática evitar "if" para cada regra
+
+// - no arquivo "Conta.js"
+// -- eliminar o "if" da taxa da conta corrente do método sacar
+// -- eliminar o atributo "tipo" da classe "Conta"
+
+// - no arquivo "index"
+// -- alterar a classe construtora das contas:
+// --- "new Conta" para "new ContaCorrente"
+// --- "new Conta" para "new ContaPoupanca"
+// -- retirar dos parâmetros os tipos de contas "corrente" e "poupança"
+
+
+// Herança
+
+// - compartilhar código para simplificar verificação
+// -- conta corrente vai extender da classe Conta
+// --- classe Conta possui diversas regras
+// --- traz tudo da classe Conta para ContaCorrente
+
+  export class ContaCorrente extends Conta{ }
+
+// - já faz a importação da classe automaticamente
+
+// - pode eliminar da Classe ContaCorrente
+// -- os acessores
+// -- os métodos de movimentação de conta
+
+// - refatora o construtor
+// -- elimina todos os "this."
+// --- já estão declarados na classe "Conta"
+
+// - código completo da classe "ContaCorrente"
+
+    import { Conta } from "./Conta.js";
+
+    export class ContaCorrente extends Conta {
+      static quantidadeContas = 0;
+      constructor(cliente, agencia){
+        ContaCorrente.quantidadeContas += 1;
+      }
+    }
+
+// - refatorar a classe "ContaPounca"
+// -- adicionar "extends" na classe
+// -- eliminar "this." da classe
+// -- eliminar métodos movimentação
+
+// - problema ao rodar o programa
+// - solução:
+// -- precisa chamar "super construtor" para acessar o "this"
+
+// - precisa chamar o "super construtor" da classe "Conta" dentro das classes "ContaCorrente" e "ContaPoupanca"
+// - os parâmentros do super são os atributos de cada tipo de conta
+
+// - código completo da ContaCorrente
+
+    import { Conta } from "./Conta.js";
+
+    export class ContaCorrente extends Conta {
+      static quantidadeContas = 0;
+      constructor(cliente, agencia){
+        super(0, cliente, agencia);
+        ContaCorrente.quantidadeContas += 1;
+      }
+    }
+
+// - código completo da ContaPounca
+
+    import { Conta } from "./Conta.js";
+
+    export class ContaPoupanca extends Conta{
+      constructor(saldoInicial, cliente, agencia){
+        super(saldoInicial, cliente, agencia);
+      }
+    }
+
+// - código completo da "index"
+
+    import { Cliente } from "./Cliente.js";
+    import { ContaCorrente } from "./ContaCorrente.js";
+    import { ContaPoupanca } from "./ContaPoupanca.js";
+
+    const cliente1 = new Cliente ('Ricardo', 11122233345, 123456789);
+
+    const conta1 = new ContaCorrente(cliente1, 101);
+
+    const contaPoupanca1 = new ContaPoupanca(50, cliente1, 101);
+
+    conta1.depositar(500);
+    conta1.depositar(100);
+
+    console.log(conta1);
+    console.log(contaPoupanca1);
+
+// - código completo da classe "Conta"
+
+    export class Conta{
+      
+      constructor(saldoInicial, cliente, agencia){
+        this._saldo = saldoInicial;
+        this._cliente = cliente;
+        this._agencia = agencia;
+      }
+
+      // acessores - proteger atributos
+
+      set cliente(novoValor){
+        if(novoValor instanceof Cliente){
+          this._cliente = novoValor;
+        }
+      }
+
+      get cliente(){
+        return this._cliente;
+      }
+
+      get saldo(){
+        return this._saldo;
+      }
+
+    // métodos de movimentação
+
+        sacar(valor){
+          let taxa = 1;
+
+          const valorSacado = taxa * valor;
+
+          if (this._saldo >= valorSacado) {
+            this._saldo -= valorSacado;
+            return valorSacado;
+          }
+        }
+      
+        depositar(valor){
+          if (valor <= 0) return;
+          this._saldo += valor;
+        }
+      
+        transferir(valor, conta){
+          const valorSacado = this.sacar(valor);
+          conta.depositar(valor);
+        }
+    }
+
+// - código completo da classe "Cliente"
+
+    export class Cliente {
+      get cpf(){
+        return this._cpf;
+      }
+
+      constructor(nome, cpf, rg){
+        this.nome = nome;
+        this._cpf = cpf;
+        this.rg = rg;
+      }
+    }
+
+
+
+## 2-2 - Super e Sobreescrita
+
+// - o "super" faz refrência ao construtor da classe "mãe", a foi "extendida"
+
+// - a herança permite vincular outros métodos da classe "mãe"
+// -- sempre utilizando o "super"
+
+
+//  SOBREESCRITA
+
+// - permite compartilhar e especializar alguma funcionalidade herdada da classe "mãe"
+
+// - sobreescrever na classe "filha"
+// -- o método sacar com o copmportamento esperado
+// --- cobrança de 10% de taxa de saque
+// ---- copiar o método "sacar" da classe "Conta"
+// ---- colar na classe "ContaCorrente"
+// ---- alterar a funcionalidade da cobrança
+
+    let taxa = 1.1;
+
+
+
+## 2-3 - Privado e protegido
+
+// - refatorar o método "sacar" na classe "ContaCorrente"
+// -- evitar repetição de código
+
+// - criar método privado "_sacar" na classe "Conta"
+// - retirar toda a funcionalidade do método "sacar" sem a parte da "taxa"
+// - declarar no método privado a funcionalidade retirada
+// - método privado recebe como parâmentros "valor" e "taxa"
+// - no método público retornar o método privado 
+
+    return this._sacar(valor, taxa);
+
+// - adicionar ao método privado retorno de operação não realizada (0)
+
+    return 0
+
+// - classe "filha" pode utilizar funcionalidades protegidas da classe "mãe"
+// -- assim, pode simplificar o código da classe "ContaCorrente"
+// --- elimina toda verificação do método sacar
+// --- e retorna o método privado com valor e taxa
+
+    "this._sacar(valor, taxa)"

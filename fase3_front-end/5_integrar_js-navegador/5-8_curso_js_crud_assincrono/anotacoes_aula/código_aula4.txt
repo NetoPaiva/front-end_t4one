@@ -1,0 +1,366 @@
+5-8 - Curso 6 - JS Web - Crud Assíncrono
+
+# Aula 4 - Editar dados
+
+
+## Parte 4-1 - Conectar para editar
+
+Identificar a página com os dados do cliente
+
+  - ao clicar em "editar" na tabela de clientes da página "lista_cliente.html"
+  - é direcionado para a página "edita_cliente.html"
+  - para identificar a página
+    - no template de criar nova linha
+    - na tag "a" de link para a página "edita_cliente.html"
+    - no final do endereço (href)
+    - inlcuir uma "queryString" com o "id" do cliente (html?id=${id})
+
+    <a href="../telas/edita_cliente.html?id=${id}" class="botao-simples botao-simples--editar">Editar</a>
+
+Inserir os dados do cliente na página de edição
+
+  - na pasta "controller"
+  - criar arquivo "editaCliente-controller.js"
+  - pegar URL da página do cliente (pegaURL)
+  - instanciar nova URL (new URL)
+  - que recebe como parâmetro o endereço no navegador (window.location)
+
+    const pegaURL = new URL(window.location);
+
+  - no documento "edita_cliente.html"
+  - declarar o script "editaCliente"
+  - do tipo "module"
+
+    <script src="../controller/editaCliente-controller.js" type="module"></script>
+
+  - exibir no console do navegador (console.log)
+  - mostra diversas propriedades do elemento
+  - em "searchParams/proto"
+    - identificar a função para pegar o "id" cliente (GET)
+
+  - incluir no arquivo "editaCliente-controller.js"
+    - criar variável "id"
+    - que recebe "pegaURL"
+    - com o método "searchParams.get"
+    - tendo o "id" como parâmetro
+
+    const id = pegaURL.searchParams.get('id');
+
+  - exibir "id" no console do navegador
+  - exibiu "1" que é o "id" deste cliente
+  - ok, capturou o id do cliente
+
+Função para editar cliente (editaCliente)
+
+  - no arquivo "cliente-service.js"
+  - após a função "removeCliente"
+  - criar a variável "editaCliente"
+  - que recebe uma função arrow
+  - com parâmetro "id"
+  - executa o método "fetch"
+    - que faz um get específico (o "id" do cliente)
+  - recebe a URL com "id" (/profile/${id})
+  - então, a resposta será um cliente específico
+  - resposta retorna como "json"
+
+    const editaCliente = (id) => {
+      return fetch(`http://localhost:3000/profile/${id}`)
+      .then(resposta => {
+        return resposta.json();
+      })
+    }
+
+Exportar a função "editaCliente"
+
+  - incluir no objeto exportador (clienteService)
+  - a função "editaCliente"
+
+    export const clienteService = {
+      listaClientes,
+      criaCliente,
+      removeCliente,
+      editaCliente
+    }
+
+Percorrer DOM e preencher os campos com dados do cliente
+
+  - no arquivo "editaCliente-controller.js"
+  - percorrer o DOM para selecionar o campo do nome e do email
+  - guardar nas variáveis "inputNome" e "inputEmail"
+
+    const inputNome = document.querySelector('[data-nome]');
+    const inputEmail = document.querySelector('[data-email]');
+
+  Importar a função "editaCliente"
+
+  - chamar objeto exportador "clienteService"
+    - irá importar automaticamente
+    - lembrar de incluir ".js" no caminho do arquivo "clienteService.js"
+  - vincular a função "editaCliente"
+  - passando "id" como parâmetro
+  - então, "dados" vai executar a função arrow 
+  - para buscar o valor dos campos "nome" e "email"
+
+  Verificar no navegador
+
+    - abrir a página "lista_cliente.htlm"
+    - exibe clientes cadastrados na base de dados (db.json)
+    - ao clicar em "editar"
+    - abre a página "edita_cliente.html?id=3"
+    - com os campos nome e email preenchidos
+
+
+
+## Parte 4-2 - Exibir dados da edição
+
+Abrir comunicação com servidor para gravar os dados editados
+
+  - no arquivo "cliente-service.js"
+  - construir função "atualizaCliente"
+  - para atualizar os dados do cliente
+  - recebe como parâmetros
+    - "id"
+    - "nome"
+    - "email"
+  - executa o método "fetch" semelhante ao da função "criaCliente"
+    - acrescentar após a URL "vírgula abre-chaves-enter"
+    - o método "PUT" (pegar)
+    - o cabeçalho com o tipo de conteúdo
+    - o corpo com dos dados a serem atualizados convertidos em string (stringfy)
+      - nome igual a "nome"
+      - email igual a "email"
+  - então, a resposta devolve um "json" (.then)
+
+    const atualizaCliente = (id, nome, email) => {
+      return fetch(`http://localhost:3000/profile/${id}`, {
+        method: 'PUT',
+        headers: {'Content-Type' : 'application/json'},
+        body: JSON.stringify({
+          nome: nome,
+          email: email
+        })
+      })
+      .then( resposta => {
+        return resposta.json()
+      })
+    }
+
+  Exportar a função "atualizaCliente"
+
+    - incluir a função no objeto exportador "clienteService"
+
+    export const clienteService = {
+      listaClientes,
+      criaCliente,
+      removeCliente,
+      editaCliente,
+      atualizaCliente
+    }
+
+Localizar formulário no documento HTML
+
+  - no arquivo "editaCliente-controller.js"
+  - chamar seletor do elemento (querySelector)
+  - com o data-attributes no elemento (data-form)
+  - guardar na variável "formulario"
+
+    const formulario = document.querySelector('[data-form]');
+
+Criar evento de escuta de ação no elemento
+
+  - chamar a variável "formulario"
+  - vincular o método para detectar evento (addEventListener)
+  - com os parâmetros
+    - do clique no botão (submit)
+    - e a função arrow que irá executar a ação
+    - a função recebe o "evento" como parâmetro
+    - declarar no bloco de execução da função
+      - evitar o comportamento padrão do formulário (preventDefault)
+      - importar a função "atualizaCliente"
+      - que recebe como parâmetros
+        - o "id" e os valores dos campos "nome" e "email"
+      - então, quando receber resposta (.then)
+      - executa função que exibe mensagem de operação concluída com sucesso
+        - busca o endereço da página (telas/edicao_concluida.html)
+
+    formulario.addEventListener('submit', (evento) => {
+      evento.preventDefault();
+      clienteService.atualizaCliente(id, inputNome.value, inputEmail.value)
+      .then( () => {
+        window.location.href = '../telas/edicao_concluida.html'
+      })
+    })
+
+  Visualizar no navegador
+
+    - abrir/atualizar a página "lista_cliente.html"
+    - clicar em "editar" de algum cliente listado
+    - na página que abrir
+      - alterar os dados do cliente (nome / email)
+      - clicar em "Editar cliente"
+    - redireciona para a página "edicao_concluida"
+      - com mensagem de operação concluída com sucesso
+      - botão "voltar para clientes"
+    - clicar no botão "voltar para clientes"
+    - redireciona para a página "lista_cliente.html"
+
+CRUD realizado com sucesso
+
+  - já é possível
+    - criar cliente novo (create)
+    - listar todos os clientes (read)
+    - editar/atualizar os dados do cliente (update)
+    - apagar os dados do cliente (delete)
+
+
+
+## Códigos JS desenvolvidos até aqui
+
+
+### controller/cadastraClientes-controller.js
+
+    import { clienteService } from "../service/cliente-service.js";
+
+    const formulario = document.querySelector('[data-form]');
+
+    formulario.addEventListener('submit', evento => {
+      evento.preventDefault();
+      const nome = evento.target.querySelector('[data-nome]').value;
+      const email = evento.target.querySelector('[data-email]').value;
+
+      clienteService.criaCliente(nome, email)
+      .then(() => {
+        window.location.href = '../telas/cadastro_concluido.html'
+      })
+    });
+
+
+### controller/editaCliente-controller.js
+
+    import { clienteService } from "../service/cliente-service.js";
+
+    const pegaURL = new URL(window.location);
+    const id = pegaURL.searchParams.get('id');
+    const inputNome = document.querySelector('[data-nome]');
+    const inputEmail = document.querySelector('[data-email]');
+    const formulario = document.querySelector('[data-form]');
+
+    clienteService.editaCliente(id)
+    .then( dados => {
+      inputNome.value = dados.nome;
+      inputEmail.value = dados.email;
+    })
+
+    formulario.addEventListener('submit', (evento) => {
+      evento.preventDefault();
+      clienteService.atualizaCliente(id, inputNome.value, inputEmail.value)
+      .then( () => {
+        window.location.href = '../telas/edicao_concluida.html'
+      })
+    })
+
+
+
+### controller/listaCliente-controller.js
+
+    import { clienteService } from "../service/cliente-service.js";
+
+    const criaNovaLinha = (nome, email, id) => {
+      const linhaNovoCliente = document.createElement('tr');
+      const conteudo = `
+        <td class="td" data-td>${nome}</td>
+          <td>${email}</td>
+          <td>
+            <ul class="tabela__botoes-controle">
+              <li><a href="../telas/edita_cliente.html?id=${id}" class="botao-simples botao-simples--editar">Editar</a></li>
+              <li><button class="botao-simples botao-simples--excluir" type="button">Excluir</button></li>
+            </ul>
+        </td>
+      `
+      linhaNovoCliente.innerHTML = conteudo;
+      linhaNovoCliente.dataset.id = id;
+      
+      return linhaNovoCliente;
+    }
+
+    const tabela = document.querySelector('[data-tabela]');
+
+    tabela.addEventListener('click', (evento) => {
+      let botaoExcluir = evento.target.className === 'botao-simples botao-simples--excluir';
+      if (botaoExcluir) {
+        const linhaCliente = evento.target.closest('[data-id]');
+        let id = linhaCliente.dataset.id;
+        clienteService.removeCliente(id)
+        .then( () => { linhaCliente.remove() });
+      }
+    });
+
+    clienteService.listaClientes()
+    .then( data => {
+      data.forEach(element => {
+        tabela.appendChild(criaNovaLinha(
+          element.nome, 
+          element.email,
+          element.id
+          ));
+      });
+    });
+
+
+### service/cliente-service.js
+
+    const listaClientes = () => {
+      return fetch(`http://localhost:3000/profile`)
+      .then(resposta => {
+        return resposta.json();
+      })
+    }
+
+    const criaCliente = (nome, email) => {
+      return fetch(`http://localhost:3000/profile`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:JSON.stringify({
+          nome: nome,
+          email: email
+        })
+      })
+      .then(resposta => {
+        return resposta.body;
+      })
+    }
+
+    const removeCliente = (id) => {
+      return fetch(`http://localhost:3000/profile/${id}`, {
+        method: 'DELETE',
+      })
+    }
+
+    const editaCliente = (id) => {
+      return fetch(`http://localhost:3000/profile/${id}`)
+      .then(resposta => {
+        return resposta.json();
+      })
+    }
+
+    const atualizaCliente = (id, nome, email) => {
+      return fetch(`http://localhost:3000/profile/${id}`, {
+        method: 'PUT',
+        headers: {'Content-Type' : 'application/json'},
+        body: JSON.stringify({
+          nome: nome,
+          email: email
+        })
+      })
+      .then( resposta => {
+        return resposta.json()
+      })
+    }
+
+    export const clienteService = {
+      listaClientes,
+      criaCliente,
+      removeCliente,
+      editaCliente,
+      atualizaCliente
+    }

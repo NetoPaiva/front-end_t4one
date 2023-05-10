@@ -1,0 +1,541 @@
+t4f3 - 4-8 Curso: JavaScript: programando a Orientação a Objetos
+
+https://cursos.alura.com.br/course/javascritpt-orientacao-objetos
+
+
+Evernote - estudo
+
+
+Aula 3- Modularizando código
+
+
+Parte 1 - Projeto da Aula anterior
+
+Aqui você pode baixar o projeto do curso no ponto em que paramos na aula anterior.
+
+Baixe o zip
+https://github.com/alura-cursos/js-orientacao-objetos/archive/aula2.zip
+
+ou visualize os arquivos no Github!
+https://github.com/alura-cursos/js-orientacao-objetos/tree/aula2
+
+
+
+Parte 2 - Modulos JavaScript
+
+Transcrição
+
+Já aplicamos diversos conceitos de orientação a objetos no nosso código. Por exemplo, criamos classes que podem ser instanciadas durante a execução do código usando a palavra new; entendemos o que são os objetos e métodos, que utilizamos para manipular os atributos da classe; expandimos nosso vocabulário aprendendo a definição de atributos, que podem ser públicos ou privados; e assim por diante.
+
+Note que o arquivo index.js está ficando cada vez mais extenso, sendo necessário rolarmos a tela para acessarmos determinadas instruções. Na verdade, conforme nosso sistema cresce, não é uma boa prática mantermos todos os códigos em um único arquivo - afinal, trabalhando em cenários reais, teremos dezenas de entidades, classes e cenários possíveis para lidar.
+
+O ideal é separarmos as classes em arquivos próprios, ainda que existam pessoas que prefiram manter duas ou três em um único arquivo, algo que vai da preferência de cada programador. No nosso caso, manteremos somente uma classe por arquivo. Criaremos então na raiz do projeto um arquivo Cliente.js.
+
+  Repare que o nome desse arquivo se inicia em caixa alta. É uma convenção da comunidade JavaScript que arquivos que representam classes sejam nomeados dessa forma.
+
+Moveremos a definição da classe Cliente para nosso novo arquivo:
+
+  class Cliente {
+      nome;
+      cpf;
+
+  }
+
+Repetiremos o processo para a classe ContaCorrente, movendo-a para um arquivo ContaCorrente.js.
+
+
+  class ContaCorrente {
+      agencia;
+      _saldo = 0;
+
+      sacar(valor) {
+          if (this._saldo >= valor) {
+              this._saldo -= valor;
+              return valor;
+          }
+
+      }
+
+      depositar(valor) {
+          if(valor <= 0) {
+              return;
+          }
+          this._saldo += valor;
+      }
+  }
+
+Manteremos no index.js somente os códigos referentes a execução do nosso sistema:
+
+  const cliente1 = new Cliente();
+
+  cliente1.nome = "Ricardo";
+  cliente1.cpf = 11122233309;
+
+  const cliente2 = new Cliente();
+
+  cliente2.nome = "Alice";
+  cliente2.cpf = 88822233309;
+
+  const contaCorrenteRicardo = new ContaCorrente();
+
+  contaCorrenteRicardo.agencia = 1001;
+
+  contaCorrenteRicardo.depositar(100);
+  contaCorrenteRicardo.depositar(100);
+  contaCorrenteRicardo.depositar(-100);
+  const valorSacado = contaCorrenteRicardo.sacar(50);
+
+  console.log(valorSacado);
+  console.log(contaCorrenteRicardo);
+
+Dessa forma nosso projeto fica bem mais organizado e fácil de trabalhar. Entretanto, se executarmos nosso projeto dessa forma, receberemos um erro:
+
+  const cliente1 = new Cliente(); ReferenceError: Cliente is not defined
+
+Tal erro indica que a referência Cliente não foi definida, mas temos uma classe com esse nome no projeto. Na verdade, o problema é em geral, no JavaScript, cada arquivo atua separadamente. No início, o JavaScript era utilizado como uma linguagem de browser (e até hoje é muito associado com esse ambiente), e se limitava a poucas interações com scripts individuais.
+
+Por isso, durante muito tempo não existia compartilhamento de código entre arquivos, sendo necessário definir todas as interações de código em escopo global. Mais recentemente, conforme a linguagem foi se desenvolvendo e sendo aplicada a sistemas maiores, passou a existir a necessidade de compartimentalizarmos nosso código, algo possível com a criação de módulos.
+
+Módulos são um conceito relativamente novo no JavaScript, surgindo no Ecmascript 6. As versões mais recentes do Node, como a 13 utilizada nesse treinamento, aceitam a utilização dos módulos, portando é importante acompanhar o curso usando uma versão compatível.
+
+No JavaScript, cada arquivo define um módulo, e os módulos podem exportar informações para serem consumidas por outros módulos, algo que é feito com a instrução export. Em Cliente.js, como queremos exportar a definição da classe Cliente, adicionaremos essa palavra-chave antes da classe.
+
+  export class Cliente {
+      nome;
+      cpf;
+
+  }
+
+Nosso Cliente está sendo utilizado no arquivo index.js, portanto teremos que importá-lo, algo que é feito usando a instrução import seguida de chaves circundando o nome da classe que estamos instanciando, e então o endereço do arquivo que contém a sua definição, como no exemplo a seguir:
+
+  import {Cliente} from "./Cliente.js"
+
+A documentação dos módulos em JavaScript recomenda a utilização do caminho absoluto do arquivo que está sendo importado, desde a raiz do HD (algo que é exibido se deixarmos o mouse sobre o caminho relativo"./Cliente.js"). Porém, nesse momento, manteremos a sintaxe mais curta.
+
+Como também estamos utilizando a classe ContaCorrente, precisaremos importá-la.
+
+  import {Cliente} from "./Cliente.js"
+  import {ContaCorrente} from "./ContaCorrente.js"
+
+    Lembre-se de adicionar a extensão do arquivo ao final do caminho, do contrário ele não será importado corretamente!
+
+Feitas essas alterações, se executarmos nosso código no terminal receberemos o seguinte erro:
+
+  SyntaxError: Cannot use import statement outside a module
+
+O Node está nos informando que não é possível utilizar a instrução import fora de um módulo. Entretanto, afirmamos anteriormente que cada arquivo define um módulo. Na verdade, o JavaScript pode ser utilizado como script padrão, sendo somente executado, ou compartimentalizado usando os módulos.
+
+Por padrão, quando pedimos a execução de um arquivo JavaScript com o Node, isso é feito como um script, sem identificar que estamos trabalhando com módulos. Portanto, teremos que passar essa informação ao interpretador do JavaScript.
+
+A própria tela de erro nos traz instruções sobre como fazer isso:
+
+  Warning: To load an ES module, set "type": "module" in the package.json or use the .mjs extension.
+
+  *Para carregar um módulo EcmaScript, defina "type": "module" no arquivo package.json ou use a extensão .mjs
+
+Entretanto, tais instruções não parecem familiares com o que estamos trabalhando até agora, e precisaremos explicá-las. Todo projeto Node possui um arquivo de configuração contendo uma série de informações sobre o pacote com que estamos trabalhando, e ele é chamado de package.json. Diversos frameworks, como o React, possuem esse arquivo nativamente.
+
+É possível criarmos o arquivo package.json por meio de um comando, que pode ser executado no Prompt de Comando, no Powershell ou no próprio terminal do VSCode (que é aberto com "ctrl + J"). Para esse treinamento usaremos esta última opção.
+
+Após abrirmos o terminal, executaremos o comando npm init, que inicializará um gerenciador de pacotes que nos auxiliará na criação do pacote. Esse gerenciador nos fará uma série de perguntas, começando pelo nome do pacote, que será "bytebank".
+
+Pressionando "Enter" conseguimos avançar para as próximas definições, como version, que manteremos a sugestão 1.0.0; description, que definiremos como "Projeto do bytebank para seus clientes"; entry point, que define o arquivo inicial de execução do programa, no nosso caso index.js (o padrão do JavaScript); test command, um comando para testes que manteremos vazio; git repository, que permite adicionar um repositório do GitHub, etapa que pularemos; keywords, para definir palavras-chave para o projeto, e que também pulares; author, que mantivemos vazio na gravação do treinamento, mas que você pode preencher com seu nome se preferir (ou alterar futuramente); e license, que manteremos a sugestão padrão.
+
+Finalizadas as configurações, será gerado um arquivo package.json na raiz do projeto.
+
+  {
+    "name": "bytebank",
+    "version": "1.0.0",
+    "description": "Projeto do bytebank para seus clientes",
+    "main": "index.js",
+    "scripts": {
+      "test": "echo "Error: no test specified" && exit 1"
+    },
+    "author": "",
+    "license": "ISC"
+  }
+
+Note que este é um arquivo de marcação contendo todas as informações que definimos. Para que o Node deixe de exibir o erro que tínhamos anteriormente, bastará adicionarmos uma nova marcação, "type", recebendo o valor "module".
+
+  {
+    "name": "bytebank",
+    "version": "1.0.0",
+    "description": "Projeto do bytebank para seus clientes",
+    "main": "index.js",
+    "scripts": {
+      "test": "echo "Error: no test specified" && exit 1"
+    },
+    "author": "Rodrigo",
+    "license": "ISC",
+    "type": "module"
+  }
+
+Executando nosso código agora, continuaremos recebendo um erro:
+
+  import {ContaCorrente} from "./ContaCorrente.js" ^^^^^^^^^^^^^ SyntaxError: The requested module './ContaCorrente.js' does not provide an export named 'ContaCorrente'
+
+Dessa vez o problema ocorre pois não exportamos a classe ContaCorrente, permitindo o acesso por meio de outro módulo. Faremos essa correção.
+
+  export class ContaCorrente {
+      agencia;
+      _saldo = 0;
+
+      sacar(valor) {
+          if (this._saldo >= valor) {
+              this._saldo -= valor;
+              return valor;
+          }
+
+      }
+
+      depositar(valor) {
+          if(valor <= 0) {
+              return;
+          }
+          this._saldo += valor;
+      }
+  }
+
+Com isso, nosso código passará a executar corretamente:
+
+  50 ContaCorrente { agencia: 1001, _saldo: 150 }
+
+Repare que temos a mesma saída que recebíamos anteriormente. A única diferença é que agora estamos trabalhando com módulos.
+
+Na versão 13 do Node também receberemos uma mensagem informando que os módulos que estamos utilizando são experimentais, já que sua implementação é recente. Ou seja, talvez não seja adequado utilizá-los em produção. Para esses casos, existem transpiladores (ou bundlers, como são comumente chamados) que traduzem esse código para uma versão retrocompatível do Node.js.
+
+De qualquer forma, agora que passamos a utilizar os módulos, é possível trabalharmos em arquivos separados, organizando melhor o nosso código e facilitando a sua manutenção e desenvolvimento.
+
+
+
+Parte 3 - Organizando código
+
+A organização de um projeto de programação é algo muito importante, isso pois conforme o sistema cresce, ainda seremos capazes de encontrar de forma fácil as classes e trechos de código que necessitam de manutenção.
+
+Dessa forma, para que serve a criação de módulos no JavaScript?
+
+Alternativa correta
+
+Criamos módulos para compartilhar código entre os diferentes arquivos do meu sistema, ajudando na organização dele.
+  Isso, dentro do JS cada arquivo é considerado um módulo e podemos escolher o que queremos exportar ou não a partir dele.
+
+
+Alternativas incorretas:
+
+Só devemos usar módulos quando temos código muito grande e que não conseguimos fazer caber em uma única tela.
+  Não, módulos nos ajudam em muitos momentos e a boa prática é separar cada classe do nossos projeto em um arquivo.
+
+Módulos servem apenas para conseguirmos exportar código de bibliotecas externas ao nosso projeto.
+  Apesar de usarmos módulos para isso, essa não é a única função deles.
+
+
+
+Parte 4 - O package.json
+
+Para melhorarmos a organização do nosso código e podermos separar as classes em diversos arquivos, precisamos usar módulos de Javascript e, para isso, criamos um arquivo chamado package.json. Mas o que é esse arquivo?
+
+O package.json é um arquivo muito utilizado em aplicações JS modernas que guarda vários dados de nossa aplicação. O arquivo gerado para este curso tem apenas algumas informações.
+
+  {
+    "name": "bytebank",
+    "version": "1.0.0",
+    "description": "Projeto do Bytebank para seus clientes",
+    "main": "index.js",
+    "scripts": {
+      "test": "echo "Error: no test specified" && exit 1"
+    },
+    "author": "",
+    "license": "ISC",
+    "type": "module"
+  }
+
+Algumas delas são simples de entender, como nome, versão, descrição e autor. Outras, como o campo script, já são mais difíceis de entender sem uma explicação mais detalhada.
+
+Como desenvolvedores é normal queremos reaproveitar código de outras pessoas e bibliotecas que estão disponíveis para nosso time. Dessa forma, agilizamos o desenvolvimento de nossas aplicações. Mas onde podemos encontrar essas bibliotecas e código feitos pela comunidade?
+
+Achamos essas bibliotecas dentro de gerenciadores de pacote – pense neles como um lugar centralizado onde toda a comunidade pode subir e compartilhar códigos para que outros desenvolvedores usem. E é justamente para organizar essa série de pacotes e bibliotecas que o package.json foi criado. Com ele é fácil de saber qual a versão do pacote, o nome dele, quem fez aquele código etc.
+
+No caso do Javascript o gerenciador de pacotes mais utilizado é o NPM – Node package manager https://www.npmjs.com/.
+
+"Ok, mas e essa tag de script?"
+
+Até este momento no curso não fizemos muitas operações complicadas, pois só estamos usando o terminal para chamar o interpretador do NodeJS e pedindo para ele executar o arquivo que queremos. Mas conforme nosso projeto cresce ou usamos outras bibliotecas para desenvolver a aplicação, é comum que o comando que precisamos rodar no terminal fique longo ou que ele precise de alguns parâmetros especiais. Como normalmente estamos trabalhando em equipe, não queremos que alguém na nossa equipe precise ficar perguntando o tempo todo qual o comando precisa escrever para o programa rodar. É nesse momento que usamos os scripts do package.json.
+
+Podemos escrever um script com o comando que colocaríamos no terminal, por exemplo:
+
+  "scripts": {
+      "start": "node index.js"
+  }
+
+E ao invés de escrever esse comando podemos chamar o script com o comando npm start. Dessa forma não precisamos lembrar de todo o comando sempre que vamos executar o programa. Se você quiser saber mais, veja na documentação do NPM https://docs.npmjs.com/misc/scripts os tipos de scripts e os casos de uso.
+
+"E por que eu preciso disso no meu programa agora?"
+
+Como esse arquivo de configurações está presente em praticamente todo projeto de Javascript moderno, algumas ferramentas usam-no para colocar informações de configuração que elas precisam. No caso do NodeJS eles escolheram adicionar uma propriedade chamada "type" dentro desse arquivo e, sempre que vão executar algum código JS, eles leem essa propriedade e configuram o interpretador do JS de acordo com o valor lido.
+
+Como os módulos JS são uma coisa nova e experimental, dentro desse interpretador do Node não é interessante deixá-lo configurado para tratar todo arquivo como um módulo, pois muitos projetos antigos teriam problemas ao atualizar a versão do Node que estão usando.
+
+Então, esta é a opção que eles encontraram para deixar quem quisesse usar os módulos JS conseguir configurar a ferramenta para fazer os testes, e quem não quisesse não teria problemas e não precisaria mudar nenhuma configuração.
+
+Se você quiser saber mais sobre as propriedades que esse arquivo suportam você pode encontrá-las nesta página da documentação https://docs.npmjs.com/files/package.json.
+
+
+
+Parte 5 - Composição de classes
+
+Transcrição
+
+Agora que temos um código um pouco mais organizado, continuaremos trabalhando com a classe ContaCorrente.
+
+  export class ContaCorrente {
+      agencia;
+      _saldo = 0;
+
+      sacar(valor) {
+          if (this._saldo >= valor) {
+              this._saldo -= valor;
+              return valor;
+          }
+
+      }
+
+      depositar(valor) {
+          if(valor <= 0) {
+              return;
+          }
+          this._saldo += valor;
+      }
+  }
+
+Até o momento, em ContaCorrente, temos os atributos agencia e _saldo, cujos valores consistem em números (um dos tipos primitivos que conhecemos no curso anterior). Em Cliente temos os atributos nome, que é uma string (outro tipo primitivo), e um CPF que atualmente também é representado por um número. Além disso, já temos as operações de saque e depósito, mas ainda falta um ponto muito importante que nos foi pedido pelo Bytebank: a associação entre uma conta e um cliente.
+
+Para isso, criaremos um atributo cliente na classe ContaCorrente, logo após a agencia. Dessa forma, manteremos separados os atributos públicos e privados, demonstrando visualmente o que pode ou não ser alterado (ou quais informações são específicas ou não dessa classe).
+
+  export class ContaCorrente {
+      agencia;
+      cliente;
+
+      _saldo = 0;
+
+      sacar(valor) {
+          if (this._saldo >= valor) {
+              this._saldo -= valor;
+              return valor;
+          }
+
+      }
+
+      depositar(valor) {
+          if(valor <= 0) {
+              return;
+          }
+          this._saldo += valor;
+      }
+  }
+
+Em index.js já temos definido um cliente1 com o nome "Ricardo" e o CPF "11122233309". Agora que temos um atributo cliente na classe ContaCorrente, poderemos atribuir a ele o próprio cliente1 criado anteriormente.
+
+  const contaCorrenteRicardo = new ContaCorrente();
+  contaCorrenteRicardo.agencia = 1001;
+  contaCorrenteRicardo.cliente = cliente1;
+
+  contaCorrenteRicardo.depositar(100);
+  contaCorrenteRicardo.depositar(100);
+  contaCorrenteRicardo.depositar(-100);
+  const valorSacado = contaCorrenteRicardo.sacar(50);
+
+  console.log(contaCorrenteRicardo);
+
+Ao executarmos nosso código, imprimindo na tela a contaCorrenteRicardo, teremos como retorno:
+
+    ContaCorrente { agencia: 1001, _saldo: 150, cliente: Cliente { nome: 'Ricardo', cpf: 11122233309 } }
+
+Recebemos uma instância de ContaCorrente com todas as suas informações, incluindo cliente, que por sua vez é uma instância de Cliente. Ou seja, é possível utilizar classes como atributo de outras classes, compondo objetos mais complexos e relacionados.
+
+Para continuarmos nossos testes, removeremos os depósitos e o saque que escrevemos anteriormente, já que sabemos como eles funcionam. Em seguida, criaremos uma nova instância de ContaCorrente, chamada conta2, e atribuiremos a ela uma agencia com o valor 102 e um cliente com o valor cliente2 (outra instância de Cliente que já havíamos definido anteriormente). Por fim, faremos o console.log() da nova conta.
+
+  cliente2.nome = "Alice";
+  cliente2.cpf = 88822233309;
+
+  const contaCorrenteRicardo = new ContaCorrente();
+  contaCorrenteRicardo.agencia = 1001;
+  contaCorrenteRicardo.cliente = cliente1;
+
+  const conta2 = new ContaCorrente();
+  conta2.cliente = cliente2;
+  conta2.agencia = 102;
+
+  console.log(conta2);
+
+Ao executarmos, receberemos o objeto contendo os dados que definimos, dessa vez com o nome "Alice".
+
+    ContaCorrente { agencia: 102, _saldo: 0, cliente: Cliente { nome: 'Alice', cpf: 88822233309 } }
+
+A composição de classes nos permite criar comportamentos mais interessantes, como a própria associação entre Cliente e ContaCorrente. O próximo passo será desenvolvermos uma funcionalidade de transferência entre contas. Para isso, em ContaCorrente, criaremos o método transferir().
+
+Esse método será um pouco diferente dos demais, afinal ele não alterará somente as informações da própria conta que o chamou. Sendo assim, além de um valor, ele precisará receber por parâmetro uma conta que servirá como destino da transferência.
+
+  transferir (valor, conta) {
+
+  }
+
+No corpo do método, criaremos uma variável valorSacado que receberá a chamada de this.sacar(valor) - ou seja, usaremos o valor recebido como parâmetro para realizaremos um saque na própria conta que chamou o método. Em seguida, faremos a chamada do método depositar() a partir da conta recebida, passando como parâmetro o valorSacado anteriormente.
+
+  transferir (valor, conta) {
+      const valorSacado = this.sacar(valor);
+      conta.depositar(valorSacado);
+
+  }
+
+Em index.js, faremos um depósito com o valor 500 em contaCorrenteRicardo de modo a termos saldo disponível para a transferência. Em seguida, chamaremos o método transferir() a partir dessa conta usando os parâmetros 200 e conta2 e imprimiremos o objetoconta2 na tela.
+
+  const contaCorrenteRicardo = new ContaCorrente();
+  contaCorrenteRicardo.agencia = 1001;
+  contaCorrenteRicardo.cliente = cliente1;
+  contaCorrenteRicardo.depositar(500);
+
+  const conta2 = new ContaCorrente();
+  conta2.cliente = cliente2;
+  conta2.agencia = 102;
+
+  console.log(conta2);
+
+  contaCorrenteRicardo.transferir(200, conta2);
+  console.log(conta2)
+
+Ao executarmos, receberemos:
+
+    ContaCorrente { agencia: 102, cliente: Cliente { nome: 'Alice', cpf: 88822233309 }, _saldo: 200 }
+
+Como não havíamos feito nenhum depósito na conta2 anteriormente, ela passou a ter o valor 200. Podemos acompanhar isso mais de perto fazendo também um console.log() de contaCorrenteRicardo.
+
+  contaCorrenteRicardo.transferir(200, conta2);
+  console.log(conta2);
+  console.log(contaCorrenteRicardo);
+
+    ContaCorrente { agencia: 102, cliente: Cliente { nome: 'Alice', cpf: 88822233309 }, _saldo: 200 } ContaCorrente { agencia: 1001, cliente: Cliente { nome: 'Ricardo', cpf: 11122233309 }, _saldo: 300 }
+
+Assim, conseguimos observar que os 200 depositados na conta da Alice foram sacados da conta do Ricardo, e fizemos tudo isso usando as propriedades da classe Cliente recebida por parâmetro. Note, também, que essa composição de classes/objetos nos permitiu criar um comportamento complexo utilizando um código bastante simples e legível.
+
+  transferir (valor, conta) {
+      const valorSacado = this.sacar(valor);
+      conta.depositar(valorSacado);
+
+  }
+
+Além disso, esse código está em uma linguagem de abstração mais alta e mais próxima da linguagem do nosso negócio em si (saque, depósito, transferência), e mais distante da linguagem JavaScript, um vocabulário que também melhora a legibilidade.
+
+
+
+Parte 6 - Tipo de valor e tipo de referência
+
+Transcrição
+
+Criamos o método transferir() com o auxílio da composição de classes, que ainda tornou nosso código mais legível, já que estamos tratando de uma linguagem mais próxima do nosso negócio. Apesar de muito útil durante o desenvolvimento dos nossos projetos, é necessário tomar alguns cuidados.
+
+Por exemplo, todas vez que passamos um parâmetro que representa um objeto para dentro de um método, como no caso da conta, estamos realmente passando a instância dessa entidade (no caso uma ContaCorrente). Sendo assim, as alterações que fizermos no objeto dentro do escopo do método realmente serão efetuadas.
+
+Para testarmos isso, adicionaremos ao método transferir() uma instrução que cria, em conta, um novo atributo cidade e atribui a ele o valor "São Paulo". Lembrando que no JavaScript é possível criar novos atributos dinamicamente, algo que não é comum em outras linguagens (como Java e C#).
+
+  transferir (valor, conta) {
+      conta.cidade = "São Paulo";
+      const valorSacado = this.sacar(valor);
+      conta.depositar(valorSacado);
+
+  }
+
+Ao executarmos o código no terminal, veremos que nosso objeto conta2 foi alterado com o dado incluído no método transferencia().
+
+    ContaCorrente { agencia: 102, cliente: Cliente { nome: 'Alice', cpf: 88822233309 }, _saldo: 200, cidade: 'São Paulo' } ContaCorrente { agencia: 1001, cliente: Cliente { nome: 'Ricardo', cpf: 11122233309 }, _saldo: 300 }
+
+Essa não é uma situação interessante, por isso devemos tomar cuidado. Para entendermos melhor o que acontece, testaremos outro cenário, no qual, ainda no método transferencia(), alteraremos o valor recebido por parâmetro para 20.
+
+  transferir (valor, conta) {
+      conta.cidade = "São Paulo";
+      const valorSacado = this.sacar(valor);
+      conta.depositar(valorSacado);
+      valor = 20
+
+  }
+
+Em index.js, criaremos uma variável valor recebendo 200 e a passaremos como parâmetro para a chamada de contaCorrenteRicardo.transferir().
+
+  let valor = 200;
+  contaCorrenteRicardo.transferir(valor, conta2);
+  console.log(conta2);
+  console.log(contaCorrenteRicardo);
+
+Incluiremos no código um console.log() com a string "valor: " seguida da própria variável valor, de modo a acompanharmos o que acontece com ela, e removeremos a impressão de contaCorrenteRicardo.
+
+  let valor = 200;
+  contaCorrenteRicardo.transferir(valor, conta2);
+
+  console.log("valor: ", valor);
+  console.log(conta2);
+
+Ao executarmos, teremos:
+
+    valor: 200 ContaCorrente { agencia: 102, cliente: Cliente { nome: 'Alice', cpf: 88822233309 }, _saldo: 200, cidade: 'São Paulo' }
+
+Perceba que, apesar do atributo cidade ter sido adicionado à conta2, o valor não foi alterado. Qual a diferença entre a variável valor e o objeto conta2? O valor consiste em um tipo primitivo (como strings, booleanos, inteiros e assim por diante). Sempre que uma variável desse tipo é passada como parâmetro para um método, na verdade estamos passando uma cópia do seu valor, mantendo a variável intacta.
+
+Já quando passamos a conta2, estamos trabalhando diretamente com a referência ao objeto conta, e não uma cópia dele. Aqui entendemos a diferença entre tipos de referência e tipos de valor. Recapitulando: quando passamos como parâmetro de um método os tipos primitivos, também chamados de tipos de valor, estamos na verdade copiando aquela informação para utilizá-la; já com tipos de referência, como objetos de classes, estamos trabalhando com a informação direta, e todas as alterações serão refletidas no objeto original.
+
+Existem outros detalhes sobre como isso funciona, relacionados, por exemplo, com a maneira como o JavaScript trabalha com a memória do computador, e nas atividades extras você encontrará um texto mais aprofundado sobre o temahttps://cursos.alura.com.br/course/javascritpt-orientacao-objetos/task/73673.
+
+Antes de prosseguirmos, não se esqueça de remover do método transferir() as linhas que utilizamos nesses testes, mais especificamente valor = 20 e conta.cidade = "São Paulo"!
+
+  transferir (valor, conta) {
+      conta.cidade = "São Paulo";
+      const valorSacado = this.sacar(valor);
+
+  }
+
+
+
+Parte 7 - Gerenciamento de memória
+
+Ao criarmos um programa em qualquer linguagem de programação, precisamos utilizar variáveis para guardar valores durante a execução de nossos programas. Cada uma dessas variáveis é armazenada em um lugar na memória do computador.
+
+Porém, vimos que, dependendo dos valores que uma variável guarda, seu comportamento dentro do código pode variar, passando como uma cópia de seu valor ou como uma referência ao espaço de memória onde ela está guardada. O JS faz isso baseado justamente nos valores que a variável guarda. Tipos primitivos são sempre passados como um valor, enquanto tipos não primitivos sempre são passados por referência.
+
+"Mas o que são tipos primitivos?"
+
+Tipos primitivos são os valores mais simples que a linguagem consegue trabalhar e geralmente são implementados no nível mais baixo da linguagem. Isso significa que eles não são representados como um objeto e por isso não possuem métodos ou atributos.
+
+https://developer.mozilla.org/pt-BR/docs/Glossario/Primitivo
+
+Um tipo primitivo é simplesmente um valor em sua forma mais simples de representação. Eles também são imutáveis, uma vez declarados seu valor, nunca muda.
+
+Em Javascript, os tipos primitivos são:
+
+  String (texto);
+  Number (número);
+  Boolean;
+  Null;
+  undefined;
+  Symbol.
+
+Qualquer outro tipo que encontramos em nossas aplicações, como Objetos, Arrays, etc... não são tipos primitivos e por isso seu comportamento é distinto. Variáveis não primitivas são mutáveis por natureza e tem potencial para armazenar estruturas muito mais complexas, o que torna as operações de cópia desses valores muito ineficiente.
+
+  "Mas se o JavaScript não o copia, o que ele faz?"
+
+Quando criamos um objeto dentro do JavaScript ocorre a reserva de um espaço na memória local que chamamos de heap. Ao fazer isso, o que o JavaScript guarda na nova variável não é o valor do Objeto que criamos, mas sim o endereço de memória onde os valores estão salvos.
+
+Dessa forma, ao declararmos uma variável que armazena informações dentro do heap, o que estamos fazendo é "alugar" um espaço da memória, o qual funções podem acessar. Isso torna as operações muito mais eficientes, mas tem um problema: quaisquer alterações no conteúdo armazenado pelos objetos não primitivos afetam todas as variáveis que o referenciam.
+
+Como essas variáveis são links para espaços na memória, dizemos que elas são um "tipo de referência" enquanto que os tipos primitivos são "um tipo de valor".
+
+Caso você queira ver em detalhes como essa operação de alocação de memória é feita, leia esse artigo sobe o modelo de gerenciamento de memória do JavaScript.
+https://medium.com/reactbrasil/como-o-javascript-funciona-gerenciamento-de-mem%C3%B3ria-como-lidar-com-4-vazamentos-comuns-de-5cfa341b9e39
+
+
+
+Parte 8 - O que aprendemos?
+
+  Package.json
+  Modules
+  import/export
+  Quais as vantagens de ter um código onde usamos classes e composição ao invés de tipos primitivos
+  Tipos de valor e tipos de referência
+  Alterando dinamicamente um objeto

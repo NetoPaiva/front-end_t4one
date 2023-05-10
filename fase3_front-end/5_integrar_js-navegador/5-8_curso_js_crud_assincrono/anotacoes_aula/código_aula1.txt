@@ -1,0 +1,424 @@
+5-8 - Curso 6 - JS Web - Crud Assíncrono
+
+# Aula 1 - Comunicação assíncrona
+
+## Informações do README.md do "projeto inicial baixado"
+
+Para abrir a aplicação no navegador:
+
+Primeiro, abrir a pasta admin no terminal do VS Code e rodar o json server: 
+  json-server --watch db.json
+
+No Linux:
+  npx json-server --watch db.json
+
+Depois, rodar a aplicação:
+browser-sync start --server --file . --host --port 5000 --startPath admin/telas/lista_cliente.html
+
+
+
+## Parte 1-1 - Apresentação
+
+Criar CRUD com JS para consumir dados externos (API)
+
+CRUD de uma aplicação
+  - Create (criar)
+  - Read (ler)
+  - Update (atualizar)
+  - Delete (deletar)
+
+Doguito Petshop
+  - aplicação exemplo utilizada no curso
+  - gerar dinamicamente linha da tabele do banco de dados com
+    - nome / email / editar / excluir cliente
+    - adicionar novo cliente
+
+Recursos / ferramentas utilizados
+  - verbos HTTP para manipulação do dados
+  - funções JS assíncronas (try/catch - promises)
+  - manipular DOM (conhecimento prévio)
+
+
+## Parte 1-2 - Exibir dados
+
+Abrir aplicação no navegador 
+
+  browser-sync start --server --file . --host --port 3000 --startPath admin/telas/lista_cliente.html
+
+  - não está adicionando / exibindo lista de clientes
+  - solução
+    - abrir conexão com API que tem a base de dados
+
+Abrir conexão com API
+
+  - utilizar o Ajax para intermediar a conexão
+  - NO VS Code
+    - projeto aberto
+    - na pasta "admin"
+    - criar pasta "service"
+    - irá conter tudo referente à comunicação com API
+    - na pasta "service"
+    - criar arquivo "cliente-service.js"
+
+Criar comunicação com API (cliente-service.js)
+
+  - no arquivo "cliente-service.js"
+  - criar métodos para comunicação
+  - objeto XMLHttpRequest (XHR)
+    - responsável pela comunicação
+    - transfere dados entre cliente-servidor
+    - recupera qualquer tipo de dados de uma URL sem atualizar página web
+      - atualiza apenas a parte do conteúdo
+      - suporta diversos protocolos
+        - HTTP / File / FTP
+
+  - referência MDN
+  https://developer.mozilla.org/pt-BR/docs/Web/API/XMLHTTPRequest
+
+  - sintaxe para instanciar objeto XMLHttpRequest
+    new XMLHttpRequest();
+
+  - guardar em variável para facilitar chamar o objeto
+    const http = new XMLHttpRequest();
+
+  - utilizar os métodos "open" e "send"
+
+  - método "open"
+    - abrir comunicação entre a aplicação e a API
+    - passar como parâmetros do método
+      - o que falar/pedir ao servidor (GET)
+      - o endereço para onde enviar requisição (URL)
+    http.open('GET', 'http://localhost:3000/profile');
+
+  - método "send"
+    - enviar dados
+    http.send();
+
+  - informar o que fazer com resposta do servidor
+    - método "onload"
+      - ao carregar a página
+    http.onload()
+
+    - criar função anônima
+      - que, ao carregar, vai executar
+        - método "response"
+        - que será guardado na variável "data"
+        - exibir resultado no console
+    http.onload = () => {
+      const data = http.response;
+      console.log (data);
+    }
+
+  - carregar o script JS no documento HTML
+    - na pasta "telas"
+    - abrir arquivo "lista_cliente.html"
+    - após o fechamento da tag "body"
+    - chamar o script "../service/cliente-service.js"
+    <script src="../service/cliente-service.js"></script>
+
+  - recarregar página no navegador
+    - abrir console (F12)
+    - exibe erro "não conseguiu conectar localhost:3000"
+      - localhost é um endereço virtual, não existe
+      - é a simulação de uma API (mocando) 
+      - mocar dados para fazer simulações
+
+
+Criar "mocagem" de dados
+
+  - abrir no VS Code o arquivo "package.json"
+  - "json-server" está como dependência do projeto
+    - é quem irá simular API
+  - abrir terminal
+  - dentro da pasta "admin"
+  - baixar depedências do projeto (json-server)
+    npm install 
+    ou "npm install -g json-server" (instalação global)
+
+  - rodar o "json-server" para observar um arquivo (db-json)
+    - no terminal / pasta admin
+      json-server --watch db.json
+      
+      - no Linux incluir "npx" no início do comando
+      npx json-server --watch db.json
+
+      referência:
+      https://cursos.alura.com.br/forum/topico-ajuda-rodar-json-server-para-aqueles-que-estao-usando-linux-ubuntu-assim-como-eu-156617
+
+  - resultado no terminal
+    \{^_^}/ hi!
+
+    Loading db.json
+    Done
+
+  - Primeiro rodar o "json-server"
+  - depois rodar o "browser-sync"
+
+
+
+## Parte 1-3 - Criar templates
+
+Exibir na tela os dados armazenados no banco de dados "db.json"
+
+  - exibir no corpo da tabela da página "lista_clientes.html"
+
+  - Interromper a aplicação no terminal
+    ctrl + C
+
+  Pegar dados da API e inserir no HTML
+
+    - criar template para receber dados da API
+
+  - No arquivo "lista_cliente.html"
+  - na tag "tbody"
+  - código do template está pronto (comentado)
+  - copiar o trecho de código
+  - colar no início do arquivo "cliente-service", antes do código JS
+  - retirar as marcações de comentário "<!-- -->"
+
+  - conteúdo do código HTML do template
+    - campo do "nome" do cliente
+    - campo de "email"
+    - campo de link para página de edição
+    - campo do botão "excluir dados do cliente"
+
+  Criar função para guardar código HTML do template
+
+    - tendo como parâmetros "nome" e "email" que virá da API
+    - contendo a variável "conteudo" que irá receber o código do template
+    - antes da variável "conteúdo", declarar o criador de elementos "createElement()"
+    - guardar o criador de elementos em uma variável
+
+    const criaNovaLinha = (nome, email) => {
+      const linhaNovoCliente = document.createElement('tr');
+      const conteudo = `
+        <td class="td" data-td>${nome}</td>
+          <td>${email}</td>
+          <td>
+            <ul class="tabela__botoes-controle">
+              <li><a href="../telas/edita_cliente.html" class="botao-simples botao-simples--editar">Editar</a></li>
+              <li><button class="botao-simples botao-simples--excluir" type="button">Excluir</button></li>
+            </ul>
+        </td>
+      `
+    }
+
+  Inserir conteúdo na linha da tabela
+
+    - método innerHTML
+      - acessa interior do elemento
+      - insere conteúdo
+
+    - dentro da função "criaNovaLinha"
+    - no final, após o template HTML
+    - chamar "linhaNovoCliente" e vincular ao método "innerHTML"
+    - que recebe "conteudo"
+    - retorna "linhaNovoCliente"
+
+    linhaNovoCliente.innerHTML = conteudo;
+    return linhaNovoCliente;
+
+
+  Seletor "data-tabela" na tag "tbody" no arquivo "lista_cliente.html"
+
+    - será utilizado para selecionar o elemento
+    - no arquivo "cliente_service.js"
+    - após o fechamento da função "criaNovaLinha"
+    - percorrer o DOM para localizar o seletor "data-tabela"
+      - guardar em variável "tabela"
+      - o comando para percorrer o DOM (querySelector)
+      - declarar o seletor "data-tabela" como parâmetro
+
+      const tabela = document.querySelector('[data-tabela]');
+
+    - os elementos HTML
+      - tbody (elemento pai - seletor "data-tabela")
+      - td (elemento filho criado pelo template)
+
+  Inserir "td" no elemento "tbody"
+
+    - utilizar método "appendChild" viculado ao objeto do seletor do elemento pai
+    - recebe "nome" e "email" como parâmentros
+      tabela.appendChild(nome, email);
+
+    - este comando será utilizado dentro do método "onload", que irá percorrer a lista de clientes
+      - iteração realizado pelo "forEach" vinculado ao objeto que contém do dados (data)
+      - que recebe função anônima para verificar cada elemento dos clientes no método "appendChild"
+        - elemento.nome
+        - elemento.email
+
+    http.onload = () => {
+      const data = http.response
+      data.forEach(elemento => {
+        tabela.appendChild(criaNovaLinha(elemento.nome, elemento.email));
+      });
+    }
+
+  Visualizar no navegador
+
+    - rodar no terminal do VS Code
+      - json-server
+      - browser-sync
+
+    - aplicação com erro
+      - protocolo HTTP de transferência de texto
+      - não é reconhecido como JS válido
+      - transformar "http.response" em objeto JS
+
+  Tranformar "http.response" em objeto JS
+
+    - método "JSON.parse" irá transformar em dado válido JS
+
+    const data = JSON.parse(http.response);
+
+    - pronto, já exibe no navegador a lista de clientes do banco de dados
+    - a opção "editar" leva para a página de edição dos dados do cliente
+    - a opção "excluir" ainda não está funcionando
+
+
+  Encadeamento de operações assíncronas - função CallBack
+  
+  - Exercício para exibir os dados dos clientes filtrando por data de inserção
+
+    - criar nova conexão "request"
+      - na função "onload"
+      - após a iteração dos dados
+      - incluir o uma nova variável "http2"
+      - que recebe o construtor XHR
+      - seguido pelo novo método "open" com os parâmentros
+        - GET
+        - URL hipotética do servidor/profile/semanaPassada
+      - depois, criar um novo "onload" com a iteração "forEach"
+      - finalizando com o método de envio da requisição "send"
+
+      const http2 = new XMLHttpRequest();
+      http2.open('GET', 'http://localhost:3000/profile/semanaPassada');
+      http2.onload = () => {
+        ..
+      }
+      http2.send();
+      
+    - e repete a estrutura aninhada para cada filtro que for necessário
+      - incluindo dentro da função uma cópia da própria função
+      - alterando os nomes da variável que recebe o construtor da requisição
+
+    Problema desse tipo de código?
+      - resolveria com "promises"
+
+
+
+## Parte 1-4 - Lidar com promises
+
+Boas práticas
+
+  - problema do código com o encadeamento de operações
+      - chamada de callback dentro de callback dentro de callback...
+    - dificulta entendimento
+    - dificulta manutenção
+    - desenvolver outras funcionalidades
+
+Promises
+
+  - uma nova maneira de lidar com funções assícronas
+    - faz requisição
+    - devolve promessa de realizar ação após retorno da requisação
+  - substitui todo o encadeamento de operações assíncronas
+
+  Criar estrutura "promise"
+
+    - no arquivo "cliente-service.js"
+    - após o seletor da "tabela"
+    - declarar uma variável "listaClientes"
+    - que recebe função arrow
+    - para executar a promise
+
+    - dentro da função arrow
+    - inicializar a "promise" (new Promise)
+    - e guardá-la em uma variável (promise)
+    - os parâmetros serão o sucesso ou erro da chamada (resolve, reject)
+    - executar a promise em outra função arrow
+    - que terá toda a estrutura da requisição http (open / send / onload)
+    - encerrar função com retorno da promise
+
+    const listaClientes = () => {
+      const promise = new Promise(resolve, reject) => {
+        const http = new XMLHttpRequest();
+        http.open('GET', 'http://localhost:3000/profile');
+        http.send();
+        http.onload = () => {
+          const data = JSON.parse(http.response);
+          data.forEach(elemento => {
+            tabela.appendChild(criaNovaLinha(elemento.nome, elemento.email));
+          });
+          console.log(data);
+          console.log('olá, mundo!');
+        }
+      }
+    }
+
+  Refatorar estrutura da requisação
+
+    - realocar a iteração "forEach"
+      - retirar do método "onload"
+      - colocar após fechamento da função "listaClientes" para ser utilizado depois
+      const data = JSON.parse(http.response);
+      data.forEach(elemento => {
+        tabela.appendChild(criaNovaLinha(elemento.nome, elemento.email));
+      });
+
+    - dentro do "onload"
+    - realizar verificação da chamada (if)
+      - se deu tudo certo ou não (erro maior ou igual a 400)
+        - rejeita respota se passou de 400 (reject)
+        - caso contrário resposta está resolvida (else / resolve)
+        - a resposta é o "JSON" transformado em JS válido (parse)
+
+      http.onload = () => {
+        if(http.status >= 400){
+          reject(JSON.parse(http.response));
+        }else{
+          resolve(JSON.parse(http.response));
+        }
+
+    - realocar a declaração do "send" após o "onload"
+
+    - antes do retorna da promise
+    - exibir no console a "listaClientes"
+
+    - chamar a execução da "listaClientes"
+
+  Verificar saída no navegador
+
+    - a lista de cliente não está aparecendo na página (é esperado)
+    - exibe a promise no console
+      - com array da lista de clientes
+    - o recebimento da promessa retorna com sucesso
+    - falta realocar a iteração dos dados para exibir a lista de clientes na tela
+
+  Iteração do dados após retorna da promessa (then)
+
+    - se devolveu a promessa com sucesso
+    - então (then) fará a iteração dos dados
+
+    - vincular o método "then" à execução da função "listaClientes"
+      listaClientes().then();
+
+    - passar como parâmetros do "then"
+      - função para executar a iteração dos dados
+        - pega a resposta
+        - faz iteração
+        - exibe dados na tabela da página
+
+      .then(data => {
+        data.forEach(elemento => {
+          tabela.appendChild(criaNovaLinha(elemento.nome, elemento.email));
+        }
+      });
+
+  - no navegador voltou a exibir na página a lista de clientes
+  - remover do código o console.log de verificação da promise
+    - está recebendo com sucesso a promesa
+    - e exibe o resultado na tela do navegador
+
+  - essa estrutura de promise com requisição http
+    - configura uma "fetch API"

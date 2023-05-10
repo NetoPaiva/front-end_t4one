@@ -1,0 +1,126 @@
+Curso 5-1 - JS - interface e herança POO
+
+# Aula 1 - Conhecer problema do cliente
+
+## 1-1 - Introdução
+
+// - Continuar projeto "bytebank" desenvolvido no curso de 4-8_POO (linguagem web)
+// -- permitir incluir novas funcionalidades ao projeto
+// --- conta-funcionário / poupança
+// --- sistema de autenticação
+
+
+## 1-2 - Relembrar projeto
+
+// - estrutura do Projeto
+// -- index.js
+// -- Cliente.js
+// -- ContaCorrente.js
+// -- package.json
+
+// - criar conta poupança com
+// -- saldo
+// -- cliente
+// -- agência
+
+// - criar novo arquivo da classe "ContaPoupanca.js"
+// -- declarar e exportar a classe
+// -- declarar o construtor com
+// --- saldo inicial
+// --- cliente
+// --- agencia
+
+// - boas práticas:
+// -- todos os atributos (propriedades de instâncias) devem ser definidos dentro de um método da classe
+// --- aqui, declarar no próprio construtor
+// --- sempre iniciar atributos de modo privado (_atributo)
+
+    export class ContaPoupanca {
+      constructor(saldoInicial, cliente, agencia){
+        this._saldo = saldoInicial;
+        this._cliente = cliente;
+        this._agencia = agencia;
+      }
+    }
+
+// - criar métodos de movimentação da conta poupança
+// -- iguais aos métodos da classe ContaCorrente
+// --- sacar
+// --- depositar
+// --- transferir
+
+// - organizar código da "index"
+// -- retirar movimentação de transferência
+// -- manter apenas cliente1 e conta1 declarados
+// -- exibir informações de cliente e conta
+
+// - instanciar conta poupança
+// -- declarar variável que recebe novo objeto da classe "ContaPoupanca"
+// --- VS Code já realiza o auto-import da classe "ContaPoupanca"
+// -- passar como parâmetro os atributos:
+// --- saldoInicial = 50
+// --- cliente = cliente1
+// --- agencia = 101
+
+    const contaPoupanca = new ContaPoupanca(50, cliente1, 101);
+
+// - está repetindo código
+// - não há compartilhamento entre as classes
+
+
+## 1-3 - Compartilhar código
+
+// - evitar duplicação de código no projeto
+// -- facilita manutenção
+// -- evita erros
+
+// - criar classe "Conta.js"
+// -- será classe base para criar todas as contas
+// -- possui todos os atributos das contas corrente e poupança
+
+    export class Conta {
+      ... tudo que tem na conta poupança copiar para cá
+    }
+
+// - importar Conta.js na "index"
+// - declara a classe Conta na abertura das contas corrente e poupança
+
+// - incluir o atributo "tipo" na classe "Conta"
+
+// - não são mais necessários os arquivos das classes 
+// -- ContaCorrente.js
+// -- ContaPoupanca.js
+
+// - código da classe "Conta" até agora
+
+    export class Conta{
+      constructor(saldoInicial, cliente, agencia, tipo){
+        this._saldo = saldoInicial;
+        this._cliente = cliente;
+        this._agencia = agencia;
+        this._tipo = tipo;
+      }
+
+        sacar(valor){
+          if (this._saldo >= valor) {
+            this._saldo -= valor;
+            return valor;
+          }
+        }
+      
+        depositar(valor){
+          if (valor <= 0) return;
+          this._saldo += valor;
+        }
+      
+        transferir(valor, conta){
+          const valorSacado = this.sacar(valor);
+          conta.depositar(valor);
+        }
+    }
+
+// -  código para instanciar conta corrente e poupança (index.js)
+
+    const conta1 = new Conta(0, cliente1, 101, 'corrente');
+
+    const contaPoupanca1 = new Conta(50, cliente1, 101, 'poupança');

@@ -1,0 +1,121 @@
+# Aula 5 - Construtores estáticos
+
+## 5-1 - Construtores
+
+// - impedir alteração de valor de atributos da classe
+// -- como o CPF, é único e inalterável para cada cliente
+// --- "-_cpf"
+// --- acessor "get"
+// --- com retorno deste "_cpf"
+
+// - construtor para dinamizar a construção de objetos
+// -- permite controlar estado da classe (os atributos)
+// -- recebe como parâmentros os atributos da classe
+// --- no caso de "Cliente" recebe
+// ---- nome
+// ---- cpf
+// ---- rg
+
+    export class Cliente {
+      nome;
+      _cpf;
+      rg;
+
+      get cpf(){
+        return this._cpf;
+      }
+
+      constructor(nome, cpf, rg){
+        this.nome = nome;
+        this._cpf = cpf;
+        this.rg = rg;
+      }
+    }
+
+// - simplifica toda a declaração da criação de "cliente" na "index"
+// -- "new Cliente" recebe como parâmentros os atributos da classe
+
+const cliente1 = new Cliente ('Ricardo', 11122233345, 123456789);
+
+// - exibe "cliente1" no console
+
+    Cliente { nome: 'Ricardo', _cpf: 11122233345, rg: 123456789 }
+
+// - construtor da classe "ContaCorrente"
+// -- declarar o construtor com parâmentros:
+// --- com o atributo "agencia"
+// --- e o acessor "cliente"
+
+    constructor(cliente, agencia){
+      this.cliente = cliente;
+      this.agencia = agencia;
+    }
+
+// - alterar criação de contas na "index"
+
+    const conta1 = new ContaCorrente(cliente1, 1001);
+
+    const conta2 = new ContaCorrente(cliente2, 102);
+
+
+## 5-2 - Atributos estáticos
+
+// - saber quantidades de contas correntes abertas no sistema
+// -- a cada abertura de conta, incrementar número automaticamente
+// --- adicionar atributo estático "static quantidadeContas" na classe "ContaCorrente" com valor inicial igual a zero
+// ---- assim, atributo ficará global, alterando valor a cada nova conta aberta
+
+    static quantidadeContas = 0;
+
+// --- adiionar incremento ao construtor
+// --- altera quantidade a cada nova conta instaciada
+
+    ContaCorrente.quantidadeContas += 1;
+
+// -- para exibir quantidade contas abertas
+
+    console.log(ContaCorrente.quantidadeContas);
+
+
+
+## 5-3 - Conclusão
+
+// - resumo conteúdo visto no curso
+
+    - classes
+      - instaciar
+      - exportar
+      - importar
+
+    - atributos de classe
+      - públicos
+      - protegidos
+      - estáticos
+
+    - acessores de classe
+      - encapsular atributos da classe
+      - set
+        - permite alterar valor
+      - get
+        - permite pegar valor
+      
+    - construtores de atributos
+      - simplifica o código
+      - declaração de novas contas
+
+    - métodos de movimentação da conta
+      - sacar
+      - depositar
+      - transferir
+
+    - instanciar objetos
+      - novos clientes
+      - novas contas de clientes
+      - novas clientes e contas
+
+    - instanciar movimentação da conta
+      - depositar
+      - sacar
+      - transferir
+
+    - testar e exibir funções

@@ -1,0 +1,377 @@
+Curso JS - interfaces e heranças em Orientação a Objetos
+
+
+Aula 1 - Conhecendo o problema do cliente
+=========================================
+
+
+PARTE 1 - INTRODUÇÃO
+====================
+
+https://cursos.alura.com.br/course/javascript-polimorfismo/task/74125
+
+
+Transcrição
+
+[00:00] Boas-vindas! Neste curso vamos continuar nosso projeto para o ByteBank. Faremos o nosso sistema de contas funcionar melhor, de uma maneira mais eficiente e reutilizando o código.
+
+[00:09] Agora teremos um projeto um pouco mais organizado, já que ele ficou maior, e vamos continuar criando nossa conta-corrente. Se vocês repararem, ela está menor do que no curso anterior, porque agora estamos usando herança, estamos estendendo e compartilhando o código entre vários tipos de contas que criamos.
+
+[00:24] Temos uma conta-corrente, uma conta poupança, uma conta salário e assim por diante. Nós vamos melhorar o nosso sistema de contas e deixá-lo fácil para trabalhar. Para se no futuro o ByteBank quiser outros tipos de contas, como uma conta empresarial, uma conta CNPJ ou uma conta conjunta, nós conseguirmos fazer isso de uma maneira fácil, com pouquíssimo trabalho.
+
+[00:43] E ainda tem todas as vantagens que vimos no curso anterior, onde trabalhamos com assessores, métodos, propriedades e assim por diante. Neste curso continuaremos trabalhando nesse sistema de contas, melhorando-o e compartilhando o código para deixá-lo fácil de trabalhar.
+
+[00:57] Outra coisa que criaremos neste curso, agora o ByteBank nos pediu um sistema de funcionários, então temos um funcionário diretor, um funcionário gerente, todo funcionário vai ter nome, salário e CPF, e eles terão uma bonificação.
+
+[01:10] Além disso, eles terão que usar um sistema interno, e nós faremos o sistema de autenticação para esse sistema interno deles.
+
+[01:16] Vamos também ver código para fazer esse sistema de autenticação bem simples, no qual vamos tratar tanto os gerentes quanto os diretores e clientes, porque nosso cliente também vai ter que usar esse sistema da mesma maneira, já que os três terão que fazer login nesse sistema que estão criando para todo mundo usar.
+
+[01:30] Vamos aprofundar muito mais conceito em orientação a objetos, aumentaremos o tamanho do nosso projeto, tentando deixá-lo de uma maneira fácil de trabalhar. Sempre vendo boas práticas e maneiras de trabalhar bem legais para continuarmos tendo uma boa manutenção no nosso código.
+
+[01:46] Eu sou Ricardo Bugan e te espero neste curso.
+
+
+PARTE 2 - PROJETO INICIAL
+=========================
+
+
+Aqui você pode baixar o projeto inicial do curso.
+
+Baixe o zip ou visualize os arquivos no Github!
+
+Atenção: para esse curso precisaremos usar o NodeJS a partir da versão 13.0 pois ela adiciona a capacidade de usarmos módulos JS dentro do Node.
+
+
+Links
+
+  Projeto.zip
+  https://github.com/alura-cursos/js-heranca-polimorfismo/archive/projetoinicial.zip
+
+  Repositório
+  https://github.com/alura-cursos/js-heranca-polimorfismo/tree/projetoinicial
+
+
+
+PARTE 3 - RELEMBRANDO O PROJETO
+===============================
+
+Transcrição
+
+[00:00] Nesse curso daremos continuidade para o nosso projeto do ByteBank, onde vamos rever, melhorar e conhecer ainda mais sobre orientação a objetos.
+
+[00:10] Eu estou com meu projeto aqui, o projeto final do último curso, vamos deixar uma atividade para você baixar esse projeto, para você começar esse curso, se você não o tem no seu computador.
+
+[00:18] Mas é legal que você tenha visto o curso anterior, para continuar esse aqui, já que o projeto vai ser o mesmo, daremos continuidade nele, e lá nós começamos fazendo uma introdução a orientação a objeto.
+
+[00:29] Então ali vamos aprender o que são classes, o que são objetos, vamos criar um vocabulário novo para começarmos a conversar sobre código, então vamos falar de instância, de método, de função, vamos falar de uma série de coisas que podemos fazer.
+
+[00:43] Aqui eu estou com o nosso projeto, na index.js, se eu abrir o meu projeto, no lado superior esquerdo, eu tenho a nossa classe Cliente, que tínhamos criado, eu tenho a nossa classe ContaCorrente, que também tínhamos criado e eu tenho o package.json, onde tínhamos configurado o Node, na verdade, como o Node ia interpretar o nosso código, colocando aqui que agora estamos usando módulos do JavaScript.
+
+[01:03] Dado esse projeto inicial, como vamos continuá-lo? O que precisamos fazer? O ByteBank viu esse projeto e falou, legal, eu já tenho a conta-corrente, eu já tenho um cliente, mas outra funcionalidade do meu banco que queremos implementar é a conta poupança.
+
+[01:18] Então eu gostaria que tivéssemos no nosso sistema um jeito de um cliente ter uma conta poupança e essa conta poupança vai ter que ter também saldo, por ser uma conta poupança, também guarda dinheiro. Ela vai ter que saber de quem é o cliente dela, já que conta poupança e conta-corrente estão atreladas a um cliente, mas são coisas separadas, e vamos precisar saber quem é a agência que criou aquela conta poupança.
+
+[01:37] Para fazer isso, vamos abrir um novo arquivo no nosso projeto, selecionando a opção “New File”, novo arquivo, eu vou chamá-lo de ContaPoupanca.
+
+[01:45] Lembrando que é sempre uma boa prática você nomear o arquivo com o mesmo nome da classe que está dentro dele e ter só uma classe por arquivo, então ContaPoupanca.js. Vamos abrir essa conta e começar a criar nossa classe, relembrando de algumas coisas que vimos.
+
+[02:03] Como falamos, estamos usando os módulos do JavaScript e cada um desses módulos é individual e protege tudo o que tem dentro dele.
+
+[02:13] E se queremos que alguma coisa seja pública, para podermos usar em outros lugares, por exemplo, nossa index.js, fazendo a importação desses módulos, temos que pedir para primeiro ele exportar, para ele abrir, o que tem lá dentro que eu posso usar, assim como fizemos no ContaCorrente, se olharmos aqui em cima, ele tem o export do ContaCorrente e no arquivo Cliente tem o export da classe Cliente.
+
+[02:35] No ContaPoupanca.js também teremos um export, ou seja, eu vou querer abrir a nossa classe, então export class e essa classe eu vou chamar de ContaPoupanca. E nós abrimos chaves ({}) para delimitar o que tem dentro dessa classe, qual é o molde que estamos criando, o que vamos querer colocar dentro dessa classe.
+
+[02:53] E como falamos, vamos precisar de um saldo, de um cliente e de uma agência. Uma coisa que vimos no último curso, uma das últimas coisas que vimos, foi que podemos usar construtores para criar a nossa classe.
+
+[03:05] Na verdade, se eu deixo uma classe sem declarar um construtor explicitamente, sem criar o nosso método construtor, ele vai automaticamente criar um para mim, mas um construtor vazio, então por padrão vai vir um método construtor que basicamente está declarado dessa maneira, ou seja, ele é um construtor vazio.
+
+export class ContaPoupanca{
+  constructor(){
+
+  }
+}
+
+[03:22] E dentro desse construtor, o que podemos fazer? Podemos receber parâmetros sobre o que queremos que ele construa para nós.
+
+[03:30] No caso da nossa conta poupança, o ByteBank nos falou que ele gostaria que pudéssemos declarar um saldo inicial, então teremos saldoInicial como parâmetro do constructor, porque um cliente que já tem uma conta-corrente, na hora em que ele for abrir uma conta poupança, ali no sistema ele pode declarar quanto é o valor inicial que ele quer que essa conta poupança tenha, porque ele vai tirar da conta-corrente dele.
+
+[03:50] Adicionaremos também cliente, que nós vamos receber, e a agencia como parâmetros do construtor. Para sabermos qual a agência do banco que é dona dessa conta.
+
+export class ContaPoupanca{
+  constructor(saldoInicial, cliente, agencia){
+
+  }
+}
+
+[04:05] Uma coisa que não falamos no último curso, mas que é uma boa prática no JavaScript, e não falamos porque no final terminamos só falando de construtores, não tínhamos o construtor, essa ideia de que temos que construir uma classe, logo no início do curso, é que todas as propriedades da nossa classe, no caso da classe Cliente, o nome e o cpf dele, no caso da ContaCorrente, o saldo, a agência e o cliente, têm que ser declarados.
+
+[04:30] Ou seja, eles têm que estar inicializados também, declarados e inicializados, dentro de uma propriedade ou de um método da classe. Isso nós podemos ver lá na documentação do JavaScript.
+
+[04:39] Eu vou abrir o meu Firefox, e digitar “js class” na busca, porque eu quero procurar a documentação de classes do JavaScript, é esse primeiro resultado da developer.mozilla.org acessível neste link, uma documentação muito boa para usarmos.
+
+[04:51] E no meio da documentação, onde ele fala de propriedades de instância, que é o que ele tem chamado de propriedades até agora, ele fala: “Propriedades de instâncias devem ser definidas dentro dos métodos da classe”.
+
+[05:01] E ele dá até um exemplo, ele criou uma classe Retangulo, e dentro do construtor ele tem o this.altura e this.largura, sendo declarados e inicializados, porque é uma boa prática você sempre inicializar suas propriedades, assim que elas são declaradas, dentro do construtor, dentro de um método da classe.
+
+class Retangulo {
+  constructor(altura, largura) {
+    this.altura = altura;
+    this.largura = largura;
+  }
+}
+
+[05:16] O mais comum é usarmos o construtor, mas como ele fala métodos de classe, poderia sem em qualquer método da classe. Mas é legal deixarmos no construtor, porque é quem constrói a classe, e é a primeira coisa que vamos fazer, quando damos um new lá na nossa instância.
+
+[05:29] No Cliente.js, em vez de declarar como declaramos o nosso cliente, fora do construtor, eu vou deletar o nome e o cpf que estão fora do construtor, porque dentro do construtor eles já estão sendo declarados, então mais para frente o JavaScript consegue saber quem ele está usando, quais são as propriedades que ele pode usar dentro dessa classe, elas não precisam estar fora desse construtor, inclusive pela recomendação elas têm que estar dentro do construtor.
+
+[05:52] E nós vamos fazer isso no nosso construtor da classe ContaPoupanca. Então eu vou ter um this._saldo, lembrando que sempre vou iniciar minhas propriedades como privadas, porque eu não sei se eu vou querer realmente abri-las para alguém manipular de fora, e mesmo se eu quiser fazer isso, posso usar os assessores, que me dão uma camada de proteção, de encapsulamento em cima dessa propriedade.
+
+[06:17] Então o this._saldo vai ser igual a saldoInicial, vamos inicializar essa variável com o valor que recebemos por parâmetro.
+
+[06:23] O cliente, this._cliente, também privado, precedido por underline (_), é uma convenção do JavaScript, porque ele é de escopo aberto, ou seja, ele não tem propriedades realmente privadas, pelo menos não por enquanto, então temos essa convenção de deixar o underline para sinalizarmos para outros desenvolvedores que essa propriedade é privada.
+
+[06:42] E o this._agencia também vamos deixá-la privada, vai ser igual a agência que foi passada pelo parâmetro do construtor.
+
+export class ContaPoupanca {
+  constructor(saldoInicial, cliente, agencia) {
+    this._saldo = saldoInicial;
+    this._cliente = cliente;
+    this._agencia = agencia;
+  }
+
+[06:53] Já temos as três propriedades que o banco pediu e outras coisas que vamos precisar é sacar, depositar, vamos precisar transferir dessa conta poupança. Onde temos esses outros comportamentos de sacar, de transferir e de depositar numa classe? Temos eles na nossa ContaCorrente.
+
+[07:11] Inclusive, vamos já tirar esse agência e esse saldo da nossa declaração da classe ContaCorrente e inserir o saldo dentro do construtor que this._saldo será igual a 0. Eu vou inicializar o saldo na conta-corrente com 0.
+
+[07:28] E como eu estava falando, onde temos esses comportamentos de sacar, depositar e transferir? Eles estão aqui na nossa ContaCorrente, ela também tem o sacar, o depositar e o transferir.
+
+[07:41] E já que vamos precisar de tudo isso na conta poupança, o jeito mais fácil de pegar isso é copiando e colando. Vamos selecionar os métodos sacar(), depositar() e transferir(), copiar e colar na ContaPoupanca. Agora minha conta poupança consegue sacar, depositar e transferir um valor.
+
+export class ContaPoupanca {
+  constructor(saldoInicial, cliente, agencia) {
+    this._saldo = saldoInicial;
+    this._cliente = cliente;
+    this._agencia = agencia;
+  }
+
+  sacar(valor) {
+    if (this._saldo >= valor) {
+      this._saldo -= valor;
+      return valor;
+    }
+  }
+
+  depositar(valor) {
+    if (valor <= 100) {
+      return;
+    }
+    this._saldo += valor;
+  }
+
+  tranferir(valor, conta) {
+
+    const valorSacado = this.sacar(valor);
+    conta.depositar(valorSacado);
+
+  }
+}
+
+[07:56] Vamos ver se a classe ContaPoupanca está funcionando? Vamos para a index.js, vamos dar uma limpada no código, não queremos transferir mais, não vamos usar esse cliente2 nem a conta2, teremos uma conta-corrente e um cliente declarados. E agora vamos declarar uma conta poupança.
+
+[08:13] Então const, declarando uma variável, contaPoupanca vai ser igual a uma nova ContaPoupanca, inclusive o Visual Studio Code já fez o auto import para mim, ele já colocou na parte de cima o import da ContaPoupanca, então ele reconheceu que eu tenho um módulo.
+
+[08:31] E para essa conta poupança precisamos dar um saldo inicial. O saldo inicial vai ser de 50, dentro do parênteses. Vamos ter um cliente, no meu caso vai ser uma variável cliente1, que ela guarda a referência para o cliente, uma variável de referência. Ela guarda o endereço de onde esse cliente foi guardado lá na memória, que nós vimos no último curso, e minha agência eu vou colocar 1001, já que é a mesma agência que está abrindo a minha conta-corrente:
+
+const contaPoupanca = new ContaPoupanca(50, cliente1, 1001);
+
+[08:56] Agora que eu tenho minha conta poupança, vamos só imprimir o valor dela com uma chamada de console.log para contaPoupanca. Para imprimir o objeto inteiro e dessa vez vamos usar o terminal integrado do VS Code.
+
+[09:12] Vou apertar “Ctrl + J”, tecla de atalho para ele abrir o terminal, e eu vou digitar o comando node./index.js. Eu vou pedir para ele executar esse comando, assim como já tínhamos feito nos outros cursos. Esse terminal colore para nós a saída do terminal, fica um pouco mais fácil de visualizarmos, diferente do PowerShell:
+
+ContaPoupanca {
+  _saldo: 50,
+  _cliente: Cliente { nome: 'Ricardo', _cpf:11122233309 },
+  _agencia: 1001
+}
+ContaCorrente {
+  agencia: 1001,
+  _cliente: Cliente { nome: 'Ricardo', _cpf:11122233309 },
+  _saldo: 400
+}
+
+[09:35] Aqui temos nossa conta poupança, saldo, cliente e agência, e temos nossa conta-corrente com agência, cliente e saldo. Nós conseguimos criar nossa classe contaPoupanca e começamos a fazer o sistema do ByteBank ter uma conta poupança.
+
+[09:49] Mas reparem uma coisa - vamos dar um “Ctrl + J” para fechar o terminal do VS Code fechar - vimos que eu tenho a conta-corrente com código igual a conta poupança, eu tenho o sacar, eu tenho o depositar. Literalmente, eu só copiei e colei. Será que isso é uma boa prática de programação? Será que é legal ter isso?
+
+[10:05] Vamos refletir, se eu tenho código repetido, eu podia abstrair isso, eu podia extrair isso para outro lugar, para ele não estar repetido. Como eu faço isso quando eu estou com orientação a objeto? Quando eu tenho uma classe? Eu quero compartilhar código entre as classes, eu quero ter um comportamento similar. É isso que vamos ver daqui a pouco.
+
+
+Links:
+
+    MDN - Documentação de classes JS
+    https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Classes
+
+
+
+PARTE 4 - COMPARTILHANDO CÓDIGO
+===============================
+
+Transcrição
+
+[00:00] Como vimos, temos código duplicado entre a nossa Contapoupanca e a nossa ContaCorrente, e não é uma coisa desejável para o nosso código, aliás, para nenhum código é legal ter duplicação de código.
+
+[00:11] Porque toda vez que você tiver que alterar uma regra em um código, e no caso, estamos no sistema da conta-corrente e da conta poupança do ByteBank, então o ByteBank define as regras para essas contas. Toda vez que ele mudar essa regra, teremos que vir aqui e falar, agora minha regra para depositar é que eu não posso depositar valores menores do que 100 reais, porque 100 reais é o mínimo que o banco aceita de depósito.
+
+[00:32] Então eu tenho que vir na ContaPoupanca e mudar no método depositar(), 100 é para conta poupança, e eu vou ter que mudar para a conta-corrente também, 100 reais. Eu tenho que vir aqui, procurar meu depositar() e mudar o valor de 100 reais também para a ContaCorrente.
+
+[00:43] Dessa maneira temos um problema, porque toda vez que você for mudar, vai fazer o trabalho duas vezes, isso é ruim. E outra coisa é, se você esquecer de mudar em alguma das contas, e podemos ter várias contas aqui.
+
+[00:57] No caso, o ByteBank só pediu para fazermos uma conta poupança e uma conta-corrente, mas imagina se tivéssemos uma conta conjunta, uma conta para empresas, uma conta para microempreendedores, vários tipos de contas, porque conta é um produto do banco, ele pode ter quantas ele quiser, e com isso teremos que duplicar esse trabalho várias vezes, então não é recomendado e não é legal você sempre ter código duplicado.
+
+[01:24] E como nós fazemos para abstrair isso? Para tirar esse código duplicado da nossa conta poupança? Se analisarmos, as duas são contas, temos a conta poupança e conta-corrente. Se as duas são contas, por que não criar uma classe Conta e deixar todo esse código junto?
+
+[01:40] Eu vou criar um novo arquivo e chamá-lo de Conta.js. Essa conta será a conta base que todo mundo vai usar. Vou inserir um export para a classe Conta, começando a criar minha conta, e essa conta vai ter tudo que a nossa conta poupança já tem. Ela tem o nosso construtor, ela vai ter o sacar(), o depositar() e o transferir(), então eu vou copiar tudo isso da ContaPoupanca e colar na Conta.
+
+export class Conta{
+  constructor(saldoInicial, cliente, agencia) {
+    this._saldo = saldoInicial;
+    this._cliente = cliente;
+    this._agencia = agencia;
+  }
+
+  sacar(valor) {
+    if (this._saldo >= valor) {
+      this._saldo -= valor;
+      return valor;
+    }
+  }
+
+  depositar(valor) {  
+    if (valor <= 100) {
+      return;
+    }
+    this._saldo += valor;
+  }
+
+  tranferir(valor, conta) {
+
+    const valorSacado = this.sacar(valor);
+    conta.depositar(valorSacado);
+
+  }
+}
+
+[02:06] Entretanto, como eu copiei o código da Contapoupanca, ela vai falar que eu tenho um saldo inicial. Mas o saldo inicial da ContaCorrente é 0, ele tem que ser 0. Como ficaria para usar isso?
+
+[02:20] Se eu não estou usando a ContaCorrente nem a ContaPoupanca, eu só vou usar essa Conta, eu vou fazer uma alteração na index.js, substituir new ContaPoupanca e new ContaCorrente por new Conta, então eu não vou usar mais uma ContaCorrente, eu não vou usar mais uma ContaPoupanca, eu só vou usar essa Conta.
+
+[02:38] Lembrando que, no index.js, precisamos importar a classe Conta do arquivo Conta.js. Eu vou importar esse arquivo, vamos manter toda a consistência do nosso arquivo index.js inserindo ponto e vírgula no final de todas as linhas e agora eu estou usando a Conta, meu cliente tem uma conta, minha conta poupança também é uma Conta.
+
+  import {Cliente} from "./Cliente.js";
+  import {ContaCorrente} from "./ContaCorrente.js";
+  import {ContaPoupanca} from "./ContaPoupanca.js";
+  import {Conta} from "./Conta.js";
+
+  const cliente1 = new Cliente("Ricardo", 11122233309);
+
+  const contaCorrenteRicardo = new Conta(1001, cliente1);
+  contaCorrenteRicardo.depositar(500);
+  contaCorrenteRicardo.sacar(100);
+
+  const contaPoupanca = new Conta(50, cliente1, 1001);
+
+  console.log(contaPoupanca);
+  console.log(contaCorrenteRicardo);
+
+[03:09] Só que nos parâmetros da conta-corrente temos a ordem invertida, antes eu tinha a conta-corrente, ela recebia primeiro a agência, depois o cliente e ela não recebia saldo. Agora eu vou ter uma conta-corrente, que na verdade é uma Conta, porque as duas são contas, e ela vai receber um saldo inicial de 0, porque a conta-corrente tem que ser sempre 0 e a minha agência vai ser a 1001, como já tínhamos antes.
+
+  const contaCorrenteRicardo = new Conta(0, cliente1, 1001);
+
+[03:28] Então eu tenho a conta-corrente, a conta poupança, vamos ver se isso está funcionando. Abri meu terminal no VS Code, vou fechar o menu lateral com o atalho “Ctrl + B”. Em seguida, vamos no terminal, vou limpá-lo com o comando clear, e agora vamos chamar node ./index.js, retornou a mesma coisa: a conta, um saldo, o cliente e uma agência.
+
+Conta {
+  _saldo: 50,
+  _cliente: Cliente { nome: 'Ricardo', _cpf:11122233309 },
+  _agencia: 1001
+}
+Conta {
+  _saldo: 400,
+  _cliente: Cliente { nome: 'Ricardo', _cpf:11122233309 },
+  agencia: 1001
+}
+
+[03:52] E, no caso, a minha primeira conta é a conta poupança, ela tem um saldo de 50, minha conta-corrente tem o saldo de 400, as duas são do mesmo cliente, então ele já trouxe o objeto cliente para nós, e as duas têm a mesma agência. Teoricamente, tudo funciona certo, agora as duas têm o transferir(), o depositar() e o sacar() para fazermos essas regras, para manipularmos as contas.
+
+[04:16] Só que nós perdemos uma informação na parte de linguagem. No terminal está publicado como "Conta", não dá para saber se é a conta-corrente ou a conta poupança. Inclusive, quando eu estava explicando para vocês eu inverti a ordem e acabei me confundindo. E essa linguagem, essa maneira de falar é algo muito importante para nós.
+
+[04:39] Apesar de agora termos uma única Conta, na qual temos o código inteiro que precisamos, tem o nosso construtor, o saldo inicial, o cliente, agência, sacar, depositar e transferir, e não temos mais código duplicado, se eu estou usando só essa conta, não é o ideal ainda, porque podemos ter diferenças.
+
+[04:56] Uma conta-corrente, por exemplo, pode ter diferenças de uma conta poupança, mas podem ser diferenças muito pequenas, e como nós tratamos essas pequenas diferenças?
+
+[05:06] Por exemplo, o ByteBank solicitou que na hora de sacar de uma conta-corrente exista uma taxa. Então, no Conta.js, para a conta-corrente eu vou inserir uma taxa de 10% no método sacar(), na hora de sacar eu vou multiplicar o valor por 1.1, ou seja, eu vou pôr uma taxa de 10%. O meu valor final será essa taxa multiplicada pelo valor.
+
+sacar(valor) {
+  taxa = 1.1 * valor;
+  if (this._saldo >= valor) {
+    this._saldo -= valor;
+    return valor;
+  }
+}
+
+[05:33] Mas na conta poupança eu não vou ter isso, na conta poupança minha taxa é 0. Como eu lido com essas pequenas diferenças? Eu ainda tenho o mesmo comportamento, tenho a mesma interface e ainda consigo sacar das duas, só que o "sacar" funciona de maneira um pouco diferente.
+
+[05:46] Como nós lidamos com isso? Já que agora não temos mais código duplicado, nosso código está inteiro compartilhado, mas ainda tenho que lidar com essas pequenas diferenças. Como vamos fazer isso?
+
+
+
+PARTE 5 - PENSANDO NA MANUTENÇÃO
+================================
+
+Laís está escrevendo um código para seu cliente e acabou criando duas classes para representar os alunos e professores do seu sistema de ensino.
+
+Seu código está assim:
+
+class Aluno{
+  constructor(nome, cpf, idade) {
+    this.nome = nome;
+    this.cpf = cpf;
+    this.idade = idade;
+  }
+}
+
+class Professor{
+  constructor(nome, cpf, idade) {
+    this.nome = nome;
+    this.cpf = cpf;
+    this.idade = idade;
+  }
+}
+
+Agora a escola pediu para que ela adicionasse uma nova propriedade "RG" para o aluno e o professor. Qual o problema desse código nesse contexto?
+
+Ela terá que adicionar a propriedade individualmente em cada classe e em casos com mais classes que compartilham propriedades esses trabalho será maior ainda.
+  Exatamente! Além do fato dela poder esquecer de alterar alguma classe por ter código duplicado no projeto
+
+
+
+PARTE 6 - FAÇA COMO NA AULA
+===========================
+
+Praticar ajuda bastante no aprendizado de um novo conceito. Assim, é muito importante que você implemente o que foi apresentado nesta aula.
+
+Opinião do instrutor
+  Não deixe de sanar suas dúvidas antes de dar continuidade ao curso. Estaremos te esperando no fórum da Alura caso alguma dúvida surja.
+
+
+PARTE 7 -RESUMO DA AULA
+=======================
+
+O que aprendemos nessa aula:
+
+  Relembramos conceitos de classe, propriedades e métodos
+  Boas práticas na hora de declarar atributos
+  Declarando sempre as propriedades como sendo privadas inicialmente
+  Problemas de duplicação de código
+  Problemas de código extremamente compartilhado
+

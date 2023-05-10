@@ -1,0 +1,71 @@
+# aula 4 - acessar atributos privados
+
+## 4-1 - null e undefined
+
+// - sendo os novos objetos apenas referências à classe, é possível criar objetos com referência a mais de uma classe
+// -- criar nova conta para novo cliente
+
+      const conta3 = new ContaCorrente();
+      conta3.cliente = new Cliente();
+      conta3.cliente.nome = 'João';
+      conta3.cliente.cpf = 77722233345;
+      conta3.agencia = 103;
+
+// - erro "undefined"
+// -- valor não foi definido
+
+// - erro "null"
+// -- valor nulo (vazio)
+// -- reserva espaço de memória vazio
+
+// - exibir conta no console
+
+      ContaCorrente {
+        agencia: 103,
+        cliente: Cliente { nome: 'João', cpf: 77722233345, rg: undefined },
+        _saldo: 0
+      }
+
+
+## 4-2 - getter e setter
+
+// - encapsular as funcionalidades mais sensíveis do código
+
+// - impedir declarações indevidas aos objetos
+// -- exibir erro
+
+// - proteger atributos das classes
+// -- transformar "cliente" para atributo privado da classe "ContaCorrente":
+
+      _cliente;
+
+// - métodos de acesso aos atributos privados
+// -- getter e setter
+
+// - setter
+// -- acessor para atribuir valor
+// --- protege objeto e dá acesso aos atributos com regra específica
+// ---- verificar se valor é uma instância do objeto
+// ---- atribuir novo valor
+
+    set cliente(novoValor){
+      if(novoValor instanceof Cliente){
+        this._cliente = novoValor;
+      }
+    }
+
+// - getter
+// -- acessor para pegar valor específico
+// --- retorna valor apenas do atributo declarado
+
+      console.log(conta3.cliente);
+
+      Cliente { nome: 'Ricardo', cpf: 11122233345, rg: 123456789 }
+
+// - proteger o acesso ao saldo
+// -- não consegui reatribuir valor
+// -- só tem acessor get
+
+      get saldo(){
+        return this._saldo;
+      }

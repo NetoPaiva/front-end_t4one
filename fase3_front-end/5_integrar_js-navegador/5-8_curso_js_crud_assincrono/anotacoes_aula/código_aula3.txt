@@ -1,0 +1,236 @@
+5-8 - Curso 6 - JS Web - Crud Assíncrono
+
+# Aula 3 - Criar e remover clientes
+
+
+## Parte 3-1 - Criar clientes
+
+Cadastro online de novos clientes
+
+  - clicar em "Novo Cliente"
+  - direciona para página "cadastra-cliente.html"
+    - conté formulário com
+      - campos nome / email
+      - botão cadastrar
+
+Criar funcionalidade do formulário "cadastra-cliente"
+
+  - enviar dados com método http "post"
+
+  - no arquivo "cliente-service.js"
+  - após a função "listaCliente" com método "fetch-get"
+  - crir a função "criaCliente" com método "fetch-post"
+  - passa como parâmentros os nomes dos campos do formulário
+  - passa as informações no bloco da função
+    - cabeçalho com tipo de informação
+    - corpo com os campos do formulário
+    - com comando para transformar em json os textos dos inputs
+      - nome e email
+    - informando que estes dados são referentes aos parâmentros da função
+      - nome: nome,
+      - email: email
+    - com a requisição feita, então realiza ação (.then)
+      - com a resposta retorna o corpo da resposta
+
+    const criaCliente = (nome, email) => {
+      return fetch(`http://localhost:3000/profile`, {
+        method: 'POST',
+        headers: {'Content-Type' : 'application/json'},
+        body: JSON.stringfy({
+          nome: nome, 
+          email: email
+        })
+      })
+      .then(resposta => {return resposta.body});
+    }
+
+// obs [ esta também poderia ser transformada em função assíncrona ]
+
+    const criaCliente = async (nome, email) => {
+      const resposta = await fetch(`http://localhost:3000/profile`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nome: nome,
+          email: email
+        })
+      });
+      return resposta.body;
+    }
+
+    - exportar a função "criaCliente"
+    - para poder importar em outro código
+      - inlcuir no bloco do objeto de exportação
+
+Criar o controle de cadastrar clientes
+
+  - na pasta "controller"
+  - criar o arquivo "cadastraClientes-controller.js"
+
+  Percorrer o DOM e chegar na página do formulário e seus campos
+
+    - na pasta "telas"
+    - abrir arquivo "cadastra_cliente.html"
+    - localizar no código o trecho referente ao formulário (linha 31)
+    - seletor JS do elemento é o "data-form"
+      - será usado para selecionar todo o formulário
+
+    - no arquivo "cadastraClientes-controller.js"
+    - percorrer o DOM e seleciona elemento do formulário
+    - guarda em uma variável
+      const formulario = document.querySelector('[data-form]');
+
+  Criar evento de escuta do botão "cadastrar"
+
+    - realizar ação ao clicar no botão
+    - método "addEventListener"
+      - passa como parâmetros
+        - o evento que será detectado (submit)]
+        - a função que irá executar ação (evento =>)
+
+    formulario.addEventListener('submit', () => {...});
+
+    - no bloco da função que executará a ação
+      - declarar a prevenção do comportamento (preventDefault)
+      - percorrer o evento do formulário e buscar os campos "nome" e "email"
+        - detectar o alvo dos eventos (target)
+        - selecionar os elementos (data-nome / data-email)
+        - guardar cada elemento em uma variável
+        - pegar o valor de cada campo (.value)
+
+      - incluir no evento de escuta a função "criaCliente"
+      - importar "clienteService" para poder utilizar a função "criaCliente"
+        - verificar o caminho do arquivo e declarar o nome com a extensão ".js"
+      - vincular os dados capturados no formulário para "criaCliente"
+      - com parâmentros dos campos de input (nome, email)
+      - após receber resposta, então redirecionar cliente (then)
+      - para outra página (window.location.href)
+        - window é a tela inteira do navegador
+        - location é onde se está no momento
+        - href é o endereço da página que será aberta
+
+    formulario.addEventListener('submit', evento => {
+      const nome = evento.target.querySelector('[data-nome]').value;
+      const email = evento.target.querySelector('[data-email]').value;
+    
+      clienteService.criaCliente(nome, email).then(() => {
+        window.location.href = '../telas/cadastro_concluido.html'
+      })
+    });
+
+  Incluir no documento HTML o script JS
+
+    - no arquivo "cadastra_cliente.html"
+    - após fechamento da tag "body"
+    - chamar o script "cadastraCliente-controller.js"
+    - do tipo módulo
+
+
+
+## Parte 3-2 - Deletar clientes
+
+Criar requisição excluir cliente cadastrado
+
+  - no arquivo "cliente-service.js"
+  - após a função "criaCliente"
+  - criar a função "removeCliente" e guardar em variável
+  - declara método "fetch"
+  - inlcuir o método "DELETE"
+  - selecionar o id do cliente que será deletado (id está no db.json)
+    - chamar id como parâmetro da função
+    - incluir id na URL do método "DElETE" (/${id})
+
+    const removeCliente = (id) => {
+      return fetch(`http://localhost:3000/profile/${id}`, {
+        method: 'DELETE',
+      })
+    }
+
+  Exportar a função removeCliente
+
+    - incluir a função do objeto de exportação
+
+    export const clienteService = {
+      listaClientes,
+      criaCliente,
+      removeCliente
+    }
+
+
+
+## Parte 3-3 - Conectar API com botão
+
+Identificar o clique no botão "excluir"
+
+  - no arquivo "listaClientes-controller.js"
+  - chamar a constante "tabela" que seleciona o elemento HTML
+  - vincular método de escuta (addEventListener)
+  - com o evento de "clique" e a função do evento
+  - para saber o alvo do evento (target)
+  - que é o botão "excluir" (className)
+  - declarar a classe do botão ('botao-simples botao-simples--excluir')
+  - guardar expressão na variável (botaoExcluir)
+
+    tabela.addEventListener('click', (evento) => {
+      let botaoExcluir = evento.target.className === 'botao-simples--excluir';
+    });
+
+Verificar se é o botão "excluir"
+
+  - antes da verificação, incluir "id" do cliente na função "criaNovaLinha"
+    - incluir "id" como parâmentro da função
+    - incluir "id" em cada linha da tabela de clientes
+      - criar data-attributes para id
+        - abaixo de "linhaNovoCliente.innerHTML"
+        - instanciar o "id" de cada linha de cliente
+          linhaNovoCliente.dataset.id = id;
+
+  - incluir na função do evento a verificação (if)
+  - que recebe a expressão do evento (botaoExcluir)
+  - verifica se é o "id" do cliente na base de dados (clienteService)
+
+    tabela.addEventListener('click', (evento) => {
+      let botaoExcluir = evento.target.className === 'botao-simples--excluir';
+      if (botaoExcluir) {
+        clienteService.removeCliente(id);
+      }
+    });
+
+  - verificar no console do navegador "linhaNovoCliente"
+  - "id" de cada linha aparece como indefinido
+
+    console.log(linhaNovoCliente);
+
+  - precisa informar o "id" no gerador da visualização (clienteService.listaCliente)
+    - incluir "id" depois de "nome" e "email" (element.id)
+
+    clienteService.listaClientes().then(data =>{
+      data.forEach(element => {
+        tabela.appendChild(criaNovaLinha(
+          element.nome, 
+          element.email,
+          element.id
+          ));
+      });
+    });
+
+Deletar a linha e o cliente
+
+  - localizar elemento pai mais próximo da linha (td) que tem o botão "excluir"
+    - o elemento pai da linha é "tr"
+    - o seletor do elemento pai é o "id"
+
+  - declarar na verificação do botão "excluir" antes da remoção do cliente
+    - variável "linhaCliente"
+      - recebe o alvo do evento do elemento pai mais pŕoximo
+      const linhaCliente = evento.target.closest('[data-id]');
+
+    - variável "id"
+      - recebe o seletor do "id"
+      let id = linhaCliente.dataset.id;
+
+  Remover a linha do cliente 
+    - no final da verificação do botão "excluir"
+    - após "removeCliente(id)"
+    - declara a condição de remoção da linha do cliente
+      .then( () => { linhaCliente.remove() })

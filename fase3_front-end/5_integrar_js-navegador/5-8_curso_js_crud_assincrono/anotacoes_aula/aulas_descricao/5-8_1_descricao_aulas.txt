@@ -1,0 +1,348 @@
+Curso JS  na web - CRUD com JS assíncrono
+
+
+Aula 1 - Comunicação assíncrona
+===============================
+
+
+PARTE 1 - APRESENTAÇÃO
+======================
+
+https://cursos.alura.com.br/course/javascript-crud-assincrono/task/86432
+
+
+
+[00:00] Olá, meu nome é Felipe Nascimento, eu sou instrutor da Alura e este curso é para você que está dando os primeiros passos na linguagem JavaScript. Neste curso vamos criar um CRUD com JavaScript consumindo dados externos.
+
+[00:15] CRUD é um acrônimo para criar, ler, atualizar e deletar dados de uma aplicação. Fazendo este curso, vamos trabalhar em cima dessa aplicação, que é o Doguito Petshop, vamos gerar essa linha da tabela dinamicamente com JavaScript, e aqui temos as possibilidades. Ele já está listando os dados dos clientes que tenho cadastrados na API. Posso criar um cliente novo, o Lucas, vou colocar o e-mail dele, cliquei em cadastrar.
+
+[00:38] Deu tudo certo, voltei, ele fez a requisição, listou todos os clientes novamente, o Lucas apareceu aqui, posso editar o Lucas para Luca, por exemplo, clicar em editar. Deu tudo certo. Ele editou para mim. E posso também excluir o Luca do meu sistema. Tudo isso vamos utilizar verbos http para fazer essas manipulações de dados.
+
+[01:00] Vamos trabalhar com async await, try catch, vamos aprender promise, vamos manipular DOM, e vamos aprender bastante coisa durante este curso. O pré-requisito para este curso é o de js manipulando DOM, porque já precisamos ter um conhecimento prévio de manipulação de DOM.
+
+[01:15] Sabendo de tudo isso, vamos começar?
+
+
+
+PARTE 2 - PROJETO INICIAL DO CURSO
+==================================
+
+Aqui você pode baixar o projeto inicial utilizado durante o curso.
+
+Baixe o arquivo ou visualize os arquivos no Github!
+
+Ao fazer o download do arquivo, o mesmo virá com o nome 2016-JS-na-web-crud-com-JavaScript-assincrono-projeto_inicial
+
+Esse é o nome do arquivo zipado 2016-JS-na-web-crud-com-JavaScript-assincrono-projeto_inicial
+
+Para acessar a pasta do projeto, temos que navegar dentro da pasta:
+
+cd projeto_inicial e depois cd admin
+
+Feito isso podemos rodar o npm install dentro da pasta admin, como é mostrado a seguir na aula.
+
+Ou manualmente depois de descompactar a pasta 2016-JS-na-web-crud-com-JavaScript-assincrono-projeto_inicial dar duplo clique dentro dela, depois duplo clique na pasta projeto_inicial e dentro dela clicar com o botão direito na pasta admin e escolher a opção abrir com vscode.
+
+Com isso o vscode vai abrir já na pasta do projeto, então faremos control + j com esse comando o terminal do vscode vai abrir já no caminho da pasta como mostrado na aula, depois disso rodamos o comando npm install.
+
+Links
+
+Projeto-inicial.zip
+https://github.com/alura-cursos/2016-JS-na-web-crud-com-JavaScript-assincrono/archive/projeto_inicial.zip
+
+Repositório
+https://github.com/alura-cursos/2016-JS-na-web-crud-com-JavaScript-assincrono/tree/projeto_inicial/projeto_inicial/admin
+
+
+PARTE 3 - PREPARANDO O AMBIENTE
+===============================
+
+Para este curso, precisaremos do nodejs instalado em nossa máquina.
+
+Antes de começarmos, precisamos preparar o ambiente e baixar o Nodejs no site oficial.
+
+Caso já tenha o node instalado, podemos pular esta etapa.
+
+Clicaremos em "download" e teremos duas opções: a "current" que apresenta novas features e outros elementos em teste. A outra versão é "LTS" a última versão estável e suporte do Node. Utilizaremos a LTS e escolheremos Windows ou Mac depende de seu sistema operacional.
+
+Finalizado o download, executaremos o arquivo. A instalação é bem simples, basta aceitarmos os termos de licença e selecionar a pasta de armazenamento.
+
+Caso você utilize linux pode seguir os seguintes passos
+
+sudo apt update
+sudo apt install nodejs
+
+Logo depois da instalação no seu sistema operacional, você pode abrir o terminal e digitar:
+
+nodejs -v
+
+Se ocorreu tudo certo na instalação, vai aparecer a versão do node.
+
+Estamos prontos para prosseguir!
+
+
+PARTE 4 - PREPARANDO O AMBIENTE - 2
+===================================
+
+
+Na aula seguinte vamos usar o json-server para simular um servidor e consumir dados.
+
+O json-server está listado como dependência no package.json, que é o arquivo onde são especificadas todas as bibliotecas externas usadas no projeto; então ao fazer npm install dentro pasta admin, que é a pasta do projeto será feito o download do json-server automaticamente. (Vamos ver essa parte em video.)
+
+Importante destacar que o comando usado durante a aula para subir o servidor, json-server --watch db.json, deve ser executado dentro da pasta do projeto, admin. Caso contrário ele não vai ser reconhecido.
+
+Outra informação importante: para que o projeto funcione localmente, ao invés de rodar o comando json-server --watch db.json, como feito na aula, deve-se rodar o mesmo comando com npx na frente:
+
+npx json-server --watch db.json
+
+Caso queira utilizar o comando sem o 'npx', será preciso instalar o json-server de forma global:
+
+npm install -g json-server
+
+Feito isso, para subir o servidor, você poderá usar json-server --watch db.json como mostrado na aula.
+
+
+PARTE 5 - EXIBINDO DADOS
+========================
+
+
+Transcrição
+
+[00:00] Nosso layout já está bonito, porém não está funcional. Como sei disso? Quando acessar lista_clientes.html, espero que ele exiba os dados dos clientes. Pode ver que temos uma tabela, mas ela está vazia. Teria que ter aqui o nome e o e-mail dos clientes que já estão cadastrados.
+
+[00:20] Como vamos resolver isso? Vamos ter que abrir uma conexão com uma API onde estão cadastrados esses dados. Do mesmo jeito que estou conversando com vocês, é possível máquinas conversarem entre si. Para isso vamos ter que utilizar o Ajax para fazer esse meio de campo entre a nossa aplicação e a API para conseguirmos obter os dados.
+
+[00:44] Vamos no VSCode, que vamos fazer isso agora. Estou com o projeto aberto. Só para vocês estarem na mesma página que eu, quando vocês baixarem o projeto é só dar dois cliques em admin, vir em telas e dois cliques em lista_clientes.html. Ele vai abrir o projeto.
+
+[01:02] Vou fechar uma guia porque não quero ficar com duas abas. E vou voltar no VisualStudio code, no projeto aberto. Aqui dentro de admin vou criar outra pasta, clicando em new folder, chamada service. Nessa pasta vou colocar tudo que tem relação com essa comunicação com a API. Dentro da service vou clicar em new file, vou criar um cliente-service.js.
+
+[01:30] Aqui dentro vamos fazer de fato essa comunicação. Vamos precisar de alguns métodos para fazer essa comunicação e quem vai fornecer esses métodos para nós é um objeto XMLHttpRequest, ele vai ser o responsável por essa comunicação.
+
+[01:44] A primeira coisa que temos que fazer é inicializar esse objeto. Como fazemos isso? Utilizando um new XMLHttpRequest e aqui o parênteses para indicar que ele está inicializado. Como vou utilizar ele várias vezes, vou colocar dentro de uma const http e vai ser igual a new XMLHttpRequest.
+
+[02:05] Agora podemos utilizar os métodos. A primeira coisa que quero fazer é abrir a comunicação entre a minha aplicação e a API. Para isso vou utilizar o método open, então http.open, e aqui vou passar dois argumentos. O primeiro é o que quero falar com o servidor, então o que vou pedir para ele, e o segundo é o endereço, para onde vou enviar a minha requisição.
+
+[02:30] Vou utilizar o get, porque quero pegar os dados que estão no servidor, get em inglês é pegar, e vou passar o endereço, que é http://localhost:3000/profile, que é onde estão os dados dos clientes.
+
+[02:52] Depois disso fazemos um http.send, que é para enviar essa nossa requisição. Já abrimos a comunicação e enviamos. Agora temos que vir em telas, lá em lista_cliente.html, porque temos que lembrar que temos que carregar o arquivo JavaScript para ele funcionar no html. Embaixo de body vou criar um script e dentro de source vou passar o endereço, então ../service/cliente-service.js.
+
+[03:30] Se voltarmos no Chrome, vou atualizar, nada aconteceu, isso porque não pedimos que ele não faça nada. Vou fechar a lista_clientes.html. O que aconteceu na hora que carregamos a página? Nada. Então temos que indicar para o JavaScript o que vai acontecer depois que fizermos essa requisição e enviar. O que vou fazer com a resposta que o servidor vai me enviar de volta.
+
+[03:55] Para isso vamos utilizar o método onload, ou seja, ao carregar a página. Então, http.onload = () =>, vou criar uma função anônima que ao carregar ele vai executar alguma coisa aqui dentro. Quero pegar o http.response, que é o que o servidor me devolveu, e vou imprimir lá no console de começo.
+
+[04:20] Como vou utilizar ele aqui algumas vezes, também vou utilizar o const data = http.response, para colocar na variável, assim se eu precisar alterar um dia esse response só altero em um lugar.
+
+[04:35] Vamos lá no Chrome, vou atualizar a página, F12 para abrir o console. Ele deu que não conseguiu fazer a conexão com localhost:3000, isso porque localhost:3000 é um endereço que não existe. O que estamos fazendo aqui é simulando uma API, isso porque no frontend nem sempre vamos ter uma API pronta para fazermos todas as requisições.
+
+[05:00] é muito comum simularmos dados. Vocês vão ouvir muito sobre mockar dados, para fazer simulações. Para fazer essa mockagem dos dados, para simular esses dados, vamos utilizar, se voltarmos no VisualStudio code, e viermos no package JSON, pode ver que está listado como dependência do meu projeto o JSON-server, que vai simular essa API para mim.
+
+[05:24] Vou apertar "Ctrl + J" para abrir o terminal e dentro da pasta admin vou fazer um npm install para ele baixar as dependências do meu projeto, que no caso é o JSON server, foi rápido, porque só tem ele, e agora vou fazer um clear para limpar o terminal.
+
+[05:42] Agora tenho que rodar o JSON server, para isso vou fazer um JSON-server --watch, porque vou pedir para ele ficar olhando um arquivo em específico, e esse arquivo é o db.json. Se vocês olharem na esquerda, ele está aqui.
+
+[06:01] Vou dar um enter, ele deu uma carinha feliz, sinal que está tudo ok. Se eu voltar no Chrome, vou atualizar e ele exibiu os dados dos clientes para mim ao carregar a página.
+
+[06:11] Aprendemos como fazer requisições Ajax e a exibir esses dados. Por enquanto exibimos no console, mas agora quero exibir na tela, na tabela, é onde as pessoas vão olhar na nossa aplicação os dados dos clientes.
+
+
+PARTE 6 - CRIANDO TEMPLATE
+==========================
+
+
+Transcrição
+
+[00:00] Foi bem tranquilo pegar os dados da API, utilizamos o xml http request, ele ofereceu vários métodos para fazermos essa comunicação e acabamos exibindo no console os dados. Por enquanto só tem esse, mas vamos com o tempo cadastrar mais.
+
+[00:20] O que quero agora é pegar esses dados e exibir no corpo da tabela porque é isso que pediram para fazermos. Vamos fechar o console, vamos voltar no VSCode, lembrando que estou com o JSON server ligado, então para parar ele uso “Ctrl + C”, ele para. Vou dar um clear para subir a tela.
+
+[00:40] Dentro de admin quando você for rodar novamente é só fazer o JSON-server --watch db.json. Ele está rodando, vou fechar o painel, vou fechar o package JSON que não preciso mais dele.
+
+[00:52] O que tenho que fazer é pegar os dados da API e colocar no html. Vou criar um template que vai receber esses dados da API. Vou contar um segredo para vocês. Lá em lista_clientes.html, que está dentro da pasta de telas, dentro do tbody, que é o corpo da tabela, deixei um template escondido, ele está até comentado.
+
+[01:15] Vou copiar ele, "Ctrl + X", lá em cliente-service vou dar uns espaços e vou colar em cima. Ele já está reclamando porque o JavaScript não reconhece isso como um JavaScript válido. Vou apagar o comentário do html, no começo e no fim.
+
+[01:42] O que temos aqui? Vamos ter o campo que vai pegar o nome, o campo que vai pegar o e-mail, e depois vamos ter também um campo que está dentro de uma lista, que vai ter um link que quando clicarmos vai levar-nos para a página de edição e um botão que vai excluir os dados dos clientes. Temos mais funcionalidades pela frente, mas por enquanto vamos focar em exibir os dados dos clientes.
+
+[02:07] Para o VSCode parar de reclamar aqui eu vou criar uma função para guardar esse template, porque vamos utilizar ele várias vezes. Vou chamar de const criaNovaLinha = () => {, aqui dentro vou colar esse template. "Ctrl + X", colei.
+
+[02:28] Ainda está reclamando, isso porque ainda não resolvemos esse problema. Vou primeiro criar uma const chamada conteúdo, que vai agora sim receber tudo isso, vou até dar uma outra endentada. Para ele parar de reclamar podemos usar o template literals, que são dois acentos graves, um no começo e um lá embaixo, no final. E pronto, ele parou de reclamar.
+
+[02:55] Agora ele entende que isso é string e ele entende que quando tenho alguma coisa dentro das chaves que estão do lado esquerdo e cifrão, isso é JavaScript. Por que está nome e e-mail? Porque são os dados que vamos pegar da API. Ele vai receber isso como parâmetro. Então nome e e-mail.
+
+[03:17] Mas precisamos primeiro colocar, são vários clientes então temos que colocar várias linhas. Para isso vou criar a linha. Para criarmos a linha podemos utilizar o createElement, então const linhaNovoCliente = document.createElement('tr'). Fechou, criamos a linha, temos o conteúdo, agora temos que colocar o conteúdo dentro da linha.
+
+[03:55] Podemos fazer isso utilizando um inner html, ele vai acessando o interior do elemento e vai colocar o conteúdo lá dentro. Podemos voltar algumas linhas e falar que linhaNovoCliente.innerHTML = conteudo. Agora como é uma função retorno linhaNovoCliente.
+
+[04:22] A função já está pronta, se voltarmos no lista_cliente.html, de onde copiei o template, temos um data attributes, é ele que vamos usar como alvo quando formos percorrer todo o documento. Toda a árvore do DOM. Vamos pegar o data attributes data-tabela, e vamos voltar no cliente-service.
+
+[04:46] Vou percorrer a árvore do DOM até achar o data-tabela. Para isso vou criar uma const tabela e vou percorrer a árvore do DOM utilizando querySelector. Aspas e colchete, e data-tabela.
+
+[05:05] Já pegamos a tabela. Agora tenho o elemento pai, que é o tbody, e tenho o elemento filho, que é a linha que acabamos de criar. Quero colocar ela dentro desse elemento pai. Para isso podemos utilizar o appendChild. O que vou fazer aqui é tabela.appendChild(criaNovaLinha(nome,email)).
+
+[05:42] Mas cadê os dados? Os dados já vimos que vêm do data. Vou pegar essa parte da tabela appendChild que eu criei, vou dar "Ctrl + X", vou apagar o console.log. Agora temos dados no array e vamos ter que percorrer eles para pegar cada um referente a cada um dos clientes.
+
+[06:11] Para isso vou utilizar o forEach para iterar sobre essa resposta. A resposta é a data, que vai conter os dados. Então, data.forEach(elemento =>, ou seja, para cada cliente que tenho lá, vou fazer tabela.appendChild(criaNovaLinha(elemento.nome,elemento.email)). Assim conseguimos pegar cada dado referente ao cliente.
+
+[06:54] Se voltarmos no Chrome, vou atualizar, nada aconteceu, F12 para vermos o que está rolando. Ele está falando que “data.forEach is not a function”. Isso porque se voltarmos no VSCode temos o http.response, ele está devolvendo para nós texto, porque é assim que eles se comunicam. O http, o hyper text transfer protocole, então protocolo de transferência de texto.
+
+[07:20] Ele não reconhece como JavaScript válido, temos que transformar essa resposta em um objeto JavaScript para conseguirmos fazer o forEach, percorrer todo esse objeto e pegar os dados. Para isso, parece complicado, mas é bem simples, posso utilizar um objeto nativo do navegador chamado JSON. Ele tem um método chamado parse, que vai fazer exatamente isso. Ele vai transformar o dado válido em um objeto JavaScript válido.
+
+[07:52] Se eu vier no Chrome agora, vou atualizar a página, apareceu meu nome, e-mail, se eu clicar no botão editar ele vai para uma página de edição, que vamos trabalhar nisso depois. E temos um botão de excluir que não está funcional.
+
+[08:08] Já conseguimos matar nossa tarefa, que era exibir os dados na tela. Agora vamos fazer um exercício, vem comigo. Vamos voltar no VisualStudio code, conseguimos exibir os dados dos clientes, certo? Digamos que chega para nós uma nova tarefa, que é depois que exibir os dados dos clientes quero exibir os dados dos clientes que foram cadastrados na semana passada.
+
+[08:30] Como fazemos isso? Vamos pegar o const http, depois que ele fizer tudo isso, vou chamar de http2 XMLHttpRequest, vou pegar o open, copiar, colar aqui embaixo, ele é o http2, e aqui no localhost, depois de profile, barra, é hipotético, vamos falar que tem um caminho que é semanaPassada.
+
+[09:02] Então, abri outra conexão, estou pedindo dados da semana passada e vou ter que fazer o seguinte. Depois que eu fizer isso, http.onload, ele vai executar, aqui dentro ele vai executar a mesma coisa que está dentro do primeiro onload. Vou colocar dois pontos para indicar que teoricamente teria todos esses dados aqui dentro.
+
+[09:35] Não podemos esquecer de fazer um http2.send, que é para enviar esses dados. Digamos que depois que exibe os dados dos clientes exibimos os dados dos clientes da semana passada. E aí pedem para nós depois que exibir os dados da semana passada, queremos também uma tabela com os dados da semana retrasada, como faço isso?
+
+[10:05] Com certeza é isso que você pensou. Aqui dentro do http2, depois dele ter feito toda a operação, vamos copiar o http2, colar dentro do onload do http2, e aqui vai ser o http3, por exemplo. E aqui o http2.open vou copiar, colar embaixo do http3, só para trocar o nome da variável, e o caminho seria semanaRetrasada.
+
+[10:38] Depois de semanaRetrasada ele teria um http3.onload, que vai executar todo o template de exibir os dados. O que fizemos aqui? Encadeamos uma sequência de operações assíncronas, assim garantimos que depois que eu acabar uma operação assíncrona executo a outra. Vocês conseguem me dizer qual a problemática desse código?
+
+
+
+PARTE 7 - LIDANDO COM PROMISES
+==============================
+
+
+Transcrição
+
+[00:00] A primeira tarefa que era exibir os dados dos clientes fizemos com sucesso. Então estamos em cliente-service.js, lá em cima criamos uma função chamada criaNovaLinha, ela recebe um template que quando pegarmos os dados na API vamos inserir esses dados no template e vamos exibir nome, e-mail e mais dois elementos, um link e um botão que vai excluir os dados dos clientes. São novas funcionalidades que vamos trabalhar mais tarde.
+
+[00:27] Para isso tivemos que percorrer a árvore do DOM, fizemos um querySelector buscando um data attributes, que é um data-tabela, que indica o tbody. Temos o tbody como elemento pai e a função que cria um novo elemento, que é o tr como filho. Para colocar o tr dentro do tbody utilizamos o appendChild.
+
+[00:47] Pegamos também os elementos que estavam na API, no caso só tinha um, fizemos uma iteração sobre eles para poder pegar cada um dos dados e exibir nos campos do criaNovaLinha. Deu aquele problema porque os dados vieram em forma de texto, então tivemos que usar o JSON.parse para fazer dele um elemento JavaScript válido. E assim conseguimos exibir os dados na tela.
+
+[01:11] Depois fizemos um exercício pensando em novas funcionalidades que fossem pedidas para nós. Imaginando que teríamos que bater nesse endereço profile/semanaPassada para pegar os dados dos clientes da semana passada, logo após termos exibido todos os dados dos clientes. E também a mesma coisa com os dados da semana retrasada.
+
+[01:34] Expliquei sobre call-back help, só para ficarmos na mesma página, a função do onload recebe essa função auxiliar. Essa função auxiliar vai ser uma função que vai ser disparada logo após uma requisição assíncrona. Essa função é chamada de call-back. Só para termos o completo entendimento do que foi passado na aula passada, só para estarmos na mesma página de entendimento.
+
+[02:02] O problema desse código vocês com certeza acertaram, que é a dificuldade de entender. Se é difícil de entender é difícil de dar manutenção, é difícil de criar uma outra funcionalidade, e esse tipo de programação foi utilizado durante muito tempo e talvez vocês ainda encontrem por aí esse tipo de chamada de call-back dentro de call-back dentro de call-back, trabalhando com funções assíncronas.
+
+[02:28] Para trazer um entendimento maior sobre nosso código, a comunidade, junto com as pessoas que mantém JavaScript entenderam que esse tipo de programação não era o ideal. Eles criaram um novo jeito de lidar com operações assíncronas. Eles criaram a promise. A promise, traduzindo, é uma promessa. Vou fazer uma requisição e ele vai me devolver uma promessa de que quando aquela requisição for completa ou não, vou poder fazer alguma coisa com aquela resposta que ele vai me dar.
+
+[03:03] Vamos ver como isso funciona na prática. Primeiro vou apagar tudo isso do http, http3 até o 2. Não vamos precisar mais disso. E em cima do http vamos criar uma função. Vou chamar de const listaClientes = () => para já englobar nosso código e deixar mais organizado.
+
+[03:31] Do http vai tudo lá para dentro de listaClientes. Do mesmo jeito que instanciamos, ou inicializamos o xml, vamos precisar inicializar também a promise. Vou colocar ela dentro de uma const chamada promise e inicializamos ela com um new Promise, executamos.
+
+[03:53] Dentro dela vamos passar dois parâmetros, o primeiro é o resolve e o segundo o reject, que vão lidar com sucesso ou erro da nossa chamada. E pedimos para ele executar, passando o sinal da arrow function. Vamos colocar dentro dela tudo isso que acabamos de criar. Dentro da promise, vamos passar tudo isso.
+
+[04:20] Como estamos com uma função, tem que lembrar de lá no final retornar essa promise. Agora que já estamos com tudo organizado, vamos ter pequenas modificações. No onload não vamos mais fazer a parte de loop, de iteração e de exibição dos dados. Vou copiar e colar embaixo, porque vou usar ele logo.
+
+[04:44] Dentro do onload, dentro dessa função de call-back, do onload, vou passar uma verificação para saber se deu tudo ok ou não com a nossa chamada. Vou fazer uma verificação com if, então if(http.status >= 400), ou seja, 400 já é a bad request, a requisição que não deu certo, acima disso também tem erros, são erros relacionados a cliente servidor.
+
+[05:17] Se passou de 400 não queremos, então reject, e quem ele vai rejeitar? A resposta. Então, http.response. Caso contrário, else, vamos fazer um resolve, passando o http.response.
+
+[05:41] Lembrando que precisamos transformar essa resposta em um objeto JavaScript válido, então vou fazer um "Ctrl + X" nesse JSON.parse, e vou colar no http response. Copiei e colei, lembrando de colocar entre parênteses. Vou copiar, já que é a mesma coisa, do reject, e vou colar no resolve.
+
+[06:06] Ele está reclamando porque passamos demais. Agora está tudo certo. Temos a promise instanciada, temos o xml request, vou tirar o send daqui para deixar visualmente mostrando o que está acontecendo, faz mais sentido visualmente. E agora com essa lista de clientes vamos retornar essa promise.
+
+[06:36] Vou fazer um console.log aqui para quando exibirmos vocês verem o que está dentro dessa promise. Vou copiar tudo isso, "Ctrl + X", e guardem esse no "Ctrl + X", o que copiei. Vou agora executar o listaClientes. Salvei.
+
+[07:05] Vamos voltar no Chrome, vou atualizar a página, sumiu tudo. É esperado. Mas se formos no F12 e abrirmos o console, reparem que temos a promise. E dentro dela temos o array, com Felipe e felipe@alura.com. Agora que tivemos essa promessa que íamos receber alguma coisa, com essa promessa vamos fazer todo o trabalho de iteração para devolver de novo os dados na tela.
+
+[07:35] Vou fechar o console e voltar no VSCode. Lembre-se que ele devolveu a promise, então vou fazer alguma coisa. É exatamente esse o termo que vou utilizar. Temos uma propriedade chamada então, que é inglês seria then. Fizemos o ponto, então ele já sabe que automaticamente estou me referindo a listaClientes.
+
+[08:00] Dentro do then vou passar uma função que vai executar. Tínhamos data, que eram os dados que tínhamos, vou abrir chaves e vou colar o que tinha copiado. O que não vamos utilizar aqui é o const data =(http.response), então posso apagar. E posso voltar um pouco.
+
+[08:25] Estou fazendo a mesma coisa, pegando a resposta, iterando sobre ela, e estou exibindo na tela. Ele está chiando porque faltou fechar o parênteses do then. Antes do parênteses do then temos as chaves da data e o parênteses do then. Ele parou de reclamar.
+
+[08:44] Se voltarmos no Chrome, vou atualizar a página. Recebemos Felipe, felipe@alura.com, os botões estilizados. Tudo ok. Vamos voltar no VSCode, vou apagar o console.log que não vamos precisar mais.
+
+[09:04] O que fizemos aqui? Agora estamos recebendo uma promessa, ficou muito mais organizado de trabalhar com nosso código. Chamo listaClientes, ele vai me devolver uma promessa, quando essa promessa for completada vou exibir os dados, pegar os dados da API, fazer o loop e exibir.
+
+[09:28] Com o tempo esse tipo de abordagem ficou muito comum, então acabaram se juntando esse tipo de fazer requisição, com XML e lidar com promise, e assim foi criado a fetch API.
+
+
+
+PARTE 8 - CALLBACK HELL
+=======================
+
+Estamos criando um jogo em que a personagem precisa correr por uma série de labirintos. Para movimentar a personagem pelo primeiro labirinto criamos o seguinte código:
+
+movePersonagem(‘100’, ‘Esquerda’, function() {
+  movePersonagem(‘800’, ‘Direita’, function() {
+    movePersonagem(‘200’, ‘Esquerda’, function() {
+      movePersonagem(‘10’, ‘Direita’, function() {
+        movePersonagem(‘60’, ‘Esquerda’, function() {
+        })
+      })
+    })
+  })
+})
+
+No atual formato, código cria o inferno das funções auxiliares(callback hell) ou pirâmide da ruina(pyramid of doom), que acaba dificultando não só o entendimento do código, mas também sua manutenção caso a personagem precise fazer novas movimentações no cenário.
+
+Qual solução abaixo entregaria o mesmo resultado, mas resolvendo esses dois problemas citados utilizando promise?
+
+movePersonagem(‘100’, ‘Esquerda’)
+    .then(() => movePersonagem(‘800’, ‘Direita’))
+    .then(() => movePersonagem(‘200’, ‘Esquerda’))
+    .then(() => movePersonagem(‘10’, ‘Direita’ ))
+    .then(() => movePersonagem(‘60’, ‘Esquerda’ ))
+
+  Alternativa correta! Utilizando promise conseguimos organizar o código de forma estrutural facilitando a leitura e futura manutenção.
+
+
+PARTE 9 - PARA SABER MAIS - PROMISE.ALL
+=======================================
+
+Já sabemos como o callback hell dificulta nossa vida quando estamos falando de manutenção e complexidade de código, como nesse exemplo abaixo, onde temos várias funções auxiliares uma dentro da outra para executar o movimento de um personagem:
+
+movePersonagem(‘100’, ‘Esquerda’, function() {
+    movePersonagem(‘800’, ‘Direita’, function() {
+        movePersonagem(‘200’, ‘Esquerda’, function() {
+            movePersonagem(‘10’, ‘Direita’, function() {
+                movePersonagem(‘60’, ‘Esquerda’, function() {
+                })
+            })
+        })
+    })
+})
+
+O callback hell acaba sendo necessário nesse caso pois desse modo garantimos que a segunda função só vai ser disparada quando a primeira for concluída e assim por diante, já que nesse cenário de exemplo estamos trabalhando com funções assíncronas para movimentar o personagem.
+
+Vimos também que uma alternativa para deixar o código mais “limpo” é utilizar uma Promise. Com o retorno de um objeto de promessa, podemos encadear o .then() garantindo a sequência da execução.
+
+movePersonagem(‘100’, ‘Esquerda’)
+    .then(() => movePersonagem(‘800’, ‘Direita’))
+    .then(() => movePersonagem(‘200’, ‘Esquerda’))
+    .then(() => movePersonagem(‘10’, ‘Direita’ ))
+    .then(() => movePersonagem(‘60’, ‘Esquerda’ ))
+
+Esse cenário onde fazemos várias requisições que dependem uma da outra é bem comum, e nesse cenário podemos fazer uso do método .all da Promise. Passando cada uma das funções dentro de um array como argumento daPromise.all, conseguimos executar todas as funções em ordem sem precisar encadear vários.then()`
+
+Promise.all([
+    movePersonagem(‘100’, ‘Esquerda’),
+    movePersonagem(‘800’, ‘Direita’),
+    movePersonagem(‘200’, ‘Esquerda’),
+    movePersonagem(10, ‘Esquerda’),
+    movePersonagem(‘60’, ‘Esquerda’)
+])
+.then(...)
+
+O Promise.all vai executar todas as chamadas na ordem e devolver uma resposta que então poderá ser utilizada no .then.
+
+
+PARTE 10 - FAÇA COMO NA AULA
+============================
+
+Praticar ajuda bastante no aprendizado de um novo conceito, assim, é muito importante que você implemente o que foi apresentado nesta aula.
+
+Opinião do instrutor
+  Continue com os seus estudos, e se houver dúvidas, não hesite em recorrer ao nosso fórum!
+
+
+PARTE 11 - RESUMO DA AULA
+=========================
+
+Nesta aula, aprendemos:
+
+    Fazer requisições utilizando XMLHttpRequest.
+    Lidar com promises.
+    Fazer uma requisição http utilizando XMLHttpRequest para buscar todos os clientes do servidor.
+    Refatorar o código utilizando promises melhorando a leitura do código.
+    Utilizar template literals para criar um template html.
+

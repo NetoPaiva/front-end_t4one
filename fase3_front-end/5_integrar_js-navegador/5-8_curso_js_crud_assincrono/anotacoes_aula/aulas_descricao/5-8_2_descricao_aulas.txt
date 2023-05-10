@@ -1,0 +1,235 @@
+Curso JS  na web - CRUD com JS assíncrono
+
+
+Aula 2 - Fetch API
+==================
+
+
+PARTE 1 - PROJETO DA AULA ANTERIOR
+==================================
+
+https://cursos.alura.com.br/course/javascript-crud-assincrono/task/86452
+
+
+Aqui você pode baixar o projeto da aula anterior. Baixe o zip ou visualize os arquivos no Github!
+
+
+projeto.zip
+https://github.com/alura-cursos/2016-JS-na-web-crud-com-JavaScript-assincrono/archive/aula01.zip
+
+repositório
+https://github.com/alura-cursos/2016-JS-na-web-crud-com-JavaScript-assincrono/tree/aula01/aula1/admin
+
+
+
+PARTE 2 - REESCREVENDO COM FETCH API
+====================================
+
+
+Transcrição
+
+[00:00] Agora temos XMLHttpRequest e promise trabalhando em conjunto. O XMLHttpRequest fazendo requisições e a promise me devolvendo uma promessa de que quando a resposta estiver pronta posso fazer alguma coisa com ela. Esse então foi o que fizemos na linha 41 com o .then.
+
+[00:20] Temos essa função listaClientes que criei para organizar nosso código, dentro dela coloquei a promise e o XMLHttpRequest. Executamos lista, então quando obtivemos resposta fiz toda a lógica para exibir os dados na tela.
+
+[00:37] A primeira missão está completa, porém podemos ainda melhorar esse código. A partir do momento que para realizarmos uma tarefa a complexidade começa a ficar um pouco alta, muita gente começa a pensar em soluções para resolver isso, e foi assim que surgiu a fetch.
+
+[01:00] Hoje utilizamos a fetch, que substitui tanto a promise e o http. Como vamos utilizar ela? Vou apagar tudo da promise, vou apagar o get e toda a promise, vou manter só o listaClientes. Para utilizar a fetch basta fazer um return fetch e passar o endereço, ‘http://localhost:3000/profile’.
+
+[01:34] É isso, fetch é um método global da interface da fetch API, a fetch API possui vários métodos que podemos utilizar, a fetch é um dos métodos utilizados da interface da fetch API, então aqui por padrão a fetch já faz um get, e já me devolve uma promise. Não precisa instanciar mais nada, simplesmente retorno a fetch.
+
+[01:55] Como ele me devolve uma promise, eu já vou trabalhar com essa resposta. Faço aqui um .then, falo que resposta e passo uma arrow function, executando resposta return, ‘return resposta .json’.
+
+[02:15] Lembra que a resposta é um texto e temos que fazer .json para ele virar um objeto JavaScript válido. Agora. O que vamos fazer? Não precisa mexer em mais nada aqui embaixo, vamos no Chrome, vou atualizar a página, e funcionou.
+
+[02:35] Vou voltar no VisualStudio code, reduzimos, não lembro exatamente quantas linhas tinham, mas agora temos 4 linhas para fazer a mesma requisição que estávamos fazendo antes.
+
+[02:52] Reduzimos bastante a complexidade de fazer requisições, porém ainda tenho algumas observações sobre nosso código. Se formos lá para cima, tenho criaNovaLinha, que é um template. Ele está gerando um template, está recebendo dados, e gerando uma visualização para o html.
+
+[03:12] Tenho tabela, que está percorrendo a árvore do DOM para buscar a data tabela, corpo da tabela. Tenho listaClientes, que está fazendo apenas conexão com a API, e tenho a parte do nosso código que é listaClientes sendo executado e me devolvendo a resposta e eu fazendo essa iteração para exibir dados na tela.
+
+[03:33] Tenho responsáveis diferentes no mesmo código. Para garantir que nossa aplicação fique de fácil manutenção e de fácil adicionar novas funcionalidades, vamos separar responsabilidades, deixando assim nosso código mais manutenível.
+
+
+PARTE 3 - PARA SABER MAIS
+=========================
+
+Neste artigo vamos aprender a utilizar a fetch api para preencher um formulário automaticamente, puxando os dados da via CEP.
+
+Link do artigo:
+https://www.alura.com.br/artigos/comecando-com-fetch-no-javascript
+
+
+
+PARTE 4 - REFATORANDO RESPONSABILIDADES
+=======================================
+
+
+Transcrição
+
+[00:00] Conseguimos reduzir bastante a complexidade do nosso código utilizando a fetch. Tiramos a promise e o XMLHttpRequest, a fetch está fazendo as duas funções para nós.
+
+[00:12] Na linha 20, dentro da listaClientes, na linha 21 tenho a fetch, que já faz o get para mim, não preciso nem passar, passo apenas o endereço, ele já vai buscar os dados para mim. A fetch também retorna uma promise, ou seja, é uma promessa que vou ter uma resposta.
+
+[00:30] Quando eu pegar essa resposta, então, faço alguma coisa com ela. O que vou fazer com ela é retornar resposta.json, ou seja, pego a resposta e transformo em um JavaScript válido, e retorno.
+
+[00:42] Não tivemos que fazer mais nada, ficou muito mais fácil, reduziu para pouquíssimas linhas, tem quatro linhas aqui. Se voltarmos no Chrome, atualizarmos, está funcionando, tudo certo. Vamos voltar no VSCode.
+
+[00:55] Outra coisa que eu tinha comentado é que existem responsabilidades diferentes dentro do código, porque se notarmos criaNovaLinha cria um template, tabela vai percorrer o DOM para buscar o corpo da tabela, listaClientes está fazendo conexão com a API. E essa parte do código com listaClientes que está solta no arquivo está pegando os dados da API, estamos fazendo um loop, iterando sobre os dados e exibindo na tela.
+
+[01:25] Toda essa parte tem a ver com pegar, receber dados da API e exibir dados na tela. Apenas listaClientes que está fazendo de fato a conexão com a API. Eu vou deixar listaClientes nesse arquivo de cliente-service, que tem a ver com requisições, e vou criar uma pasta nova. Clico em new folder dentro de admin.
+
+[01:50] Vou chamar de controller. Dentro dessa pasta vou criar um arquivo chamado listaClientes-controller.js. Aqui dentro vamos colar os outros arquivos que não têm relação direta com a API.
+
+[02:08] Lá em cliente-service vou copiar tabela e criaNovaLinha, "Ctrl + X" e “Ctrl + V” em listaClientes.controller. Voltando em cliente-service vou copiar também listaClientes servisse e o .then e vou colar abaixo da tabela.
+
+[02:30] Vamos em cliente-service de novo, agora temos um arquivo que faz o seguinte, simplesmente pede os dados e devolve uma resposta. Ficou bem mais simples de bater o olho aqui e entender o que está acontecendo.
+
+[02:43] Lá em listaClientes.controller sabemos que ele está gerando um template, está percorrendo a árvore do DOM e está fazendo uma junção com o listaClientes, que inclusive não existe dentro desse arquivo, e que esse listaClientes é provavelmente uma promise, por isso tem o .then e está fazendo toda essa lógica para exibir os dados na tela.
+
+[03:07] Eu disse que listaClientes não existe em listaClientes.controller. Como faço para acessar esse arquivo? Vamos utilizar a partir de agora os módulos do JavaScript. Vou expor listaClientes para ser utilizado dentro de listaClientes.controller. Como faço isso?
+
+[03:25] Vou clicar em listaClientes service e vou colocar um export na frente do listaClientes. Quero dizer com isso que estou deixando visível para os outros arquivos que quiserem utilizar listaClientes. Lá no listaClientes.controller em cima, vou dar um enter, na linha 1 vou fazer um import, ou seja, estou importando o que cliente-service está exportando.
+
+[03:55] Entre chaves aqui, porque estou importando apenas a listagem de clientes, é listaClientes. E tenho que falar de onde estou pegando esse arquivo, então from, abro aspas, ../service/cliente-service.js. Pronto, agora já conseguimos acessar listaClientes dentro do listaClientes.controller.
+
+[04:22] Uma coisa que vou fazer aqui também voltando em cliente-service. Estamos exportado apenas listaClientes, mas vamos com o tempo desenvolver mais funcionalidades que vão pedir com que nós interajamos de forma diferente com a API. Para isso vamos utilizar a seguinte estratégia.
+
+[04:40] Vou criar um objeto, ele já vai ser um objeto que vai ter um export, vou chamar de clienteService, e ele vai receber listaClientes. Aqui tem que ser um const. Apagamos o export daqui, porque agora quando eu for acessar na listaClientes.controller o listaClientes tenho que usar a notação de ponto.
+
+[05:14] Vou fazer clienteService.listaClientes. Isso já vai me falar de onde está vindo o listaClientes. Faz sentido. Lá em listaClientes.controller ao invés de ser listaClientes vou fazer que é clienteService.listaClientes, e não podemos esquecer lá em cima, na linha 1, não é mais listaClientes, é clienteService.
+
+[05:42] Estamos lidando com módulo, então temos que tomar alguns cuidados. A primeira coisa é que se clicarmos em telas, lá em listaClientes, lembram que lá embaixo fazíamos o carregamento o cliente-service? Mas agora ele só vai ser responsável pela API.
+
+[05:58] Temos que trocar esse caminho. Vai ser agora ../controller/listaClientes-controller.js, é de onde ele vai carregar quando abrir o documento de listagem. Outra coisa é que temos que indicar que estamos falando que listaClientes agora é um módulo. Antes do source, do src, coloco um type=”module”.
+
+[06:30] O html já está avisado que isso é um módulo. Vamos voltar agora no Chrome e vamos atualizar a página. Sumiram todos os dados. O que será que aconteceu? F12, vamos ver. Ele está falando que deu um erro de cross origin requests, ou o famoso CORS.
+
+[06:48] Isso quer dizer que o navegador está considerando que minha página html e o JSON server de onde estamos pegando os dados estão em domínios diferentes. Temos que falar para o navegador que estamos fazendo essa requisição do mesmo domínio. Como vamos fazer isso?
+
+[07:06] Temos que subir também um outro servidor, e não podemos mais acessar nossa página html desse jeito diretamente. Como vou fazer isso? Vou baixar uma extensão que vai nos ajudar nessa missão.
+
+[07:22] Vou abrir uma nova aba, npmjs.com, aqui na barra de search vou colocar browser-sync. Vou colocar para procurar. Ele apareceu primeiro para mim, é desse shakyshane, live CSS reload, vou clicar nele. Reparem que ele tem bastante downloads semanais.
+
+[07:55] Se rolarmos um pouco mais, ele vai mostrar “por favor, visite nosso site”, vou clicar no site. Embaixo ele já fala como instalamos o browser-sync, com npm install -g browser-sync. Vou copiar esse comando, vou voltar no VSCode, "Ctrl + J".
+
+[08:17] O JSON server está rodando nessa primeira aba. Vou clicar no sinal de mais para abrir um novo terminal, e dentro de petshop mesmo vou colar a instalação. Como estou no Linux preciso colocar o sudo, porque vamos instalar o browser-sync de forma global na máquina.
+
+[08:35] Caso vocês queiram desinstalar depois, basta colocar na frente do install un, que é de desinstalar, uninstall. Vou dar um enter, ele vai pedir minha senha, coloquei a senha. Provavelmente vai ser rápido, esse pacote não é um pacote pesado. Se minha internet me ajudar.
+
+[09:00] Carregou. E agora o que faço para rodar esse comando? Para rodar o comando tenho uma cola comigo, “Ctrl + C”, “Ctrl + V”, caso vocês queiram pausar neste momento para copiar, mas vou deixar também no material o comando certo.
+
+[09:20] O que ele está fazendo aqui é subir o browser-sync na porta 5000 e automaticamente está abrindo o listaClientes.html. Vou dar um enter e ele vai subir a aplicação para mim. Tudo certo. Meu nome, e-mail e os botões, tudo ok. Agora já estamos trabalhando com módulos, organizamos melhor a arquitetura do nosso projeto. Agora vamos entrar um pouco mais na teoria de como o JavaScript funciona dentro do navegador.
+
+
+PARTE 5 - EVENT LOOP
+====================
+
+
+Transcrição
+
+[00:00] Passamos por bastante coisa até agora. Vimos XMLHttpRequest, vimos o promise, reduzimos a complexidade da junção dessas duas coisas. Reduzimos utilizando fetch, se eu voltar no VSCode em cliente-service, tudo aquilo que estávamos fazendo antes reduzimos somente utilizando fetch, também separamos responsabilidades do nosso código.
+
+[00:22] Agora para adicionar funcionalidades já ficou muito mais fácil, isso vai facilitar para escalar. Cada vez precisamos adicionar mais e mais coisas no nosso código. Já vamos separando a responsabilidade aqui.
+
+[00:35] Outra coisa que utilizamos também foi o export, e no listaClientes o import. Isso é, transformamos os arquivos em módulos. Além de deixar esses arquivos seguros, conseguimos acessar funções que estão em um arquivo e importar no outro para poder utilizar.
+
+[00:52] Também tivemos esse problema de CORS que resolvemos subindo um servidor, e agora se voltarmos no Chrome pode ver que nossa aplicação está no localhost5000 e não mais no cliente html chumbado direto do meu computador. Passamos por bastante coisa. E agora vamos ver como o JavaScript funciona no navegador.
+
+[01:15] Antigamente, o JavaScript foi criado para pequenas interações em sites, porque antigamente tinha muito mais texto, então JavaScript não era exigido tanto dele. Tanto que ele foi criado single thread, ou seja, ele só consegue fazer uma coisa de cada vez.
+
+[01:35] Se viermos no Chrome, deixei um site carregando para nós, que é o Globo Esporte de 2006. Reparem que não tem muita coisa. O web.archive inclusive é um site bem legal para vocês darem uma olhada depois, de vários sites antigos, como eles eram. Aqui é basicamente links que clico e vou para outra página, nem tem muita interação.
+
+[01:55] Pensando nisso, o JavaScript funcionava tranquilo, mas imagine hoje em dia você estar na sua timeline da sua rede social e de repente atualiza a sua timeline, só que você quer conversar com alguém. E enquanto isso, você não consegue mexer na sua aplicação enquanto não atualiza sua timeline. De repente por três, quatro segundos.
+
+[02:14] De repente você vai parar de usar aquela rede social e vai pular para outra. O JavaScript hoje está muito mais exigente, as pessoas estão exigindo muito mais da linguagem, porém ela ainda continua sendo single thread, então como eles resolveram esse problema?
+
+[02:30] Quando falo de JavaScript hoje no navegador não estou falando apenas da linguagem, e sim de um ambiente de execução. Quando rodamos o JavaScript ele vai para o navegador, e nesse ambiente vou ter uma pilha de execução, que vai executar o código JavaScript, vou ter uma pilha de memória que vai pegar nome de variável, nome de objeto, vai guardar as funções, e vou ter o motor JavaScript, que vai transformar o que escrevemos em código de máquina.
+
+[02:58] E aí temos um pulo do gato, que é a web API. Muitas das coisas que fazemos hoje achamos que é JavaScript, mas na verdade é da web API. Quando faço um document.query estou utilizando JavaScript para acessar o web API. Quando uso localStorage, que é o armazenamento, estou usando o JavaScript para acessar o localStorage, e por aí vai.
+
+[03:25] Isso não é da linguagem. Tenho aqui na web API a fetch API, o armazenamento, que é localStorage, sessionStorage, entre outros, tenho a API de áudio, tenho várias APIs que consigo acessar com JavaScript.
+
+[03:40] Então como funciona esse fluxo de código JavaScript e código da web API? Quando eu executo o código JavaScript estou executando da linguagem. Tudo que for da linguagem a partir do momento em que ele vai para o navegador, ele separa o que é da linguagem e o que é da web API.
+
+[04:00] O que for da web API vai ficar na caixa da web API, e o que for da pilha de execução, ou seja, da linguagem, vai ser executado primeiro. Quando não tiver mais nada da linguagem dentro da pilha de execução, a web API fala “então esse API de áudio está resolvido” e manda para essa fila de funções da web API.
+
+[04:22] Aqui ficam os arquivos relacionados a web API. Temos um agente aqui que fica olhando a pilha de execução e essa fila com os arquivos da web API. Quando não tiver mais nada na pilha de execução, ele vai procurar arquivos dentro da fila de funções da web API.
+
+[04:42] Se tiver alguma coisa aqui, ele vai puxar e jogar para a pilha de execução para ela poder executar o código. Lembra que trabalhamos com promises, certo? Também temos uma fila de promises, que é o mesmo funcionamento da fila da web API, porém o eventloop, o evento de loop procura primeiro na fila de promessa.
+
+[05:02] Se tiver alguma coisa aqui, ele executa, se não tiver nada ele procura na função de web API para jogar na pilha de execução e executar. Tenho um site bem legal que deixei separado para vocês, que vai exemplificar bem na prática o que está acontecendo.
+
+[05:22] Do lado esquerdo tenho um código que está fazendo uma busca por um botão, que é o botão “click me”, e ele está passando uma função que ao clicar ele vai utilizar o setTimeout, que é uma função que vai executar alguma coisa depois de x tempos, aqui está 2000 milissegundos, que é 2 segundos.
+
+[05:42] Depois que passar 2 segundos vou executar o console.log. Embaixo tenho um console.log, depois tenho um setTimeout, que tem dentro dele um console.log que vai ser executado cinco segundos depois, e tenho um console.log.
+
+[05:55] Vamos ver como funciona essa interação. Vou clicar no save run. Pausei. O que aconteceu? Ele veio aqui, está lendo meu código, pegou o primeiro trecho, que é essa função, que tem a ver com querySelector, querySelector é da web API, ele leu, falou que isso não é JavaScript, vai jogar para web API, ela vai se virar lá.
+
+[06:20] Vamos clicar no resumo para ver o que vai acontecer. A próxima linha de código é o console.log, console.log é JavaScript, JavaScript sabe executar. Ele vai executar. A próxima é setTimeout, setTimeout também é da web API. A web API que se vire, vou jogar para lá.
+
+[06:40] Percebe aqui que tem um verde, que é o tempo que está correndo. Porém enquanto está rolando o timeout lá na web API ele está lendo o último trecho, na linha 13, que é o console.log, console.log é JavaScript, ele vai executar. Executou, e está passando o tempo, setTimeout pronto.
+
+[07:00] quando o setTimeout está pronto ele cai para a fila da web API, e o eventloop fica olhando. Não tem mais nada na pilha de execução. Ele vai puxar o setTimeout para cima. Dei play.
+
+[07:20] Ele foi, setTimeout, executou o console.log e o console.log tem aquela mensagem de click the button, para eu clicar no botão. Vou clicar no botão para vermos o que vai acontecer.
+
+[07:30] Cliquei, ele executou lá na web API, que é o setTimeout, mandou para a fila de call-back, a fila da web API. Cliquei em resume, ele resolveu, porque não tinha nada no call stack, e jogou o setTimeout que tem a função de 2 segundos e vai exibir o console.log.
+
+[07:57] Vou clicar no resume, ele vai executar a função do onClick, que era o setTimeout, o setTimeout é da web API, ele jogou para a web API, executou o console.log. Cliquei no botão, ele não tinha nada na pilha de execução, o eventloop jogou para cima, vou dar um resume.
+
+[08:22] Ele vai executar agora o setTimeout, mandou o timer para a web API, o timer tinha a função de console.log e ele executou. É assim que JavaScript consegue fazer várias coisas, mesmo sendo single thread, quer dizer que ele executa uma coisa por vez. Isso porque a web API auxilia nesse processo.
+
+[08:42] Agora que vimos como o JavaScript funciona nesse ambiente de execução dentro do navegador, vamos voltar a pôr a mão na massa, porque chegou tarefa para nós, pediram para adicionarmos agora clientes na nossa aplicação, não só mais exibir, é isso que vamos fazer.
+
+
+PARTE 6 - QUAL A ORDEM DE EXECUÇÃO
+==================================
+
+Depois de estudar sobre o JavaScript runtime, Maria resolveu fazer alguns exercícios para fixar o aprendizado. Ela se deparou com o seguinte código:
+
+console.log('1');
+setTimeout(() => console.log('2'), 1000);
+console.log('3')
+
+Qual a saída do código acima?
+
+1
+3
+2
+
+  Alternativa correta! Exatamente setTimeOut() é uma instrução da WebApi, logo ele é mandado para a callback queue e executado após os dois console.log() que são executados primeiro pois são comandos nativos da linguagem.
+
+
+
+PARTE 7 - PARA SABER MAIS
+=========================
+
+Site usado para simular o funcionamento do ambiente JavaScript.
+http://latentflip.com/loupe/?code=JC5vbignYnV0dG9uJywgJ2NsaWNrJywgZnVuY3Rpb24gb25DbGljaygpIHsKICAgIHNldFRpbWVvdXQoZnVuY3Rpb24gdGltZXIoKSB7CiAgICAgICAgY29uc29sZS5sb2coJ1lvdSBjbGlja2VkIHRoZSBidXR0b24hJyk7ICAgIAogICAgfSwgMjAwMCk7Cn0pOwoKY29uc29sZS5sb2coIkhpISIpOwoKc2V0VGltZW91dChmdW5jdGlvbiB0aW1lb3V0KCkgewogICAgY29uc29sZS5sb2coIkNsaWNrIHRoZSBidXR0b24hIik7Cn0sIDUwMDApOwoKY29uc29sZS5sb2coIldlbGNvbWUgdG8gbG91cGUuIik7!!!PGJ1dHRvbj5DbGljayBtZSE8L2J1dHRvbj4%3D
+
+
+Site do Globo Esporte de 2006 mostrado na aula.
+https://web.archive.org/web/20060516060134/http://globoesporte.globo.com/
+
+
+
+PARTE 8 - FAÇA COMO NA AULA
+===========================
+
+Praticar ajuda bastante no aprendizado de um novo conceito. Assim, é muito importante que você implemente o que foi apresentado nesta aula.
+
+Opinião do instrutor
+  Continue com os seus estudos, e se houver dúvidas, não hesite em recorrer ao nosso fórum!
+
+
+
+PARTE 9 - RESUMO DA AULA
+========================
+
+Nesta aula, aprendemos:
+
+    Entender a ordem de execução do código JavaScript.
+    Puxar dados do servidor utilizando a função a fetch api ao invés do xmlhttprequest para modernizar o código.
+    Refatorar as responsabilidades do código pensando na manutenção da aplicação no futuro.
+

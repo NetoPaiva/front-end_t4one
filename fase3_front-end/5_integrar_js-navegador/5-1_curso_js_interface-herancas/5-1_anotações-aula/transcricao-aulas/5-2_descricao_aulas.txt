@@ -1,0 +1,543 @@
+Curso JS - interfaces e heranças em Orientação a Objetos
+
+
+Aula 2 - Herança
+================
+
+
+PARTE 1 - PROJETO DA AULA ANTERIOR
+==================================
+
+https://cursos.alura.com.br/course/javascript-polimorfismo/task/75375
+
+
+Aqui você pode baixar o projeto da aula anterior.
+
+Baixe o zip ou visualize os arquivos no Github!
+
+Links:
+
+  Projeto.zip
+  https://github.com/alura-cursos/js-heranca-polimorfismo/archive/aula1.zip
+
+  Repositório
+  https://github.com/alura-cursos/js-heranca-polimorfismo/tree/aula1
+
+
+
+PARTE 2 - HERANÇA
+=================
+
+Transcrição
+
+[00:00] Como nós vimos, ter código compartilhado entre as duas classes, colocando tudo dentro de uma só classe, ajuda a ter código que seria repetido, a não estar duplicado.
+
+[00:11] Ao mesmo tempo em que quando temos alguma especialização de comportamento, porque agora que o ByteBank pediu que na conta-corrente, na hora de sacar tenha uma taxa de 10% em cima do valor que for sacado, vamos ter esse problema, compartilhar 100% do código traz esse tipo de problema, porque queremos especializar o comportamento e não conseguimos necessariamente.
+
+[00:30] Ao mesmo tempo em que vimos que ter código 100% duplicado, como tínhamos na ContaCorrente e na ContaPoupanca, também não é muito legal, porque vamos ter na ContaCorrente e na ContaPoupanca duplicação de trabalho quando a regra que for comum para os dois mudar, porque o ByteBank pode mudar, ele pode ter vários tipos de contas, conta salário, conta empresarial e conta conjunta, etc.
+
+[00:52] Como vamos lidar com isso? Primeiro que tínhamos aqui na ContaCorrente, que foi a primeira conta que fizemos, aqueles assessores para proteger nossas propriedades. Vamos trazê-las para a classe Conta, porque eu quero continuar com as nossas propriedades, o saldo, o cliente e a agência, bem protegidos.
+
+    set cliente(novoValor) {
+      if (novoValor instanceof Cliente) {
+            this._cliente = novoValor;
+        }
+    }
+
+    get cliente() {
+        return this._cliente;
+    }
+
+    get saldo() {
+        return this._saldo;
+    }
+
+[01:11] Lembrando, como vimos na documentação, precisamos sempre declarar as propriedades da classe dentro de um método da classe e o mais comum é fazer isso dentro do construtor. E outra boa prática é sempre inicializar essas variáveis com algum valor.
+
+[01:27] Na classe Conta estamos usando como parâmetro o que veio do construtor, mas poderíamos inicializar com o valor colocado aqui, Hardcoded ou uma string, um número, alguma coisa direto na nossa propriedade.
+
+[01:40] Agora, na classe Conta temos nossos assessores, temos o sacar(), o depositar() e o transferir(), e eu quero compartilhar código entre a classe ContaCorrente e a classe ContaPoupanca, mas não quero fazer isso de qualquer forma, porque eu quero que minha classe ContaCorrente possa sacar de uma maneira diferente.
+
+[01:58] Como faremos isso? Como podemos usar? Uma das maneiras é pedir para a nossa classe Conta definir qual é o tipo dela. Vou inserir no construtor uma variável chamada tipo, a minha conta vai ter um tipo, agora eu vou ter uma nova propriedade, this._tipo e aqui eu estou colocando-a como privada de propósito, lembrando que sempre começo as propriedades como privadas.
+
+[02:20] Se eu precisar abri-la para alguém de fora da minha classe usar, eu faço isso depois, através de um assessor, ou se eu realmente precisar, eu deixo-a pública, mas vou deixá-la privada por enquanto.
+
+[02:30] E baseado nesse tipo, eu vou vir aqui e vou sacar. Vamos colocar no sacar() que essa taxa inicial vai ser sempre de 1, o meu valor sacado vai ser igual a taxa multiplicada pelo valor. E se o this._tipo for igual a conta-corrente, a minha taxa vai ser igual a 1.1, eu só quero alterar minha taxa se estiver dentro desse tipo de conta.
+
+[03:12] E o valorSacado, eu vou usá-lo aqui, já que eu multipliquei a minha taxa, vai ser o valor que eu vou ter que fazer as verificações de saldo e retornar, se eu tiver saldo suficiente para fazer esse saque.
+
+    sacar(valor) {
+
+        let = taxa = 1
+        if(this._tipo == "corrente"){
+           taxa = 1.1;
+        }
+        const valorSacado = taxa * valor;
+        if (this._saldo >= valorSacado) {
+           (this._saldo -= valorSacado;
+           return valorSacado;
+      }
+    }
+
+[03:22] Como eu vou fazer isso agora? Se eu tenho a minha conta-corrente, meu ByteBank pode vir e falar que a conta-corrente vai ter uma taxa de 1.1, mas a conta salário vai ter uma taxa de 0.5, ter uma taxa de 5% quando a conta for salário. E uma taxa também para a conta de empresa, então a conta empresarial vai ter uma taxa de 15%, já que é uma conta de CNPJ, eles têm mais dinheiro, então deve ter uma taxa maior para eles.
+
+[03:55] Isso é para sacar, mas e se o ByteBank disser que também vai ter algumas regras diferentes para depositar ou para transferir. Falar que conta salário não pode transferir. Então se ela for conta salário, eu vou vir no transferir() e inserir um return, não faz mais nada, você não pode transferir. Mas eu também posso ter aqui no depositar.
+
+sacar(valor) {
+
+    let = taxa = 1
+    if(this._tipo == "corrente"){
+                    taxa = 1.1;
+    }
+    if(this._tipo == "salario"){
+                    taxa = 1.05;
+    }
+    if(this._tipo == "empresarial"){
+                    taxa = 1.15;
+    }
+    const valorSacado = taxa * valor;
+    if (this._saldo >= valorSacado) {
+        this._saldo -= valorSacado;
+        return valorSacado;
+    }
+}
+
+[04:16] Espera, olha quanta regra que estamos colocando dentro desse código, quantos if's vamos ter que criar só porque o ByteBank quer mudar algum comportamento específico dessas contas. Não faz muito sentido.
+
+[04:27] Ter essa variável do tipo na nossa conta não é tão legal, primeiro porque eu vou ter que criar um monte de if dentro do meu código, para cada uma das variações, para cada um dos tipos de conta que forem criadas. Eu tive que fazer tudo isso para mudar uma única regra.
+
+[04:43] Agora eu vou ter que vir no index.js e colocar que a conta-corrente é "corrente", então essa conta-corrente vai cair naquela regra do sacar, a minha conta poupança também preciso colocar que é "poupança".
+
+const contaCorrenteRicardo = new Conta("corrente", 0, cliente1, 1001);
+contaCorrenteRicardo.depositar(500);
+contaCorrenteRicardo.sacar(100);
+
+const contaPoupanca = new Conta("poupanca", 50, cliente1, 1001);
+
+[04:56] Mas se eu colocar o “corrente” errado, colocar dois “o”, ele não vai entrar no if, então aquela regra que eu coloquei na conta não vai entrar, olha como fica frágil essa código.
+
+[05:07] E uma das coisas que nós continuamos não tendo ainda, se abrirmos nosso terminal, antes vamos solucionar esse erro que o terminal indicou ao chamarmos o node ./index.js, na linha 25 do arquivoConta, let = taxa não faz muito sentido mesmo, então vamos fechar nosso terminal. Não deve ter o sinal de igual entre let e taxa.
+
+[05:28] Vamos abrir o terminal, tentar executar de novo, limpar o terminal, agora sim. Trouxemos aqui minha Conta, então eu tenho dois objetos do tipo Conta, mas eu tenho aqui o _tipo: 'poupanca' e eu tenho o _tipo: 'corrente'. Então parte do que perdemos de vocabulário na hora de conversar nós ganhamos de volta, porque eu tenho aqui qual é o tipo da conta.
+
+Conta {
+  _saldo: 50,
+  _cliente: Cliente { nome: 'Ricardo', _cpf:11122233309 },
+  _agencia: 1001
+    _tipo: 'poupanca'
+}
+Conta {
+  _saldo: 400,
+  _cliente: Cliente { nome: 'Ricardo', _cpf:11122233309 },
+  agencia: 1001
+    _tipo: 'corrente'
+}
+
+[05:46] Mas o meu código ainda não fica maravilhoso, porque eu tenho muitas condicionais dentro do mesmo código, muitos caminhos possíveis dentro desse método sacar(), muitos caminhos possíveis dento do depositar(), e eu vou ter esse if todas as vezes que eu tiver alguma regra especial para algum comportamento especial de uma conta que o ByteBank quiser. Então não é a melhor maneira de fazermos isso.
+
+[06:07] Como podemos compartilhar código entre as contas e ganhar de volta aquele vocabulário de chamar para os outros desenvolvedores, conversar com o meu cliente na linguagem do negócio, falar: "eu tenho aqui um objeto do tipo ContaCorrente, ele fez essas operações, ele tem essas propriedades específicas dele".
+
+[06:27] Eu vou voltar aqui no sacar() da maneira que ele estava antes dos if's para "corrente", "salario" e "empresarial":
+
+    sacar(valor) {
+
+       let = taxa = 1
+       const valorSacado = taxa * valor;
+       if (this._saldo >= valorSacado) {
+           this._saldo -= valorSacado;
+           return valorSacado;
+    }
+}
+
+O depositar() e o transferir(), vamos só arrumá-los um pouco, vamos identar nosso código corretamente, vou deixar tudo aqui, já trouxemos os nossos assessores para Conta e já vimos que essa variável que chama tipo, que definia qual é o tipo de conta não é muito legal de ter, então eu já vou tirá-la, porque eu não quero ter aquele monte de if no meu código.
+
+[06:52] Mas o que eu quero fazer é: eu quero falar, minha conta-corrente é igual a nova ContaCorrente, e ela tem que seguir esse construtor, ela tem que seguir que ela recebe um cliente e ela recebe uma agência.
+
+[07:06] E minha contaPoupanca é uma ContaPoupanca, eu não preciso declarar isso como uma string, eu tenho que declarar isso como um tipo, porque o tipo do JavaScript, essa classe que eu criei, é muito melhor para definir isso do que uma string que eu posso errar na hora de escrevê-la, então eu quero declarar meus objetos dessa maneira:
+
+const cliente1 = new Cliente("Ricardo", 11122233309);
+
+const contaCorrenteRicardo = new ContaCorrente(cliente1, 1001);
+contaCorrenteRicardo.depositar(500);
+contaCorrenteRicardo.sacar(100);
+
+const contaPoupanca = new ContaPoupanca(50, cliente1, 1001);
+
+[07:25] Só que eu quero compartilhar código entre eles também, e para isso o que podemos falar é: tudo o que você tiver da ContaCorrente você vai estender da classe Conta, porque a classe Conta já tem uma série de coisas, então você pega tudo o que estiver na classe Conta, traz para você e usa como se fosse seu.
+
+[07:43] Como nós fazemos isso? Na ContaCorrente, vamos inserir o extends para Conta definindo que deve estender tudo o que estiver na classe Conta. Eu estou fazendo uma mudança na declaração da minha classe, que eu estou declarando uma classe ContaCorrente e falando que ela estende a classe Conta.
+
+export class ContaCorrente extends Conta{
+        static numeroDeContas = 0;
+
+        //código omitido
+}
+
+[07:58] Por "trás dos panos" o JavaScript vai fazer o quê? Vai pegar tudo o que estiver na classe Conta e vai trabalhar na classe ContaCorrente como se o código estivesse escrito aqui. Dessa maneira, todo esse código que está no ContaCorrente.js para sacar, transferir e depositar, não precisa estar aqui, eu posso ter só o meu construtor para declarar as minhas propriedades.
+
+[08:15] Mas espera, as propriedades que eu tenho no meu construtor da ContaCorrente são agência, cliente e saldo, e as propriedades que eu tenho na minha Conta são agência, cliente e saldo, então eu não preciso dessas propriedades também na ContaCorrente, eu posso tirar.
+
+export class ContaCorrente extends Conta{
+    static numeroDeContas = 0;
+
+            // #saldo =0 https://github.com/tc39/proposal-class-fields#private-fields
+
+    constructor(agencia, cliente) {
+
+        ContaCorrente.numeroDeContas += 1;
+    }
+}
+
+[08:27] E dessa maneira eu vou ter no JavaScript todo o comportamento que eu tinha antes na ContaCorrente, mas eu estou herdando de Conta, então eu estou pegando da minha classe Conta e estou trazendo para a minha ContaCorrente, isso que nós chamamos de herança.
+
+[08:42] Eu estou fazendo uma herança da classe Conta, então essa classe ContaCorrente vai pegar tudo o que tem na classe Conta, vai trazer para ela e usar como se fosse dela.
+
+[08:51] E umas das coisas que temos de vantagem disso, inclusive, que não tínhamos nem percebido, é que a classe ContaCorrente tinha um comportamento muito específico dela, que é, eu conto o número de contas-correntes que foram criadas.
+
+[09:02] Ele tem uma propriedade estática que conta quantas vezes foi criado, da maneira que eu tinha antes, código compartilhado com Conta, eu não tinha mais esse comportamento, eu teria que fazer um monte de if também para ter uma propriedade estática que fizesse essa contagem para mim.
+
+[09:17] Fazendo uma herança da Conta eu consigo ter esse comportamento especializado de volta, ao mesmo tempo em que eu estou reutilizando o código já existente em outra classe.
+
+[09:25] E posso fazer a mesma coisa para a minha poupança. Na minha ContaPoupanca,class ContaPoupanca estende de Conta, então extends Conta. E no import é o do "./Conta.js", não podemos esquecer, a importação sempre tem que ter a extensão do arquivo no final.
+
+import { Conta } from "./Conta.js";
+
+export class ContaPoupanca extends Conta{
+
+//código omitido
+
+}
+
+[09:42] E a minha ContaPoupanca estende de Conta, então eu não preciso do saldo, do cliente e da agência, eu não preciso do sacar(), depositar() e transferir() declarados na minha ContaPoupanca, porque a minha ContaPoupanca é uma Conta, então ela já vai trazer também tudo o que tiver em Contapara ela.
+
+import { Conta } from "./Conta.js";
+
+export class ContaPoupanca extends Conta{
+    constructor(saldoInicial, cliente, agencia) {
+    }
+
+}
+
+[10:01] Vamos ver se isso está funcionando? Vamos ver se eu consegui trazer realmente esses comportamentos? Vamos abrir nosso terminal do VS Code, vamos limpá-lo e executar o node ./index.js.
+
+[10:12] Estamos executando e está dando um erro em ContaCorrente, no trecho ContaCorrente.numeroDeContas += 1, na hora que ele veio passar nessa linha ele deu um erro, e o nosso erro foi um erro de referência. A mensagem dessa vez é um pouco diferente, você precisa chamar o super construtor na hora de derivar uma classe, antes de acessar o this.
+
+    ReferenceError: Must call super constructor in derived class before accessing 'this' or returning from derived constructor
+
+[10:32] Mas espera, eu não estou acessando o this, porque ele está falando que eu tenho que chamar o super construtor? Aliás, o que é esse super construtor? Antes de eu chamar o this, se eu nem estou chamando o this?
+
+[10:42] Então o teste é, sempre que fazemos essa herança, como fizemos na ContaCorrente, para o JavaScript ele precisa criar o objeto Conta para falar: "você herda todas essas propriedades na hora em que você for construido aqui no seu construtor". E para isso precisamos chamar o construtor da classe Conta.
+
+[11:00] Só que normalmente nós chamamos o construtor com o new, então eu vou ter que chamar o new Conta() aqui no construtor da ContaCorrente. Só que chamar o new Conta não faz muito sentido quando eu estou dentro de uma classe, então o que usaremos é uma palavra especial que se chama super.
+
+[11:13] O super é uma palavra especial que vai chamar o construtor da classe pai. Não é sempre que ele vai chamar o construtor, na verdade, ele depende do método em que ele está dentro.
+
+[11:24] Se ele estiver em outro método, por exemplo, se eu tivesse o sacar() aqui na ContaCorrente e eu chamasse o super dentro do método sacar(), esse super estaria chamando o método sacar() da classe Contae não da classe ContaCorrente. Então ele é uma palavra especial aqui e, no caso, ele está chamando o construtor, porque eu estou chamando o super dentro do construtor.
+
+import { Conta } from "./Conta.js";
+
+export class ContaCorrente extends Conta{
+    static numeroDeContas = 0;
+    constructor(agencia, cliente) {
+        super();
+        ContaCorrente.numeroDeContas += 1;
+    }
+}
+
+[11:40] Esse super(), inclusive, se eu passar o mouse em cima dele, ele está falando que esse super está referenciando o construtor da classe Conta, e eu preciso de um saldo inicial de um cliente e de uma agência.
+
+[11:49] Como sabemos, o nosso saldo inicial é sempre 0, o nosso cliente é o cliente que estamos recebendo pelo nosso construtor e a nossa agência também está sendo chamada aqui pelo construtor.
+
+[12:01] Inclusive, como estamos derivando da classe Conta, eu vou alterar a ordem do meu construtor para deixar sempre na mesma ordem. A minha conta recebe cliente e agência nessa ordem, então a minha ContaCorrente vai receber cliente e agência nessa ordem.
+
+export class ContaCorrente extends Conta{
+    static numeroDeContas = 0;
+    constructor(cliente, agencia) {
+        super(0, cliente, agencia);
+        ContaCorrente.numeroDeContas += 1;
+    }
+
+[12:15] Fica um pouco mais fácil de trabalharmos mais para frente, quando tivermos essa uniformidade entre todos os tipos de conta, todos recebem os parâmetros mais ou menos na mesma ordem.
+
+[12:27] O ContaCorrente recebe (cliente, agencia), e minha ContaPoupanca também tem que chamar o super, então eu também tenho que chamar o construtor da classe Conta, passando saldoInicial,, que é o saldo inicial que a própria ContaPoupanca vai receber, passando cliente, agencia. Dessa forma já temos o super das duas classes, ContaPoupanca e ContaCorrente.
+
+import { Conta } from "./Conta.js";
+
+export class ContaPoupanca extends Conta{
+    constructor(saldoInicial, cliente, agencia) {
+        super(saldoInicial, cliente, agencia);
+    }
+
+}
+
+[12:49] Vamos limpar nosso terminal, que tinha dado aquele erro, e vamos executar o nosso código. E dessa vez agora ele funcionou. Temos de volta a nossa ContaPoupanca, temos a nossa ContaCorrente e conseguimos fazer a herança das nossas propriedades da classe Conta.
+
+ContaPoupanca {
+  _saldo: 50,
+  _cliente: Cliente { nome: 'Ricardo', _cpf:11122233309 },
+  _agencia: 1001
+}
+ContaCorrente {
+  _saldo: 400,
+  _cliente: Cliente { nome: 'Ricardo', _cpf:11122233309 },
+  agencia: 1001
+}
+
+[13:05] Você pode ver que minha ContaPoupanca tem um saldo, tem um cliente e tem uma agência, e a nossa ContaCorrente também tem um saldo, um cliente e uma agência.
+
+[13:14] Inclusive, ela conseguiu manipular daqui com os comportamentos da nossa conta, com o nosso sacar e com o nosso depositar, já que na index.js estávamos chamando aqui da ContaCorrente o nosso sacar e depositar, e como nossa ContaCorrente não declarou nada disso, ela está usando os comportamentos da classe mãe dela, da nossa classe Conta.
+
+[13:36] Conseguimos fazer uma herança, compartilhar código de uma maneira um pouco mais legal, em que não perdemos o vocabulário, continuamos tendo uma linguagem de negócio mais próxima da linguagem de negócio, conta-corrente e conta poupança, que são os termos que o ByteBank vai usar, ao mesmo tempo em que estamos compartilhando código entre essas duas classes, fazendo a herança delas.
+
+
+
+PARTE 3 - SINTAXE DO JS
+=======================
+
+
+Qual a sintaxe do JavaScript para herdarmos de uma classe?
+
+class Carro extends Veiculo
+  Exatamente! dessa forma a classe carro herda as propriedades e métodos da classe Veículo
+
+
+
+PARTE 4 - SUPER E SOBRESCRITA
+=============================
+
+Transcrição
+
+[00:00] Agora que conseguimos compartilhar código entre as duas classes de uma maneira mais segura, de uma maneira mais legal de fazer, porque estamos compartilhando código entre a ContaCorrente e a ContaPoupanca através da nossa classe Conta, podemos entender um pouco melhor como funciona aquela palavra especial super, que tínhamos chamado aqui no nosso construtor.
+
+[00:18] Porque o JavaScript fala na hora que tentarmos rodar o código sem esse super, eu não salvei, vamos salvar, vamos limpar o nosso terminal e vamos rodar de novo. Ele está falando: você tem que chamar o super construtor na hora de derivar uma classe antes de acessar o this.
+
+    ReferenceError: Must call super constructor in derived class before accessing 'this' or returning from derived constructor
+
+[00:37] Ele deu esse erro e nós colocamos esse super(0, cliente, agencia), diretamente na classe ContaCorrente, para ele conseguir funcionar. E eu falei que o super, na verdade, nem sempre está chamando o construtor.
+
+[00:47] Essa palavra especial, super, faz uma referência para a classe que estamos estendendo, para a nossa classe mãe. O super, na classe ContaCorrente, está recebendo o construtor da classe Conta.
+
+[00:58] Se eu estivesse herdando de outra classe, por exemplo, se eu fizesse minha classe ContaCorrente herdar da minha classe ContaPoupanca – e eu posso fazer isso, posso ter uma árvore de herança mais complicada – esse super agora vai estar referenciando a classe ContaPoupanca.
+
+[01:12] Inclusive ele já mudou para mim, na hora que eu deixo o mouse em cima ele exibe "constructor ContaPoupanca". Então essa palavra-chave está sempre referenciando a nossa classe mãe, como chamamos.
+
+[01:24] Quando chamamos o super abrindo e fechando parênteses dessa maneira, super(0, cliente, agencia), estamos realmente chamando o construtor dessa classe que estamos referenciando.
+
+[01:30] Mas eu consigo chamar outros métodos dessa classe também. Por exemplo, se eu criasse uma classe teste na minha ContaCorrente, vou chamar minha classe teste(), dentro dessa classe teste eu vou chamar o super.teste(), que é o que está referenciando um método chamado teste na minha classe super.
+
+[01:53] E dentro do meu teste eu vou dar um console.log("teste na classe conta corrente"), vamos salvar isso.
+
+    teste(){
+        super.teste();
+        console.log("teste na classe conta corrente")
+       }
+    }
+
+Na minha classe Conta eu vou ter também um método teste(), só que dessa vez eu não vou chamar o super, eu vou só dar um console.log(“teste na classe conta”).
+
+[02:22] E se eu executar isso agora, se eu vier na index.js vou apagar a chamada de console.log na minha contaCorrenteRicardo e na contaPoupanca, e eu vou chamar só o contaCorrenteRicardo.teste(), vou invocar esse método.
+
+[02:33] Se eu fizer isso e abrir meu terminal, vamos limpá-lo e executar, podemos ver que ele chamou primeiro o teste na classe Conta e depois o teste na classe ContaCorrente.
+
+teste na classe conta
+teste na classe conta corrente
+
+[02:46] Na hora que eu invoquei o método teste() da minha classe Conta e na minha classe ContaCorrente, inclusive, porque o contaCorrenteRicardo é do tipo ContaCorrente, inclusive ele está me avisando aqui, na hora que eu chamei esse teste, esse método foi lá e falou: "vai na minha classe Conta e chama o método teste() também. E logo depois que você fizer isso, você continua a execução do meu comportamento e executa o console.log que tem aqui embaixo".
+
+[03:15] Então primeiro o nosso código vai para a minha classe Conta, chama o teste, então ele vai dar esse console.log, que é o que vimos aqui primeiro, para depois ele vir e fazer o da minha ContaCorrente, depois que ele vai continuar para a minha ContaCorrente.
+
+[03:31] Se eu, por caso, não chamar esse super.teste(), o que ele vai fazer? Vamos testar. Já salvei, vamos limpar e vamos executar no terminal. Agora ele só chamou o teste da minha classe ContaCorrente.
+
+[03:42] Podemos ver que se eu tiver dois métodos declarados em duas classes diferentes, sendo que uma classe é mãe e outra classe é filha, uma classe herda da outra, como temos aqui na classe teste.
+
+[03:53] Se eu o tiver declarado na minha classe ContaCorrente, vier em Conta.js e o tiver declarado na classe Conta, quando o chamarmos e invocarmos de um objeto específico, ele vai invocar da classe específica que ele está declarado, então ele vai vir declarado na ContaCorrente, e se eu quiser que ele também invoque o da classe superior, eu tenho que chamar o super.teste(), senão ele não vai fazer isso, ele não tem esse comportamento padrão.
+
+[04:20] E isso é muito legal porque lembra que estávamos com nosso problema de mudar o comportamento do nosso sacar() baseado no tipo de conta? Então eu posso declarar o método sacar() lá na classe ContaCorrente, onde o valor da taxa dele é 1.1.
+
+    sacar(valor){
+        let taxa = 1.1;
+        const valorSacado = taxa * valor;
+        if (this._saldo >= valorSacado){
+            this._saldo -= valorSacado;
+            return valorSacado;
+        }
+    }
+
+[04:40] Dessa forma eu tenho aqui o sacar() da classe ContaCorrente sendo diferente do sacar() da classe ContaPoupanca, porque a classe ContaPoupanca não sobrescreveu, como falamos, não declarou de novo o método sacar().
+
+[04:54] Agora se sacarmos 100 reais aqui da contaCorrenteRicardo, você pode ver que ele vai sacar mais. Se eu abrir o terminal e pedir para ele limpar agora e executar, ele voltou a chamar o super, mas eu não imprimi a nossa ContaCorrente. Vamos dar um console.log(contaCorrenteRicardo) e aí sim vamos executar no terminal. Agora podemos ver que o saldo dele foi 390.
+
+[05:23] O que aconteceu? Eu tinha depositado 500, eu saquei 100, só que esse sacar chamou o da minha ContaCorrente. Como esse sacar tem uma taxa diferente da minha taxa da conta normal, ele foi sobrescrito pela ContaCorrente, ele vai ignorar o sacar que existe na Conta. Então eu ignoro o que existe na conta normal e eu o coloco na ContaCorrente, ele só usa esse comportamento sacar() que inserimos na ContaCorrente.
+
+[05:51] Nós resolvemos aquele problema de lidar com pequenas diferenças entre comportamentos das classes baseado em alguma regra que o banco especificou, porque agora se eu preciso mudar o jeito que a minha ContaCorrente saca, eu venho aqui e mexo só nesse método sacar().
+
+[06:12] E se eu não precisar mexer em nada, se eu usar o comportamento padrão que minha Conta definiu, eu não preciso fazer isso, eu posso vir aqui, deixar como a minha ContaPoupanca, ele só vai chamar normalmente o meu sacar().
+
+[06:25] Se eu vier aqui no index.js, pedir um console.log(contaPoupanca), nós vamos ver e pedir para ele sacar, porque eu só declarei essa conta e pedi para ele sacar, eu vou sacar 10 reais, vou tirar esse teste daqui, eu não precisa mais dele, nós entendemos como o super funciona, já que ele é uma referência para a classe pai, vamos limpar o meu terminal e vamos chamar de novo o comando node ./index.js.
+
+ContaPoupanca {
+  _saldo: 40,
+  _cliente: Cliente { nome: 'Ricardo', _cpf:11122233309 },
+  _agencia: 1001
+}
+ContaCorrente {
+  _saldo: 390,
+  _cliente: Cliente { nome: 'Ricardo', _cpf:11122233309 },
+  agencia: 1001
+}
+
+[06:52] Agora podemos ver que a minha ContaPoupanca teve um saque de 10 reais. Eu tinha inicialmente 50, saquei 10, ele ficou com 40, porque eu não tenho taxa, eu vou sacar exatamente aquele valor.
+
+[07:04] Em compensação, na ContaCorrente eu pus 500, saquei 100 e o meu valor é de 390, ao invés de 400 como nós esperávamos, por quê? Como temos uma taxa de 10%, ele sacou um pouco mais do que nós pedimos, já que tem essa taxa embutida. Então estamos sobrescrevendo um comportamento que existe na minha classe mãe para especializá-lo.
+
+[07:27] Inclusive, quando estamos trabalhando com orientação a objetos, herança serve muito para especializarmos o comportamento. Então eu vou pegar um código compartilhado do que eu quero compartilhar e eu vou especializar o que eu precisar.
+
+[07:40] Temos aqui um caso bem legal da nossa ContaCorrente, ela está especializando o comportamento de sacar dela. E a nossa ContaPoupanca, como ela não precisa especializar esse comportamento, ela só usa o que vem por padrão dela. É muito legal isso, nós conseguimos compartilhar código e especializá-lo ao mesmo tempo.
+
+
+
+PARTE 5 - MÉTODOS DE MESMO NOME
+===============================
+
+Douglas começou a testar o que aprendeu com herança e escreveu o código abaixo:
+
+class Funcionario{
+    getBonificacao(){
+        return 100;
+    }
+}
+class Diretor extends Funcionario{
+    getBonificacao(){
+        return 200;
+    }
+}
+class DiretorTI extends Diretor{
+
+}
+
+O problema é que quando ele instanciou um DiretorTI e chamou o método GetBonificacao ele recebeu o valor de 200 e não de 100 como ele esperava. Por que isso aconteceu?
+
+
+Só acontece porque a classe DiretorTI não sobrescreveu o método getBonificacao
+  Sim, se ele sobrescrever esse método a classe funcionará da maneira que ele espera. Porém esse código estará sendo sobrescrito em todas as camadas da hierarquia de classes. Será que é uma boa opção?
+
+Isso acontece porque a classe DiretorTI herda da classe Diretor e ela está sobrescrevendo o método getBonificacao da classe `Funcionário.
+  Isso mesmo! Com a herança podemos herdar classes que herdam de outras classes. E conforme essa cadeia cresce a complexidade do código tbm cresce. Por isso é considerada uma má prática criarmos árvores de herança muito profundas.
+
+
+PARTE 6 - PRIVADO E PROTEGIDO
+=============================
+
+Transcrição
+
+[00:00] Como vimos, podemos sobrescrever comportamentos da nossa classe mãe. Temos aqui o nosso método teste() na ContaCorrente, podemos chamar esse comportamento da classe mãe usando super.teste(), usando essa palavra-chave super, que nós descrevemos um pouco melhor como ela funciona.
+
+[00:15] E também, além de chamar o comportamento padrão da classe mãe, podemos melhorá-lo, sobrescrever ou mudar o comportamento dele, continuando aqui, depois do super(), com o nosso teste.
+
+[00:25] Ou se o quisermos sobrescrever por completo, nós pegamos um método de mesmo nome, no nosso caso, o sacar(), e não chamamos o super dentro dele, só fazemos o comportamento novo, porque estamos realmente especializando tudo o que quisermos.
+
+[00:37] Mas nesse caso, podemos ver que essa parte, valorSacado, depois que eu defini minha taxa, ainda está igual ao sacar() da Conta. Se eu vier na classe Conta e pedir para sacar, esse código na Conta é exatamente igual a esse código que está na ContaCorrente. Ainda temos uma repetição de código que podemos tirar, ele ainda pode ficar um pouco melhor. Como podemos fazer isso?
+
+[00:58] Se esses códigos são iguais e eu posso sempre chamar um código da classe mãe, como podemos fazer isso? Eu posso vir aqui e tirar essa parte referente ao valorSacado do método sacar() para outro método, um método que vai ser privado para a classe Conta.
+
+[01:12] Abaixo do método sacar() já existente eu vou definir outro método chamado _sacar(), dentro da classe Conta, e esse método vai ser privado, então ele começa com underline (_). E como ele tem outro nome, porque começa com underline, o JavaScript vai entender que ele não é a mesma coisa do sacar, apesar de termos as duas variações, a pública e a privada.
+
+[01:33] E eu vou jogar dentro desse método sacar todo esse código. E o que ele precisa para funcionar? De uma taxa e de um valor. Então eu vou pedir nos parâmetros, (valor, taxa).
+
+    _sacar(valor, taxa){
+        const valorSacado = taxa * valor;
+        if (this._saldo >= valorSacado) {
+            this._saldo -= valorSacado;
+            return valorSacado;
+        }
+    }
+
+[01:45] E tendo essa taxa e esse valor, nós, dentro do método sacar(), podemos chamar o método sacar privado, então this._sacar(), chamando o método dentro da própria classe, temos que chamar com o this também, não é só para propriedades dentro da classe, porque estamos referenciando essa classe do método _sacar, e eu vou passar para ele o valor que recebemos por parâmetro e a taxa.
+
+[02:07] Dessa forma nós temos o método sacar(), que é público, usando um método privado que temos ali passando para ele os valores que precisamos.
+
+[02:16] Só que como o método sacar() retorna um valor que eu vou sacar depois, e eu gostaria de manter esse comportamento no meu sacar, eu vou retornar o valor retornado por esse método, então eu vou dar um return aqui, return this._sacar. Então o que o método sacar me retornar, eu vou retornar para quem chamou esse método aqui.
+
+    sacar(valor) {
+        let taxa = 1
+        return this._sacar(valor, taxa);
+    }
+
+[02:33] E como ele está retornando, por enquanto, só se deu sucesso, se temos o saldo suficiente, eu vou também, para manter uma interface uniforme, para quem receber esse valor certo, para quem chamou esse método que seria um valor certo, se eu não conseguir sacar nada, se eu não tiver saldo suficiente, eu vou retornar 0.
+
+[02:52] Então eu vou retornar 0 quando eu não conseguir entrar nesse if (this._saldo >= valorSacado). Se eu tiver o saldo suficiente, ele entra aqui e retorna o valor sacado. Se não, é porque eu não tenho saldo, então eu não vou sacar nada, vou retornar 0.
+
+    _sacar(valor, taxa){
+        const valorSacado = taxa * valor;
+        if (this._saldo >= valorSacado) {
+            this._saldo -= valorSacado;
+            return valorSacado;
+        }
+
+        return 0;
+    }
+
+[03:03] Dessa forma nós conseguimos abstrair todo aquele código repetido para um método que se chama _sacar(). Só que se ele é privado eu poderia chamá-lo aqui na minha ContaCorrente? Vamos pensar um pouco.
+
+[03:15] Até agora, tudo o que falamos que é privado, que tem esse underline na frente por convenção, não deveríamos usar fora da nossa classe que o está declarando. Então o this._saldo, o this._cliente e o this._agencia não deveriam ser usados fora da classe Conta.
+
+[03:27] Ao mesmo tempo em que para fazer o sacar, nós já estamos usando o saldo, no caso aqui, só o saldo. Mas se estamos usando esse saldo, por que podemos usá-lo aqui ou por que seria uma boa ideia usá-lo aqui na ContaCorrente e não fora, por exemplo, na index.js? Por que aqui eu não poderia usar o sacar com underline que nós acabamos de definir?
+
+[03:47] Em algumas linguagens mais formais, que têm uma rigidez maior, temos o escopo de variáveis um pouco mais definido do que só público e privado. O privado seria o que pode ser usado só por aquela classe e o público poderia ser usado por todo mundo.
+
+[04:07] Mas também temos um terceiro nível, que seria o protegido, que pode ser usado só por quem é daquela classe e pela própria classe. E no nosso caso, a ContaCorrente herda da Conta.
+
+[04:18] Como ela era da classe Conta, podemos fazer com que ela use também as propriedades privadas ou protegidas da classe Conta, porque ela é uma extensão da classe, então faz sentido com que ela possa acessar. Dessa maneira, na ContaCorrente, então eu posso tirar esse código referente ao valorSacado e pedir para ele retornar o que vier do this._sacar().
+
+[04:38] Outra maneira de usar, eu poderia usar o super._sacar(), dá na mesma, é a mesma coisa que usar o this, porque eu não estou sobrescrevendo esse método, então eu posso chamá-lo como se ele fosse da minha própria classe, ele vai simplesmente chamar o da classe mãe, e aqui eu tenho que passar o valor e a taxa, a taxa foi a que nós definimos.
+
+    sacar(valor) {
+        let taxa = 1.1;
+        return this._sacar(valor, taxa);
+    }
+
+[04:58] Dessa forma eu tirei aquela duplicação de código, eu a abstraí para o método privado, então não deve ser usado fora da classe, e eu só tenho aqui o meu método sacar() definindo qual é a taxa que eu vou usar. Dessa maneira eu não tenho mais a duplicação de código e eu consigo reutilizar código de uma maneira muito melhor.
+
+[05:18] Outra boa prática que não estamos fazendo e não fizemos até agora, é limpar os imports quando não estamos mais usando-os. Inclusive, o VS Code me avisa que ele não está sendo usado, então o cliente foi declarado, mas ele nunca foi usado, e ele fica até mais escuro, então eu posso tirar esse import daqui, já que é uma coisa que eu não estou usando na minha classe.
+
+[05:37] É muito bom você fazer isso, porque todos os imports falam o que aquela classe está usando, e tem classes que ficam muito grandes, então é legal você realmente manter só o que está sendo usado naquele momento nos seus imports. Algumas boas práticas.
+
+[05:50] Agora que vimos também, temos o método teste() na ContaCorrente, não vamos mais usá-lo, apesar de termos entendido um pouco como o superfunciona através desse método teste(), eu não quero mantê-lo na minha classe porque ele é só alguma coisa para explicarmos o super.
+
+[06:06] E o nosso método sacar(), só para deixar mais claro, ele está sobrescrevendo o comportamento de sacar, então é o jeito que nós falamos que ele está sobrescrevendo o comportamento da classe, é um método que sobrescreve o método da classe mãe. Sobrescrita de métodos é uma coisa que vimos no último vídeo, só estamos formalizando um pouco mais aqui agora.
+
+
+
+PARTE 7 - FAÇA COMO NA AULA
+===========================
+
+
+Praticar ajuda bastante no aprendizado de um novo conceito. Assim, é muito importante que você implemente o que foi apresentado nesta aula.
+
+Opinião do instrutor
+
+  Não deixe de sanar suas dúvidas antes de dar continuidade ao curso. Estaremos te esperando no fórum da Alura caso alguma dúvida surja.
+
+
+PARTE 8 - RESUMO DA AULA
+========================
+
+O que aprendemos nessa aula:
+
+    Especializando código
+
+    Herdando propriedades e atributos
+
+    Sobrescrita de métodos
+
+    Compartilhando código de forma segura
+
+    Mantendo nosso código na linguagem do cliente
+
+    Evitando código muito complicado através da herança
+
+    Palavra-chave Super
+
+    Método e propriedades privadas e protegidas
+
+
